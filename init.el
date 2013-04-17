@@ -404,7 +404,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
- '(custom-enabled-themes (quote (tango)))
+ '(custom-enabled-themes (quote (tango-dark)))
  '(ns-command-modifier (quote meta))
  '(org-format-latex-header "\\documentclass{article}
 \\usepackage{fullpage}         % do not remove
