@@ -304,7 +304,8 @@
 (load "~/site-lisp/graphviz-dot-mode")
 
 ;;; Haskell 设置
-(load "~/site-lisp/haskell-mode/haskell-site-file")
+(add-to-list 'load-path "~/site-lisp/haskell-mode/")
+(require 'haskell-mode-autoloads)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
