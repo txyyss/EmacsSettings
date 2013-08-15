@@ -4,6 +4,7 @@
 
 ;;; 设置环境变量
 (setenv "PATH" (concat "/Users/moonstone/Library/Haskell/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/texbin:/usr/X11/bin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("/Users/moonstone/Library/Haskell/bin" "/opt/local/bin" "/opt/local/sbin" "/usr/local/bin" "/usr/texbin" "/usr/X11/bin")))
 
 ;;; 设置语言
 (setq default-buffer-file-coding-system 'utf-8)
@@ -330,6 +331,8 @@
 (add-to-list 'load-path "~/site-lisp/tuareg")
 (load "tuareg-site-file")
 
+;;; Coq 设置
+(load-file "/Users/moonstone/site-lisp/ProofGeneral-4/ProofGeneral/generic/proof-site.el")
 ;;; LaTeX
 (setq latex-run-command "xelatex")
 
@@ -404,10 +407,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
+ '(ansi-color-names-vector
+   ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
  '(custom-enabled-themes (quote (tango-dark)))
  '(ns-command-modifier (quote meta))
- '(org-format-latex-header "\\documentclass{article}
+ '(org-format-latex-header
+   "\\documentclass{article}
 \\usepackage{fullpage}         % do not remove
 \\usepackage{amssymb}
 \\usepackage[usenames]{color}
