@@ -177,14 +177,12 @@
 (show-paren-mode t)
 (setq display-time-24hr-format t)
 (display-time-mode t)
-(display-battery-mode t)
 (mouse-avoidance-mode 'animate)
 (delete-selection-mode t)
 (ido-mode t)
 (global-set-key (kbd "C-x d") 'ido-dired)
 (setq dired-recursive-deletes 'always)
 (setq dired-recursive-copies 'always)
-;; (setq ido-enable-tramp-completion nil)
 (setq-default c-basic-offset 4)
 (setq-default indent-tabs-mode nil)
 (add-hook 'dired-load-hook
@@ -333,6 +331,9 @@
 
 ;;; Coq 设置
 (load-file "/Users/moonstone/site-lisp/ProofGeneral-4/ProofGeneral/generic/proof-site.el")
+;;; Agda 设置
+(load-file (let ((coding-system-for-read 'utf-8))
+                (shell-command-to-string "agda-mode locate")))
 ;;; LaTeX
 (setq latex-run-command "xelatex")
 
