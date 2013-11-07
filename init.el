@@ -330,10 +330,13 @@
 (load "tuareg-site-file")
 
 ;;; Coq 设置
-(load-file "/Users/moonstone/site-lisp/ProofGeneral-4/ProofGeneral/generic/proof-site.el")
+(load-file "/Users/moonstone/site-lisp/ProofGeneral/generic/proof-site.el")
+(setq coq-use-project-file nil)
+
 ;;; Agda 设置
 (load-file (let ((coding-system-for-read 'utf-8))
                 (shell-command-to-string "agda-mode locate")))
+
 ;;; LaTeX
 (setq latex-run-command "xelatex")
 
