@@ -3,8 +3,8 @@
 ;; C-c @ C-s 显示子节点
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "/Users/moonstone/Library/Haskell/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/texbin:/usr/X11/bin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("/Users/moonstone/Library/Haskell/bin" "/opt/local/bin" "/opt/local/sbin" "/usr/local/bin" "/usr/texbin" "/usr/X11/bin")))
+(setenv "PATH" (concat "/Users/moonstone/Library/Haskell/bin:/usr/local/bin:/usr/texbin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("/Users/moonstone/Library/Haskell/bin" "/usr/local/bin" "/usr/texbin")))
 
 ;;; 设置语言
 (setq default-buffer-file-coding-system 'utf-8)
