@@ -223,9 +223,10 @@
 (setq calendar-location-name "Peking University")
 
 ;;; Spell checking
-(setq-default ispell-program-name "/opt/local/bin/hunspell")
+(setq-default ispell-program-name "/usr/local/bin/aspell")
+(setq ispell-list-command "list")
 (setq-default ispell-extra-args '("-a"))
-(setq-default ispell-local-dictionary "american")
+(setq-default ispell-local-dictionary "en_US")
 (setq-default ispell-local-dictionary-alist '(
              ("american" ; Yankee English
               "[A-Za-z]" "[^A-Za-z]" "[']" t ("-d" "en_US" "-i"  
