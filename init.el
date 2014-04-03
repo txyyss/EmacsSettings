@@ -218,9 +218,9 @@
 (setq doc-view-continuous t)
 
 ;;; Calender setting
-(setq calendar-longitude 116.3)
-(setq calendar-latitude 40)
-(setq calendar-location-name "Peking University")
+(setq calendar-longitude 103.8)
+(setq calendar-latitude 1.3667)
+(setq calendar-location-name "Singapore")
 
 ;;; Spell checking
 (setq-default ispell-program-name "/usr/local/bin/aspell")
@@ -343,6 +343,11 @@
 (setq auto-mode-alist (cons '("\\.md" . gfm-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
 
+;;; 自动变主题
+(add-to-list 'load-path "~/site-lisp/theme-changer")
+(load "theme-changer")
+(change-theme 'tango 'tango-dark)
+
 ;;; OCaml Mode
 (add-to-list 'load-path "~/site-lisp/tuareg")
 (load "tuareg-site-file")
@@ -356,7 +361,7 @@
                 (shell-command-to-string "agda-mode locate")))
 
 ;;; LaTeX
-(setq latex-run-command "xelatex")
+(setq latex-run-command "xelatex -shell-escape")
 
 ;;; TRAMP
 (setq tramp-default-method "ssh")
@@ -431,7 +436,6 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
- '(custom-enabled-themes (quote (tango-dark)))
  '(ns-command-modifier (quote meta))
  '(org-format-latex-header
    "\\documentclass{article}
