@@ -3,8 +3,8 @@
 ;; C-c @ C-s 显示子节点
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "/Users/moonstone/Library/Haskell/bin:/usr/local/bin:/usr/texbin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("/Users/moonstone/Library/Haskell/bin" "/usr/local/bin" "/usr/texbin")))
+(setenv "PATH" (concat "~/.cabal/bin:/Applications/ghc-7.8.3.app/Contents/bin:/usr/local/bin:/usr/texbin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("~/.cabal/bin" "/Applications/ghc-7.8.3.app/Contents/bin" "/usr/local/bin" "/usr/texbin")))
 
 ;;; 设置语言
 (setq default-buffer-file-coding-system 'utf-8)
@@ -323,8 +323,24 @@
 ;;; Haskell 设置
 (add-to-list 'load-path "~/site-lisp/haskell-mode/")
 (require 'haskell-mode-autoloads)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-to-list 'Info-default-directory-list "~/site-lisp/haskell-mode/")
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+(custom-set-variables
+  '(haskell-process-suggest-remove-import-lines t)
+  '(haskell-process-auto-import-loaded-modules t)
+  '(haskell-process-log t)
+  '(haskell-process-type 'cabal-repl))
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+(eval-after-load "haskell-mode"
+       '(progn
+         (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
+         (define-key haskell-mode-map (kbd "C-`") 'haskell-interactive-bring)
+         (define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
+         (define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
+         (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
+         (define-key haskell-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
+         (define-key haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
+         (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)))
 
 ;;; 设置 SLIME
 ;; (add-to-list 'load-path "~/site-lisp/slime")
