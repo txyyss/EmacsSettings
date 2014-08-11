@@ -3,8 +3,8 @@
 ;; C-c @ C-s 显示子节点
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "~/.cabal/bin:/Applications/ghc-7.8.3.app/Contents/bin:/usr/local/bin:/usr/texbin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("~/.cabal/bin" "/Applications/ghc-7.8.3.app/Contents/bin" "/usr/local/bin" "/usr/texbin")))
+(setenv "PATH" (concat "~/Library/Haskell/bin:/usr/local/bin:/usr/texbin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("~/Library/Haskell/bin" "/usr/local/bin" "/usr/texbin")))
 
 ;;; 设置语言
 (setq default-buffer-file-coding-system 'utf-8)
@@ -340,6 +340,7 @@
          (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
          (define-key haskell-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
          (define-key haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
+         (define-key haskell-mode-map (kbd "C-c C-n") 'haskell-check)
          (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)))
 
 ;;; 设置 SLIME
