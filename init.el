@@ -3,8 +3,8 @@
 ;; C-c @ C-s 显示子节点
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "~/Library/Haskell/bin:/usr/local/bin:/usr/texbin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("~/Library/Haskell/bin" "/usr/local/bin" "/usr/texbin")))
+(setenv "PATH" (concat "~/Haskell/happy/.cabal-sandbox/bin:~/Haskell/alex/.cabal-sandbox/bin:~/Haskell/hlint/.cabal-sandbox/bin:~/Haskell/pandoc/.cabal-sandbox/bin:~/Haskell/hakyll/.cabal-sandbox/bin:~/Haskell/agda/.cabal-sandbox/bin:~/.cabal/bin:/Applications/ghc-7.8.3.app/Contents/bin:/usr/local/bin:/usr/texbin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("~/Haskell/happy/.cabal-sandbox/bin" "~/Haskell/alex/.cabal-sandbox/bin" "~/Haskell/hlint/.cabal-sandbox/bin" "~/Haskell/pandoc/.cabal-sandbox/bin" "~/Haskell/hakyll/.cabal-sandbox/bin" "~/Haskell/agda/.cabal-sandbox/bin" "~/.cabal/bin" "/Applications/ghc-7.8.3.app/Contents/bin" "/usr/local/bin" "/usr/texbin")))
 
 ;;; 设置语言
 (setq default-buffer-file-coding-system 'utf-8)
