@@ -211,11 +211,14 @@
             ))
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (setq ls-lisp-dirs-first t)
+(setq ls-lisp-use-insert-directory-program nil)
+(require 'ls-lisp)
 (define-key global-map [ns-drag-file] 'ns-find-file)
 (global-set-key (kbd "<apps>") 'execute-extended-command)
-
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 (setq doc-view-continuous t)
+(toggle-frame-fullscreen)
+(global-set-key [(meta f11)] 'toggle-frame-fullscreen)
 
 ;;; Calender setting
 (setq calendar-longitude 103.8)
