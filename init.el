@@ -369,16 +369,15 @@
 (change-theme 'tango 'tango-dark)
 
 ;;; OCaml Mode
-(add-to-list 'load-path "~/site-lisp/tuareg")
-(load "tuareg-site-file")
+;; (add-to-list 'load-path "~/site-lisp/tuareg")
+;; (load "tuareg-site-file")
 
 ;;; Coq 设置
-(load-file "/Users/moonstone/site-lisp/ProofGeneral/generic/proof-site.el")
-(setq coq-use-project-file nil)
+(load-file "/Users/moonstone/site-lisp/ProofGeneral/generic/proof-site.elc")
 
 ;;; Agda 设置
-(load-file (let ((coding-system-for-read 'utf-8))
-                (shell-command-to-string "agda-mode locate")))
+;; (load-file (let ((coding-system-for-read 'utf-8))
+;;                 (shell-command-to-string "agda-mode locate")))
 
 ;;; LaTeX
 (setq latex-run-command "xelatex -shell-escape")
