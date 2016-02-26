@@ -12,7 +12,7 @@
 (setq system-time-locale "C")
 
 ;;; 设置字体
-(set-face-font 'default "DejaVu Sans Mono-18:antialias=natural")
+(set-face-font 'default "DejaVu Sans Mono-14:antialias=natural")
 (setq dejavu-sans-mono-range
       '((160 . 451) (461 . 483) (486 . 496) (500 . 502) 
         (504 . 505) (508 . 545) (548 . 577) (579 . 581) 
@@ -685,6 +685,8 @@
 (add-to-list 'load-path "~/site-lisp/haskell-mode/")
 (require 'haskell-mode-autoloads)
 (add-to-list 'Info-default-directory-list "~/site-lisp/haskell-mode/")
+
+;;; custom-set-variables
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -692,6 +694,7 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
+ '(company-coq-disabled-features (quote (prettify-symbols smart-subscripts)))
  '(custom-enabled-themes (quote (tango-dark)))
  '(haskell-process-auto-import-loaded-modules t)
  '(haskell-process-log t)
@@ -709,6 +712,7 @@
 \\newcommand{\\quasiregu}[2]{\\genfrac{\\{}{\\}}{0pt}{1}{#1}{#2}}
 \\newcommand{\\dquasiregu}[2]{\\genfrac{\\{}{\\}}{0pt}{0}{#1}{#2}}
 \\pagestyle{empty}             % do not remove")
+ '(package-selected-packages (quote (company-coq)))
  '(user-full-name "Shengyi Wang"))
 (eval-after-load "haskell-mode"
        '(progn
@@ -749,7 +753,8 @@
 ;; (load "tuareg-site-file")
 
 ;;; Coq 设置
-(load-file "/Users/moonstone/site-lisp/ProofGeneral/generic/proof-site.el")
+(load "/Users/moonstone/site-lisp/PG/generic/proof-site")
+(add-hook 'coq-mode-hook #'company-coq-mode)
 
 ;;; Agda 设置
 ;; (load-file (let ((coding-system-for-read 'utf-8))
@@ -768,6 +773,11 @@
 ;; (autoload 'sokoban-mode "sokoban.el"
 ;;   "Play Sokoban in current buffer." t)
 ;; (setq sokoban-levels-dir "c:/Useful/Open/emacs/site-lisp/sokoban-levels")
+
+;; MELPA
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(package-initialize)
 
 ;;; 杂项
 (defun zh-count-word ()
