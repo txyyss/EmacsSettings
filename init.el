@@ -3,8 +3,8 @@
 ;; C-c @ C-s 显示子节点
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "/Users/moonstone/.local/bin:/usr/local/bin:/Library/TeX/texbin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("/Users/moonstone/.local/bin" "/usr/local/bin" "/Library/TeX/texbin")))
+(setenv "PATH" (concat "~/.local/bin:/usr/local/bin:/Library/TeX/texbin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin")))
 
 ;;; 设置语言
 (setq default-buffer-file-coding-system 'utf-8)
@@ -12,8 +12,8 @@
 (setq system-time-locale "C")
 
 ;;; 设置字体
-(set-face-font 'default "Inziu Iosevka SC-16")
-;; version = 1.9.2
+(set-face-font 'default "Sarasa Mono SC-16")
+;; version = 0.5.0
 
 ;;; 常用设置
 (setq inhibit-startup-screen t)
@@ -61,10 +61,10 @@
 (setq ispell-list-command "list")
 (setq-default ispell-extra-args '("-a"))
 (setq-default ispell-local-dictionary "en_US")
-(setq-default ispell-local-dictionary-alist '(
-             ("american" ; Yankee English
-              "[A-Za-z]" "[^A-Za-z]" "[']" t ("-d" "en_US" "-i"  
-"utf-8") nil utf-8)))
+;; (setq-default ispell-local-dictionary-alist '(
+;;              ("american" ; Yankee English
+;;               "[A-Za-z]" "[^A-Za-z]" "[']" t ("-d" "en_US" "-i"  
+;; "utf-8") nil utf-8)))
 
 
 ;;; Dictionary setting
@@ -152,7 +152,7 @@
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
 (add-hook 'org-mode-hook 'abbrev-mode)
 ;;; graphviz 设置
-(load "~/site-lisp/graphviz-dot-mode")
+;; (load "~/site-lisp/graphviz-dot-mode")
 
 ;;; custom-set-variables
 (custom-set-variables
@@ -164,6 +164,8 @@
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
  '(company-coq-disabled-features (quote (prettify-symbols smart-subscripts)))
  '(custom-enabled-themes (quote (tango-dark)))
+ '(gap-executable "/usr/local/bin/gap")
+ '(gap-start-options (quote ("-f" "-b" "-m" "2m" "-E")))
  '(ns-command-modifier (quote meta))
  '(org-format-latex-header
    "\\documentclass{article}
@@ -176,7 +178,10 @@
 \\newcommand{\\quasiregu}[2]{\\genfrac{\\{}{\\}}{0pt}{1}{#1}{#2}}
 \\newcommand{\\dquasiregu}[2]{\\genfrac{\\{}{\\}}{0pt}{0}{#1}{#2}}
 \\pagestyle{empty}             % do not remove")
- '(package-selected-packages (quote (haskell-mode company-coq)))
+ '(package-selected-packages
+   (quote
+    (tuareg gap-mode csharp-mode elpy haskell-mode company-coq)))
+ '(tramp-syntax (quote default) nil (tramp))
  '(user-full-name "Shengyi Wang"))
 ;; (eval-after-load "haskell-mode"
 ;;        '(progn
@@ -216,7 +221,7 @@
 ;; (load "tuareg-site-file")
 
 ;;; Coq 设置
-(load "/Users/moonstone/site-lisp/PG/generic/proof-site")
+(load "~/site-lisp/PG/generic/proof-site")
 (add-hook 'coq-mode-hook #'company-coq-mode)
 
 ;;; Agda 设置
@@ -241,6 +246,12 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
+
+;; Python
+(elpy-enable)
+(setq elpy-rpc-python-command "python3")
+(setq python-shell-interpreter "python3"
+      python-shell-interpreter-args "-i")
 
 ;;; 杂项
 (defun zh-count-word ()
