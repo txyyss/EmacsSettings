@@ -13,7 +13,7 @@
 
 ;;; 设置字体
 (set-face-font 'default "Sarasa Mono SC-16")
-;; version = 0.5.0
+;; Sarasa-Gothic Version = 0.5.4
 
 ;;; 常用设置
 (setq inhibit-startup-screen t)
@@ -24,6 +24,7 @@
 (column-number-mode t)
 (show-paren-mode t)
 (setq display-time-24hr-format t)
+(setq display-time-day-and-date t)
 (display-time-mode t)
 (mouse-avoidance-mode 'animate)
 (delete-selection-mode t)
@@ -245,7 +246,7 @@
 ;; MELPA
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(package-initialize)
+
 
 ;; Python
 (elpy-enable)
