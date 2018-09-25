@@ -13,7 +13,7 @@
 
 ;;; 设置字体
 (set-face-font 'default "Sarasa Mono SC-16")
-;; Sarasa-Gothic Version = 0.5.4
+;; Sarasa-Gothic Version = 0.6.0
 
 ;;; 常用设置
 (setq inhibit-startup-screen t)
@@ -163,11 +163,11 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
- '(company-coq-disabled-features (quote (prettify-symbols smart-subscripts)))
- '(custom-enabled-themes (quote (tango-dark)))
+ '(company-coq-disabled-features '(prettify-symbols smart-subscripts))
+ '(custom-enabled-themes '(tango-dark))
  '(gap-executable "/usr/local/bin/gap")
- '(gap-start-options (quote ("-f" "-b" "-m" "2m" "-E")))
- '(ns-command-modifier (quote meta))
+ '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
+ '(ns-command-modifier 'meta)
  '(org-format-latex-header
    "\\documentclass{article}
 \\usepackage{fullpage}         % do not remove
@@ -180,9 +180,8 @@
 \\newcommand{\\dquasiregu}[2]{\\genfrac{\\{}{\\}}{0pt}{0}{#1}{#2}}
 \\pagestyle{empty}             % do not remove")
  '(package-selected-packages
-   (quote
-    (tuareg gap-mode csharp-mode elpy haskell-mode company-coq)))
- '(tramp-syntax (quote default) nil (tramp))
+   '(geiser paredit tuareg gap-mode csharp-mode elpy haskell-mode company-coq))
+ '(tramp-syntax 'default nil (tramp))
  '(user-full-name "Shengyi Wang"))
 ;; (eval-after-load "haskell-mode"
 ;;        '(progn
@@ -224,6 +223,7 @@
 ;;; Coq 设置
 (load "~/site-lisp/PG/generic/proof-site")
 (add-hook 'coq-mode-hook #'company-coq-mode)
+(setq coq-highlight-hyps-cited-in-response nil)
 
 ;;; Agda 设置
 ;; (load-file (let ((coding-system-for-read 'utf-8))
@@ -253,6 +253,14 @@
 (setq elpy-rpc-python-command "python3")
 (setq python-shell-interpreter "python3"
       python-shell-interpreter-args "-i")
+
+;;; ParEdit
+(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+(add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+(add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+(add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+(add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+(add-hook 'scheme-mode-hook           #'enable-paredit-mode)
 
 ;;; 杂项
 (defun zh-count-word ()
