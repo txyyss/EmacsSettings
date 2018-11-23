@@ -13,9 +13,10 @@
 
 ;;; 设置字体
 (set-face-font 'default "Sarasa Mono SC-16")
-;; Sarasa-Gothic Version = 0.6.0
+;; Sarasa-Gothic Version = 0.7.0
 
 ;;; 常用设置
+(setq default-directory "~/")
 (setq inhibit-startup-screen t)
 (setq initial-scratch-message nil)
 (setq visible-bell t)
