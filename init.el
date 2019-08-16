@@ -13,7 +13,8 @@
 
 ;;; 设置字体
 (set-face-font 'default "Sarasa Mono SC-16")
-;; Sarasa-Gothic Version = 0.7.0
+;; Sarasa-Gothic Version = 0.8.1
+;; Download from https://github.com/be5invis/Sarasa-Gothic/releases
 
 ;;; 常用设置
 (setq default-directory "~/")
