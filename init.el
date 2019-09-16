@@ -13,7 +13,7 @@
 
 ;;; 设置字体
 (set-face-font 'default "Sarasa Mono SC-16")
-;; Sarasa-Gothic Version = 0.8.1
+;; Sarasa-Gothic Version = 0.8.2
 ;; Download from https://github.com/be5invis/Sarasa-Gothic/releases
 
 ;;; 常用设置
@@ -212,11 +212,6 @@
 (autoload 'gfm-mode "markdown-mode" "GitHub Flavored Markdown mode for editing Markdown files" t)
 (setq auto-mode-alist (cons '("\\.md" . gfm-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
-
-;;; 自动变主题
-;; (add-to-list 'load-path "~/site-lisp/theme-changer")
-;; (load "theme-changer")
-;; (change-theme 'tango 'tango-dark)
 
 ;;; OCaml Mode
 ;; (add-to-list 'load-path "~/site-lisp/tuareg")
