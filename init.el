@@ -3,8 +3,8 @@
 ;; C-c @ C-s 显示子节点
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "~/.local/bin:/usr/local/bin:/Library/TeX/texbin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin")))
+(setenv "PATH" (concat "~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v7.4/bin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v7.4/bin")))
 
 ;;; 设置语言
 (setq default-buffer-file-coding-system 'utf-8)
@@ -13,7 +13,7 @@
 
 ;;; 设置字体
 (set-face-font 'default "Sarasa Mono SC-16")
-;; Sarasa-Gothic Version = 0.8.2
+;; Sarasa-Gothic Version = 0.10.1
 ;; Download from https://github.com/be5invis/Sarasa-Gothic/releases
 
 ;;; 常用设置
@@ -167,6 +167,7 @@
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
  '(company-coq-disabled-features '(prettify-symbols smart-subscripts))
  '(custom-enabled-themes '(tango-dark))
+ '(explicit-shell-file-name nil)
  '(gap-executable "/usr/local/bin/gap")
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
  '(ns-command-modifier 'meta)
@@ -183,6 +184,7 @@
 \\pagestyle{empty}             % do not remove")
  '(package-selected-packages
    '(geiser paredit tuareg gap-mode csharp-mode elpy haskell-mode company-coq))
+ '(python-shell-interpreter "python3")
  '(tramp-syntax 'default nil (tramp))
  '(user-full-name "Shengyi Wang"))
 ;; (eval-after-load "haskell-mode"
