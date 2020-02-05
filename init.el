@@ -3,17 +3,31 @@
 ;; C-c @ C-s 显示子节点
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v7.4/bin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v7.4/bin")))
+(setenv "PATH" (concat "~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v7.5/bin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v7.5/bin")))
 
 ;;; 设置语言
 (setq default-buffer-file-coding-system 'utf-8)
 (setq default-process-coding-system '(utf-8 . utf-8))
 (setq system-time-locale "C")
 
+;;; 设置 Helm
+(require 'helm-config)
+(helm-mode 1)
+(define-key global-map [remap find-file] 'helm-find-files)
+(define-key global-map [remap occur] 'helm-occur)
+(define-key global-map [remap list-buffers] 'helm-buffers-list)
+(define-key global-map [remap dabbrev-expand] 'helm-dabbrev)
+(define-key global-map [remap execute-extended-command] 'helm-M-x)
+(define-key global-map [remap apropos-command] 'helm-apropos)
+
+;;; 设置 mode-line
+(require 'powerline)
+(powerline-center-theme)
+
 ;;; 设置字体
 (set-face-font 'default "Sarasa Mono SC-16")
-;; Sarasa-Gothic Version = 0.10.1
+;; Sarasa-Gothic Version = 0.10.2
 ;; Download from https://github.com/be5invis/Sarasa-Gothic/releases
 
 ;;; 常用设置
@@ -21,17 +35,17 @@
 (setq inhibit-startup-screen t)
 (setq initial-scratch-message nil)
 (setq visible-bell t)
+(blink-cursor-mode -1)
 (tool-bar-mode 0)
 (set-scroll-bar-mode nil)
 (column-number-mode t)
 (show-paren-mode t)
 (setq display-time-24hr-format t)
 (setq display-time-day-and-date t)
+(setq display-time-default-load-average nil)
 (display-time-mode t)
 (mouse-avoidance-mode 'animate)
-(delete-selection-mode t)
-(ido-mode t)
-(global-set-key (kbd "C-x d") 'ido-dired)
+(delete-selection-mode 1)
 (setq dired-recursive-deletes 'always)
 (setq dired-recursive-copies 'always)
 (setq-default c-basic-offset 4)
@@ -79,73 +93,7 @@
 ;; (autoload 'lookup-word "lookup" nil t)
 ;; (setq lookup-search-agents '((ndic "c:/Useful/Home")))
 ;; (global-set-key (kbd "C-c s") 'lookup-word)
-
-;;; Auto Pair
-;; (setq skeleton-pair t)
-;; (setq skeleton-pair-alist
-;;       '((?\( _ ?\))
-;;         (?[  _ ?])
-;;         (?{  _ ?})
-;;         (?\" _ ?\")))
-
-;; (defun autopair-insert (arg)
-;;   (interactive "P")
-;;   (let (pair)
-;;     (cond
-;;      ((assq last-command-char skeleton-pair-alist)
-;;       (autopair-open arg))
-;;      (t
-;;       (autopair-close arg)))))
-
-;; (defun autopair-open (arg)
-;;   (interactive "P")
-;;   (let ((pair (assq last-command-char
-;;                     skeleton-pair-alist)))
-;;     (cond
-;;      ((and (not mark-active)
-;;            (eq (car pair) (car (last pair)))
-;;            (eq (car pair) (char-after)))
-;;       (autopair-close arg))
-;;      (t
-;;       (skeleton-pair-insert-maybe arg)))))
-
-;; (defun autopair-close (arg)
-;;   (interactive "P")
-;;   (cond
-;;    (mark-active
-;;     (let (pair open)
-;;       (dolist (pair skeleton-pair-alist)
-;;         (when (eq last-command-char (car (last pair)))
-;;           (setq open (car pair))))
-;;       (setq last-command-char open)
-;;       (skeleton-pair-insert-maybe arg)))
-;;    ((looking-at
-;;      (concat "[ \t\n]*"
-;;              (regexp-quote (string last-command-char))))
-;;     (replace-match (string last-command-char))
-;;     (indent-according-to-mode))
-;;    (t
-;;     (self-insert-command (prefix-numeric-value arg))
-;;     (indent-according-to-mode))))
-
-;; (defun autopair-backspace (arg)
-;;   (interactive "p")
-;;   (if (eq (char-after)
-;;           (car (last (assq (char-before) skeleton-pair-alist))))
-;;       (and (char-after) (delete-char 1)))
-;;   (delete-backward-char arg))
-
-;; (global-set-key [backspace] 'autopair-backspace)
-
-;; (global-set-key "("  'autopair-insert)
-;; (global-set-key "["  'autopair-insert)
-;; (global-set-key "{"  'autopair-insert)
-;; (global-set-key "\"" 'autopair-insert)
-;; (add-hook 'c-mode-common-hook
-;;               '(lambda ()
-;;                  (local-set-key "(" 'autopair-insert)
-;;                  (local-set-key "{" 'autopair-insert)))
-
+ 
 ;;; Org Mode 设置
 (setq org-export-with-LaTeX-fragments t)
 (setq org-tags-column -100)
@@ -183,8 +131,8 @@
 \\newcommand{\\dquasiregu}[2]{\\genfrac{\\{}{\\}}{0pt}{0}{#1}{#2}}
 \\pagestyle{empty}             % do not remove")
  '(package-selected-packages
-   '(geiser paredit tuareg gap-mode csharp-mode elpy haskell-mode company-coq))
- '(python-shell-interpreter "python3")
+   '(helm powerline geiser paredit tuareg gap-mode csharp-mode elpy company-coq))
+ '(python-shell-interpreter "/usr/local/bin/python3")
  '(tramp-syntax 'default nil (tramp))
  '(user-full-name "Shengyi Wang"))
 ;; (eval-after-load "haskell-mode"
@@ -250,8 +198,6 @@
 ;; Python
 (elpy-enable)
 (setq elpy-rpc-python-command "python3")
-(setq python-shell-interpreter "python3"
-      python-shell-interpreter-args "-i")
 
 ;;; ParEdit
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
