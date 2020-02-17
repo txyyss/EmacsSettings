@@ -3,27 +3,13 @@
 ;; C-c @ C-s 显示子节点
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v7.5/bin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v7.5/bin")))
+(setenv "PATH" (concat "~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v7.6/bin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v7.6/bin")))
 
 ;;; 设置语言
 (setq default-buffer-file-coding-system 'utf-8)
 (setq default-process-coding-system '(utf-8 . utf-8))
 (setq system-time-locale "C")
-
-;;; 设置 Helm
-(require 'helm-config)
-(helm-mode 1)
-(define-key global-map [remap find-file] 'helm-find-files)
-(define-key global-map [remap occur] 'helm-occur)
-(define-key global-map [remap list-buffers] 'helm-buffers-list)
-(define-key global-map [remap dabbrev-expand] 'helm-dabbrev)
-(define-key global-map [remap execute-extended-command] 'helm-M-x)
-(define-key global-map [remap apropos-command] 'helm-apropos)
-
-;;; 设置 mode-line
-(require 'powerline)
-(powerline-center-theme)
 
 ;;; 设置字体
 (set-face-font 'default "Sarasa Mono SC-16")
@@ -45,6 +31,8 @@
 (setq display-time-default-load-average nil)
 (display-time-mode t)
 (mouse-avoidance-mode 'animate)
+(ido-mode t)
+(global-set-key (kbd "C-x d") 'ido-dired)  
 (delete-selection-mode 1)
 (setq dired-recursive-deletes 'always)
 (setq dired-recursive-copies 'always)
@@ -131,7 +119,7 @@
 \\newcommand{\\dquasiregu}[2]{\\genfrac{\\{}{\\}}{0pt}{0}{#1}{#2}}
 \\pagestyle{empty}             % do not remove")
  '(package-selected-packages
-   '(helm powerline geiser paredit tuareg gap-mode csharp-mode elpy company-coq))
+   '(glsl-mode geiser paredit tuareg gap-mode csharp-mode elpy company-coq))
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(tramp-syntax 'default nil (tramp))
  '(user-full-name "Shengyi Wang"))
