@@ -119,7 +119,7 @@
 \\newcommand{\\dquasiregu}[2]{\\genfrac{\\{}{\\}}{0pt}{0}{#1}{#2}}
 \\pagestyle{empty}             % do not remove")
  '(package-selected-packages
-   '(glsl-mode geiser paredit tuareg gap-mode csharp-mode elpy company-coq))
+   '(proof-general glsl-mode geiser paredit tuareg gap-mode csharp-mode elpy company-coq))
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(tramp-syntax 'default nil (tramp))
  '(user-full-name "Shengyi Wang"))
@@ -151,12 +151,7 @@
 (setq auto-mode-alist (cons '("\\.md" . gfm-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
 
-;;; OCaml Mode
-;; (add-to-list 'load-path "~/site-lisp/tuareg")
-;; (load "tuareg-site-file")
-
 ;;; Coq 设置
-(load "~/site-lisp/PG/generic/proof-site")
 (add-hook 'coq-mode-hook #'company-coq-mode)
 (setq coq-highlight-hyps-cited-in-response nil)
 
