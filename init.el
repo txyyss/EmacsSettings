@@ -3,8 +3,9 @@
 ;; C-c @ C-s 显示子节点
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v7.6/bin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v7.6/bin")))
+(setenv "PATH" (concat "~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.0/bin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.0/bin")))
+(setenv "LC_ALL" "en_US.UTF-8")
 
 ;;; 设置语言
 (setq default-buffer-file-coding-system 'utf-8)
@@ -13,7 +14,7 @@
 
 ;;; 设置字体
 (set-face-font 'default "Sarasa Mono SC-16")
-;; Sarasa-Gothic Version = 0.10.2
+;; Sarasa-Gothic Version = 0.31.2
 ;; Download from https://github.com/be5invis/Sarasa-Gothic/releases
 
 ;;; 常用设置
@@ -101,11 +102,17 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
+ '(company-backends '(company-math-symbols-unicode))
  '(company-coq-disabled-features '(prettify-symbols smart-subscripts))
- '(custom-enabled-themes '(tango-dark))
+ '(company-idle-delay 0.3)
+ '(company-minimum-prefix-length 2)
+ '(custom-enabled-themes '(tron-legacy))
+ '(custom-safe-themes
+   '("6af9a4651ed0662d64b5ee15d74ce56d0421a3101caaf513687b74d7c42853f2" default))
  '(explicit-shell-file-name nil)
  '(gap-executable "/usr/local/bin/gap")
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
+ '(geiser-chez-binary "chez")
  '(ns-command-modifier 'meta)
  '(org-format-latex-header
    "\\documentclass{article}
@@ -118,8 +125,9 @@
 \\newcommand{\\quasiregu}[2]{\\genfrac{\\{}{\\}}{0pt}{1}{#1}{#2}}
 \\newcommand{\\dquasiregu}[2]{\\genfrac{\\{}{\\}}{0pt}{0}{#1}{#2}}
 \\pagestyle{empty}             % do not remove")
+ '(org-support-shift-select t)
  '(package-selected-packages
-   '(proof-general glsl-mode geiser paredit tuareg gap-mode csharp-mode elpy company-coq))
+   '(tron-legacy-theme company-coq geiser-racket geiser-guile geiser-chez proof-general docker-tramp glsl-mode geiser paredit tuareg gap-mode csharp-mode elpy))
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(tramp-syntax 'default nil (tramp))
  '(user-full-name "Shengyi Wang"))
