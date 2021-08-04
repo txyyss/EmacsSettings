@@ -2,6 +2,11 @@
 ;; C-c @ C-q 展示大纲模式，隐藏其它 
 ;; C-c @ C-s 显示子节点
 
+;; MELPA
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+
+
 ;;; 设置环境变量
 (setenv "PATH" (concat "~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.2/bin:" (getenv "PATH")))
 (setq exec-path (append exec-path '("~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.2/bin")))
@@ -14,31 +19,13 @@
 
 ;;; 设置字体
 (set-face-font 'default "Sarasa Mono SC-16")
-;; Sarasa-Gothic Version = 0.32.13
+;; Sarasa-Gothic Version = 0.34.1
 ;; Download from https://github.com/be5invis/Sarasa-Gothic/releases
 
 ;;; 常用设置
 (setq default-directory "~/")
-(setq inhibit-startup-screen t)
-(setq initial-scratch-message nil)
-(setq visible-bell t)
-(blink-cursor-mode -1)
-(tool-bar-mode 0)
-(set-scroll-bar-mode nil)
-(column-number-mode t)
-(show-paren-mode t)
-(setq display-time-24hr-format t)
-(setq display-time-day-and-date t)
-(setq display-time-default-load-average nil)
-(display-time-mode t)
-(mouse-avoidance-mode 'animate)
-(ido-mode t)
 (global-set-key (kbd "C-x d") 'ido-dired)  
-(delete-selection-mode 1)
-(setq dired-recursive-deletes 'always)
-(setq dired-recursive-copies 'always)
 (setq-default c-basic-offset 4)
-(setq-default indent-tabs-mode nil)
 (add-hook 'dired-load-hook
           (lambda ()
             (load "dired-x")
@@ -56,6 +43,7 @@
 (setq doc-view-continuous t)
 (toggle-frame-fullscreen)
 (global-set-key [(meta f11)] 'toggle-frame-fullscreen)
+(windmove-default-keybindings)
 
 ;;; Calender setting
 (setq calendar-longitude 103.8)
@@ -91,8 +79,6 @@
 (setq org-enforce-todo-dependencies t)
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
 (add-hook 'org-mode-hook 'abbrev-mode)
-;;; graphviz 设置
-;; (load "~/site-lisp/graphviz-dot-mode")
 
 ;;; custom-set-variables
 (custom-set-variables
@@ -102,6 +88,8 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
+ '(blink-cursor-mode nil)
+ '(column-number-mode t)
  '(company-backends '(company-math-symbols-unicode))
  '(company-coq-disabled-features '(prettify-symbols smart-subscripts))
  '(company-idle-delay 0.3)
@@ -109,10 +97,23 @@
  '(custom-enabled-themes '(tron-legacy))
  '(custom-safe-themes
    '("6af9a4651ed0662d64b5ee15d74ce56d0421a3101caaf513687b74d7c42853f2" default))
+ '(delete-selection-mode t)
+ '(dired-recursive-copies 'always)
+ '(dired-recursive-deletes 'always)
+ '(display-time-24hr-format t)
+ '(display-time-day-and-date t)
+ '(display-time-default-load-average nil)
+ '(display-time-mode t)
  '(explicit-shell-file-name nil)
  '(gap-executable "/usr/local/bin/gap")
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
  '(geiser-chez-binary "chez")
+ '(ido-mode 'both nil (ido))
+ '(indent-tabs-mode nil)
+ '(inhibit-startup-screen t)
+ '(initial-scratch-message nil)
+ '(latex-run-command "xelatex -shell-escape")
+ '(mouse-avoidance-mode 'animate nil (avoid))
  '(ns-command-modifier 'meta)
  '(org-format-latex-header
    "\\documentclass{article}
@@ -129,50 +130,16 @@
  '(package-selected-packages
    '(tron-legacy-theme company-coq geiser-racket geiser-guile geiser-chez proof-general docker-tramp glsl-mode geiser paredit tuareg gap-mode csharp-mode elpy))
  '(python-shell-interpreter "/usr/local/bin/python3")
+ '(scroll-bar-mode nil)
+ '(show-paren-mode t)
+ '(tool-bar-mode nil)
  '(tramp-syntax 'default nil (tramp))
- '(user-full-name "Shengyi Wang"))
-;; (eval-after-load "haskell-mode"
-;;        '(progn
-;;          (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-file)
-;;          (define-key haskell-mode-map (kbd "C-`") 'haskell-interactive-bring)
-;;          (define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
-;;          (define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
-;;          (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
-;;          (define-key haskell-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
-;;          (define-key haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
-;;          (define-key haskell-mode-map (kbd "C-c C-n") 'haskell-check)))
-
-;;; 设置 SLIME
-;; (add-to-list 'load-path "~/site-lisp/slime")
-;; (setq inferior-lisp-program "/Users/moonstone/Open/ccl/dx86cl64 -I /Users/moonstone/Open/ccl/dx86cl64.image -K utf-8")
-;; (setq slime-lisp-implementations
-;;       '((ccl ("/Users/moonstone/Open/ccl/dx86cl64" "-I" "/Users/moonstone/Open/ccl/dx86cl64.image")
-;;              :coding-system utf-8-unix)))
-;; (require 'slime-autoloads)
-;; (slime-setup)
-;; (slime-setup '(slime-repl))
-
-;;; Markdown 设置
-(add-to-list 'load-path "~/site-lisp/markdown-mode")
-(autoload 'markdown-mode "markdown-mode" "Major mode for editing Markdown files" t)
-(autoload 'gfm-mode "markdown-mode" "GitHub Flavored Markdown mode for editing Markdown files" t)
-(setq auto-mode-alist (cons '("\\.md" . gfm-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
+ '(user-full-name "Shengyi Wang")
+ '(visible-bell t))
 
 ;;; Coq 设置
 (add-hook 'coq-mode-hook #'company-coq-mode)
 (setq coq-highlight-hyps-cited-in-response nil)
-
-;;; Agda 设置
-;; (load-file (let ((coding-system-for-read 'utf-8))
-;;                 (shell-command-to-string "agda-mode locate")))
-
-;;; LaTeX
-(setq latex-run-command "xelatex -shell-escape")
-
-;;; TRAMP
-(setq tramp-default-method "ssh")
-(setq tramp-default-user "shengyi" tramp-default-host "loris-7.ddns.comp.nus.edu.sg")
 
 ;;; 设置sokoban
 ;; (autoload 'sokoban "sokoban.el"
@@ -180,11 +147,6 @@
 ;; (autoload 'sokoban-mode "sokoban.el"
 ;;   "Play Sokoban in current buffer." t)
 ;; (setq sokoban-levels-dir "c:/Useful/Open/emacs/site-lisp/sokoban-levels")
-
-;; MELPA
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-
 
 ;; Python
 (elpy-enable)
@@ -220,18 +182,6 @@
                (forward-char)))))
     (message "English words: %d\nNon-English characters: %d"
              eng non-eng)))
-
-(defun transpose-windows (arg)
-  "Transpose the buffers shown in two windows."
-  (interactive "p")
-  (let ((selector (if (>= arg 0) 'next-window 'previous-window)))
-    (while (/= arg 0)
-      (let ((this-win (window-buffer))
-            (next-win (window-buffer (funcall selector))))
-        (set-window-buffer (selected-window) next-win)
-        (set-window-buffer (funcall selector) this-win)
-        (select-window (funcall selector)))
-      (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
