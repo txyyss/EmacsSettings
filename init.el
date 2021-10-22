@@ -1,15 +1,14 @@
-;;; 快捷键提醒 
-;; C-c @ C-q 展示大纲模式，隐藏其它 
+;;; 快捷键提醒
+;; C-c @ C-q 展示大纲模式，隐藏其它
 ;; C-c @ C-s 显示子节点
 
 ;; MELPA
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 
-
 ;;; 设置环境变量
-(setenv "PATH" (concat "~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.2/bin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.2/bin")))
+(setenv "PATH" (concat "~/.cargo/bin/:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.2/bin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("~/.cargo/bin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.2/bin")))
 (setenv "LC_ALL" "en_US.UTF-8")
 
 ;;; 设置语言
@@ -19,31 +18,26 @@
 
 ;;; 设置字体
 (set-face-font 'default "Sarasa Mono SC-16")
-;; Sarasa-Gothic Version = 0.34.1
+;; Sarasa-Gothic Version = 0.34.6
 ;; Download from https://github.com/be5invis/Sarasa-Gothic/releases
 
 ;;; 常用设置
 (setq default-directory "~/")
-(global-set-key (kbd "C-x d") 'ido-dired)  
+(global-set-key (kbd "C-x d") 'ido-dired)
 (setq-default c-basic-offset 4)
-(add-hook 'dired-load-hook
-          (lambda ()
-            (load "dired-x")
-            ;; Set dired-x global variables here.  For example:
-            ;; (setq dired-guess-shell-gnutar "gtar")
-            ;; (setq dired-x-hands-off-my-keys nil)
-            ))
+(with-eval-after-load 'dired (load "dired-x"))
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
-(setq ls-lisp-dirs-first t)
-(setq ls-lisp-use-insert-directory-program nil)
-(require 'ls-lisp)
 (define-key global-map [ns-drag-file] 'ns-find-file)
 (global-set-key (kbd "<apps>") 'execute-extended-command)
-(setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
+(setq kill-buffer-query-functions
+      (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 (setq doc-view-continuous t)
 (toggle-frame-fullscreen)
 (global-set-key [(meta f11)] 'toggle-frame-fullscreen)
-(windmove-default-keybindings)
+(add-hook 'before-save-hook
+          (lambda ()
+            (when (derived-mode-p 'prog-mode)
+              (delete-trailing-whitespace))))
 
 ;;; Calender setting
 (setq calendar-longitude 103.8)
@@ -57,20 +51,12 @@
 (setq-default ispell-local-dictionary "en_US")
 ;; (setq-default ispell-local-dictionary-alist '(
 ;;              ("american" ; Yankee English
-;;               "[A-Za-z]" "[^A-Za-z]" "[']" t ("-d" "en_US" "-i"  
+;;               "[A-Za-z]" "[^A-Za-z]" "[']" t ("-d" "en_US" "-i"
 ;; "utf-8") nil utf-8)))
 
+(which-key-mode)
 
-;;; Dictionary setting
-;; (load "dictionary-init")
-;; (setq dictionary-server "localhost")
-;; (global-set-key (kbd "C-c s") 'dictionary-search)
-;; (setq dictionary-use-single-buffer t)
-;; (autoload 'lookup "lookup" nil t)
-;; (autoload 'lookup-word "lookup" nil t)
-;; (setq lookup-search-agents '((ndic "c:/Useful/Home")))
-;; (global-set-key (kbd "C-c s") 'lookup-word)
- 
+
 ;;; Org Mode 设置
 (setq org-export-with-LaTeX-fragments t)
 (setq org-tags-column -100)
@@ -96,7 +82,7 @@
  '(company-minimum-prefix-length 2)
  '(custom-enabled-themes '(tron-legacy))
  '(custom-safe-themes
-   '("6af9a4651ed0662d64b5ee15d74ce56d0421a3101caaf513687b74d7c42853f2" default))
+   '("c44380b9483c0808694bc2a721ca626cc1925f51f580dcefbc0fc072f1906111" "a5b0e366b1bf62133ae7c303a3b36b443a13aff40bf2bc0319143aba2caa4a87" "a21dcd2f5b8c38e799b9dcb91f702d5d864263a794732aa3ac05c73de070d1da" "6af9a4651ed0662d64b5ee15d74ce56d0421a3101caaf513687b74d7c42853f2" default))
  '(delete-selection-mode t)
  '(dired-recursive-copies 'always)
  '(dired-recursive-deletes 'always)
@@ -113,6 +99,8 @@
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(latex-run-command "xelatex -shell-escape")
+ '(ls-lisp-dirs-first t)
+ '(ls-lisp-use-insert-directory-program nil)
  '(mouse-avoidance-mode 'animate nil (avoid))
  '(ns-command-modifier 'meta)
  '(org-format-latex-header
@@ -128,14 +116,16 @@
 \\pagestyle{empty}             % do not remove")
  '(org-support-shift-select t)
  '(package-selected-packages
-   '(tron-legacy-theme company-coq geiser-racket geiser-guile geiser-chez proof-general docker-tramp glsl-mode geiser paredit tuareg gap-mode csharp-mode elpy))
+   '(rustic diminish which-key lsp-ui flycheck tuareg tron-legacy-theme company-coq geiser-racket geiser-guile geiser-chez proof-general docker-tramp glsl-mode geiser paredit gap-mode csharp-mode elpy))
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(tramp-syntax 'default nil (tramp))
  '(user-full-name "Shengyi Wang")
- '(visible-bell t))
+ '(visible-bell t)
+ '(warning-suppress-log-types '((emacs) (emacs)))
+ '(warning-suppress-types '((emacs) (emacs))))
 
 ;;; Coq 设置
 (add-hook 'coq-mode-hook #'company-coq-mode)
@@ -160,6 +150,9 @@
 (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
 
+;;; Rust
+(add-hook 'rustic-mode-hook 'yas-minor-mode)
+
 ;;; 杂项
 (defun zh-count-word ()
   (interactive)
@@ -173,7 +166,7 @@
       (while (< (point) end)
         (cond ((not (equal (car (syntax-after (point))) 2))
                (forward-char))
-              ((< (char-after) 128)     
+              ((< (char-after) 128)
                (progn
                  (setq eng (1+ eng))
                  (forward-word)))
@@ -182,6 +175,10 @@
                (forward-char)))))
     (message "English words: %d\nNon-English characters: %d"
              eng non-eng)))
+
+(require 'diminish)
+(diminish 'which-key-mode)
+(diminish 'paredit-mode)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
