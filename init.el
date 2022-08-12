@@ -7,8 +7,8 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "~/.cargo/bin/:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.2/bin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("~/.cargo/bin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.2/bin")))
+(setenv "PATH" (concat "/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.6/bin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("/opt/homebrew/bin" "/opt/homebrew/sbin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.6/bin")))
 (setenv "LC_ALL" "en_US.UTF-8")
 
 ;;; 设置语言
@@ -17,11 +17,12 @@
 (setq system-time-locale "C")
 
 ;;; 设置字体
-(set-face-font 'default "Sarasa Mono SC-16")
-;; Sarasa-Gothic Version = 0.34.6
+(set-face-font 'default "Sarasa Mono SC-18")
+;; Sarasa-Gothic Version = 0.36.8
 ;; Download from https://github.com/be5invis/Sarasa-Gothic/releases
 
 ;;; 常用设置
+(add-hook 'dired-mode-hook 'treemacs-icons-dired-mode)
 (setq default-directory "~/")
 (global-set-key (kbd "C-x d") 'ido-dired)
 (setq-default c-basic-offset 4)
@@ -36,7 +37,9 @@
 (global-set-key [(meta f11)] 'toggle-frame-fullscreen)
 (add-hook 'before-save-hook
           (lambda ()
-            (when (derived-mode-p 'prog-mode)
+            (when (and (not (string-match ".*makefile.*" (message "%s" major-mode)))
+                       (or (derived-mode-p 'prog-mode)
+                           (eq major-mode 'coq-mode)))
               (delete-trailing-whitespace))))
 
 ;;; Calender setting
@@ -45,24 +48,16 @@
 (setq calendar-location-name "Singapore")
 
 ;;; Spell checking
-(setq-default ispell-program-name "/usr/local/bin/aspell")
+(setq-default ispell-program-name "aspell")
 (setq ispell-list-command "list")
 (setq-default ispell-extra-args '("-a"))
 (setq-default ispell-local-dictionary "en_US")
-;; (setq-default ispell-local-dictionary-alist '(
-;;              ("american" ; Yankee English
-;;               "[A-Za-z]" "[^A-Za-z]" "[']" t ("-d" "en_US" "-i"
-;; "utf-8") nil utf-8)))
 
 (which-key-mode)
 
-
 ;;; Org Mode 设置
-(setq org-export-with-LaTeX-fragments t)
-(setq org-tags-column -100)
 (define-key global-map [?\C-c ?a] 'org-agenda)
 (define-key global-map [?\C-c ?r] 'org-remember)
-(setq org-enforce-todo-dependencies t)
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
 (add-hook 'org-mode-hook 'abbrev-mode)
 
@@ -77,12 +72,11 @@
  '(blink-cursor-mode nil)
  '(column-number-mode t)
  '(company-backends '(company-math-symbols-unicode))
- '(company-coq-disabled-features '(prettify-symbols smart-subscripts))
  '(company-idle-delay 0.3)
  '(company-minimum-prefix-length 2)
  '(custom-enabled-themes '(tron-legacy))
  '(custom-safe-themes
-   '("c44380b9483c0808694bc2a721ca626cc1925f51f580dcefbc0fc072f1906111" "a5b0e366b1bf62133ae7c303a3b36b443a13aff40bf2bc0319143aba2caa4a87" "a21dcd2f5b8c38e799b9dcb91f702d5d864263a794732aa3ac05c73de070d1da" "6af9a4651ed0662d64b5ee15d74ce56d0421a3101caaf513687b74d7c42853f2" default))
+   '("e80b1078c4ce2225f6f8d7621a55d3b675c86cad505b22b20243d4d075f491f5" "f0f5bfda176875f70299b2a3a07e778f23b8af81defe3bc40babd0a85f88d411" "cf9414f229f6df728eb2a5a9420d760673cca404fee9910551caf9c91cff3bfa" "c44380b9483c0808694bc2a721ca626cc1925f51f580dcefbc0fc072f1906111" "a5b0e366b1bf62133ae7c303a3b36b443a13aff40bf2bc0319143aba2caa4a87" "a21dcd2f5b8c38e799b9dcb91f702d5d864263a794732aa3ac05c73de070d1da" "6af9a4651ed0662d64b5ee15d74ce56d0421a3101caaf513687b74d7c42853f2" default))
  '(delete-selection-mode t)
  '(dired-recursive-copies 'always)
  '(dired-recursive-deletes 'always)
@@ -90,7 +84,10 @@
  '(display-time-day-and-date t)
  '(display-time-default-load-average nil)
  '(display-time-mode t)
- '(explicit-shell-file-name nil)
+ '(doom-modeline-buffer-encoding 'nondefault)
+ '(doom-modeline-height 0)
+ '(doom-modeline-mode t)
+ '(explicit-shell-file-name "/bin/bash")
  '(gap-executable "/usr/local/bin/gap")
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
  '(geiser-chez-binary "chez")
@@ -103,20 +100,9 @@
  '(ls-lisp-use-insert-directory-program nil)
  '(mouse-avoidance-mode 'animate nil (avoid))
  '(ns-command-modifier 'meta)
- '(org-format-latex-header
-   "\\documentclass{article}
-\\usepackage{fullpage}         % do not remove
-\\usepackage{amssymb}
-\\usepackage[usenames]{color}
-\\usepackage{amsmath}
-\\usepackage{latexsym}
-\\usepackage[mathscr]{eucal}
-\\newcommand{\\quasiregu}[2]{\\genfrac{\\{}{\\}}{0pt}{1}{#1}{#2}}
-\\newcommand{\\dquasiregu}[2]{\\genfrac{\\{}{\\}}{0pt}{0}{#1}{#2}}
-\\pagestyle{empty}             % do not remove")
  '(org-support-shift-select t)
  '(package-selected-packages
-   '(rustic diminish which-key lsp-ui flycheck tuareg tron-legacy-theme company-coq geiser-racket geiser-guile geiser-chez proof-general docker-tramp glsl-mode geiser paredit gap-mode csharp-mode elpy))
+   '(doom-modeline company-coq proof-general xbm-life geiser-chicken treemacs-icons-dired treemacs-all-the-icons treemacs winum rustic diminish which-key lsp-ui flycheck tuareg tron-legacy-theme geiser-racket geiser-guile glsl-mode geiser paredit gap-mode elpy))
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
@@ -125,7 +111,8 @@
  '(user-full-name "Shengyi Wang")
  '(visible-bell t)
  '(warning-suppress-log-types '((emacs) (emacs)))
- '(warning-suppress-types '((emacs) (emacs))))
+ '(warning-suppress-types '((emacs) (emacs)))
+ '(winum-mode t))
 
 ;;; Coq 设置
 (add-hook 'coq-mode-hook #'company-coq-mode)
@@ -179,13 +166,22 @@
 (require 'diminish)
 (diminish 'which-key-mode)
 (diminish 'paredit-mode)
+(tuareg-opam-update-env (tuareg-opam-current-compiler))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(variable-pitch ((t (:family "Libertinus Serif")))))
+
+(custom-set-icons
+ ;; custom-set-icons was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+)
+
 ;; Local Variables:
 ;; mode: outline-minor;
 ;; End:
