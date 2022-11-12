@@ -18,7 +18,7 @@
 
 ;;; 设置字体
 (set-face-font 'default "Sarasa Mono SC-18")
-;; Sarasa-Gothic Version = 0.36.8
+;; Sarasa-Gothic Version = 0.37.4
 ;; Download from https://github.com/be5invis/Sarasa-Gothic/releases
 
 ;;; 常用设置
@@ -34,7 +34,6 @@
       (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 (setq doc-view-continuous t)
 (toggle-frame-fullscreen)
-(global-set-key [(meta f11)] 'toggle-frame-fullscreen)
 (add-hook 'before-save-hook
           (lambda ()
             (when (and (not (string-match ".*makefile.*" (message "%s" major-mode)))
@@ -60,6 +59,7 @@
 (define-key global-map [?\C-c ?r] 'org-remember)
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
 (add-hook 'org-mode-hook 'abbrev-mode)
+(add-hook 'org-mode-hook 'org-variable-pitch-minor-mode)
 
 ;;; custom-set-variables
 (custom-set-variables
@@ -87,7 +87,6 @@
  '(doom-modeline-buffer-encoding 'nondefault)
  '(doom-modeline-height 0)
  '(doom-modeline-mode t)
- '(explicit-shell-file-name "/bin/bash")
  '(gap-executable "/usr/local/bin/gap")
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
  '(geiser-chez-binary "chez")
@@ -102,10 +101,9 @@
  '(ns-command-modifier 'meta)
  '(org-support-shift-select t)
  '(package-selected-packages
-   '(doom-modeline company-coq proof-general xbm-life geiser-chicken treemacs-icons-dired treemacs-all-the-icons treemacs winum rustic diminish which-key lsp-ui flycheck tuareg tron-legacy-theme geiser-racket geiser-guile glsl-mode geiser paredit gap-mode elpy))
+   '(org-variable-pitch geiser-chez doom-modeline company-coq proof-general xbm-life geiser-chicken treemacs-icons-dired treemacs-all-the-icons treemacs winum rustic diminish which-key lsp-ui flycheck tuareg tron-legacy-theme geiser-racket geiser-guile glsl-mode geiser paredit gap-mode elpy))
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(scroll-bar-mode nil)
- '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(tramp-syntax 'default nil (tramp))
  '(user-full-name "Shengyi Wang")
@@ -173,14 +171,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-default ((t nil)))
+ '(org-document-title ((t (:foreground "#4BB5BE" :weight bold :height 1.5))))
+ '(org-done ((t nil)))
  '(variable-pitch ((t (:family "Libertinus Serif")))))
 
-(custom-set-icons
- ;; custom-set-icons was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
-)
+
 
 ;; Local Variables:
 ;; mode: outline-minor;
