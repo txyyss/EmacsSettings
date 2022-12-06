@@ -7,8 +7,8 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.6/bin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("/opt/homebrew/bin" "/opt/homebrew/sbin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.6/bin")))
+(setenv "PATH" (concat "/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.7/bin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("/opt/homebrew/bin" "/opt/homebrew/sbin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.7/bin")))
 (setenv "LC_ALL" "en_US.UTF-8")
 
 ;;; 设置语言
@@ -101,7 +101,7 @@
  '(ns-command-modifier 'meta)
  '(org-support-shift-select t)
  '(package-selected-packages
-   '(org-variable-pitch geiser-chez doom-modeline company-coq proof-general xbm-life geiser-chicken treemacs-icons-dired treemacs-all-the-icons treemacs winum rustic diminish which-key lsp-ui flycheck tuareg tron-legacy-theme geiser-racket geiser-guile glsl-mode geiser paredit gap-mode elpy))
+   '(opam-switch-mode proof-general org-variable-pitch geiser-chez doom-modeline company-coq xbm-life geiser-chicken treemacs-icons-dired treemacs-all-the-icons treemacs winum rustic diminish which-key lsp-ui flycheck tuareg tron-legacy-theme geiser-racket geiser-guile glsl-mode geiser paredit gap-mode elpy))
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil)
@@ -114,6 +114,8 @@
 
 ;;; Coq 设置
 (add-hook 'coq-mode-hook #'company-coq-mode)
+(add-hook 'coq-mode-hook #'opam-switch-mode)
+
 (setq coq-highlight-hyps-cited-in-response nil)
 
 ;;; 设置sokoban
