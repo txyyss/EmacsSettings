@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t;-*-
+
 ;; 快捷键提醒
 ;; C-c @ C-q 展示大纲模式，隐藏其它
 ;; C-c @ C-s 显示子节点
@@ -7,8 +9,8 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.10/bin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("/opt/homebrew/bin" "/opt/homebrew/sbin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.10/bin")))
+(setenv "PATH" (concat "~/.ghcup/bin:/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.11.1/bin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("~/.ghcup/bin" "/opt/homebrew/bin" "/opt/homebrew/sbin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.11.1/bin")))
 (setenv "LC_ALL" "en_US.UTF-8")
 
 ;;; 设置语言
@@ -18,14 +20,14 @@
 
 ;;; 设置字体
 (set-face-attribute 'default nil :family "Iosevka" :height 180)
-(set-fontset-font t 'han (font-spec :name "Source Han Sans"))
-;; Iosevka Version = 27.3.1
+(dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
+  (set-fontset-font t charset (font-spec :name "Source Han Sans")))
+;; Iosevka Version = 28.0.6
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; 常用设置
 (add-hook 'dired-mode-hook 'treemacs-icons-dired-mode)
 (setq default-directory "~/")
-(global-set-key (kbd "C-x d") 'ido-dired)
 (setq-default c-basic-offset 4)
 (with-eval-after-load 'dired (load "dired-x"))
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
@@ -58,6 +60,8 @@
 (require 'ls-lisp)
 (setq ls-lisp-use-insert-directory-program nil)
 
+(defun my-icomplete-styles ()
+  (setq-local completion-styles '(basic partial-completion flex)))
 
 ;;; Org Mode 设置
 (define-key global-map [?\C-c ?a] 'org-agenda)
@@ -81,7 +85,11 @@
  '(company-idle-delay 0.3)
  '(company-minimum-prefix-length 2)
  '(connection-local-criteria-alist
-   '(((:application tramp :protocol "kubernetes")
+   '(((:application tramp :machine
+                    "dynamic-oit-ip4-wifirestricted01-10-16-217-168.princeton.edu")
+      tramp-connection-local-darwin-ps-profile)
+     ((:application eshell) eshell-connection-default-profile)
+     ((:application tramp :protocol "kubernetes")
       tramp-kubernetes-connection-local-default-profile)
      ((:application tramp :protocol "flatpak")
       tramp-container-connection-local-default-flatpak-profile
@@ -94,7 +102,8 @@
       tramp-connection-local-default-system-profile
       tramp-connection-local-default-shell-profile)))
  '(connection-local-profile-alist
-   '((tramp-flatpak-connection-local-default-profile
+   '((eshell-connection-default-profile (eshell-path-env-list))
+     (tramp-flatpak-connection-local-default-profile
       (tramp-remote-path "/app/bin" tramp-default-remote-path "/bin"
                          "/usr/bin" "/sbin" "/usr/sbin"
                          "/usr/local/bin" "/usr/local/sbin"
@@ -213,28 +222,35 @@
  '(display-time-day-and-date t)
  '(display-time-default-load-average nil)
  '(display-time-mode t)
+ '(emacs-lisp-mode-hook '(enable-paredit-mode))
+ '(fido-mode t)
  '(gap-executable "/usr/local/bin/gap")
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
  '(geiser-chez-binary "chez")
- '(ido-mode 'both nil (ido))
+ '(icomplete-minibuffer-setup-hook '(my-icomplete-styles))
+ '(icomplete-mode t)
+ '(ielm-mode-hook '(enable-paredit-mode))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(latex-run-command "xelatex -shell-escape")
+ '(lisp-interaction-mode-hook '(enable-paredit-mode))
+ '(lisp-mode-hook '(enable-paredit-mode))
  '(ls-lisp-dirs-first t)
  '(ls-lisp-use-insert-directory-program nil)
  '(mouse-avoidance-mode 'animate nil (avoid))
  '(ns-command-modifier 'meta)
  '(org-support-shift-select t)
  '(package-selected-packages
-   '(async-status company company-coq diminish f flycheck gap-mode geiser
-                  geiser-chez geiser-guile geiser-racket glsl-mode
-                  ligature lsp-mode magit-section mood-line
+   '(async-status company-coq diminish flycheck gap-mode geiser
+                  geiser-chez geiser-guile geiser-racket haskell-mode
+                  ligature lsp-mode magit magit-section mood-line
                   opam-switch-mode org-variable-pitch paredit
-                  proof-general treemacs treemacs-all-the-icons
+                  proof-general transient treemacs-all-the-icons
                   treemacs-icons-dired tron-legacy-theme tuareg
                   which-key xbm-life))
  '(python-shell-interpreter "/usr/local/bin/python3")
+ '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil)
  '(tramp-syntax 'default nil (tramp))
@@ -260,14 +276,6 @@
 ;; Python
 ;; (elpy-enable)
 ;; (setq elpy-rpc-python-command "python3")
-
-;;; ParEdit
-(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-;; (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
-;; (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-;; (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
-;; (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-;; (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
 
 ;;; 杂项
 (defun zh-count-word ()
