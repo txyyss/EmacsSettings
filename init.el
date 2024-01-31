@@ -19,9 +19,9 @@
 (setq system-time-locale "C")
 
 ;;; 设置字体
-(set-face-attribute 'default nil :family "Iosevka" :height 180)
 (dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
-  (set-fontset-font t charset (font-spec :name "Source Han Sans")))
+  (set-fontset-font t charset (font-spec :name "Source Han Sans SC")))
+(set-fontset-font t 'greek (font-spec :name "Iosevka"))
 ;; Iosevka Version = 28.0.6
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
@@ -227,6 +227,7 @@
  '(gap-executable "/usr/local/bin/gap")
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
  '(geiser-chez-binary "chez")
+ '(global-hl-line-mode t)
  '(icomplete-minibuffer-setup-hook '(my-icomplete-styles))
  '(icomplete-mode t)
  '(ielm-mode-hook '(enable-paredit-mode))
@@ -312,6 +313,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:height 180 :family "Iosevka"))))
  '(org-default ((t nil)))
  '(org-document-title ((t (:foreground "#4BB5BE" :weight bold :height 1.5))))
  '(org-done ((t nil)))
