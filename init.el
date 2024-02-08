@@ -22,7 +22,7 @@
 (dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
   (set-fontset-font t charset (font-spec :name "Source Han Sans SC")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
-;; Iosevka Version = 28.0.6
+;; Iosevka Version = 28.1.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; 常用设置
@@ -50,10 +50,7 @@
 (setq calendar-location-name "Singapore")
 
 ;;; Spell checking
-(setq-default ispell-program-name "aspell")
-(setq ispell-list-command "list")
-(setq-default ispell-extra-args '("-a"))
-(setq-default ispell-local-dictionary "en_US")
+;; (setq ispell-list-command "list")
 
 (which-key-mode)
 
@@ -234,12 +231,16 @@
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
+ '(ispell-extra-args '("-a"))
+ '(ispell-local-dictionary "en_US")
+ '(ispell-program-name "aspell")
  '(latex-run-command "xelatex -shell-escape")
  '(lisp-interaction-mode-hook '(enable-paredit-mode))
  '(lisp-mode-hook '(enable-paredit-mode))
  '(ls-lisp-dirs-first t)
  '(ls-lisp-use-insert-directory-program nil)
  '(mouse-avoidance-mode 'animate nil (avoid))
+ '(ns-alternate-modifier 'super)
  '(ns-command-modifier 'meta)
  '(org-support-shift-select t)
  '(package-selected-packages
