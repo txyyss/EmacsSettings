@@ -32,7 +32,8 @@
 (with-eval-after-load 'dired (load "dired-x"))
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (define-key global-map [ns-drag-file] 'ns-find-file)
-(global-set-key (kbd "<apps>") 'execute-extended-command)
+(keymap-global-set "s-$" 'ispell-word)
+(keymap-global-set "M-o" 'other-window)
 (setq kill-buffer-query-functions
       (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 (setq doc-view-continuous t)
@@ -43,11 +44,6 @@
                        (or (derived-mode-p 'prog-mode)
                            (eq major-mode 'coq-mode)))
               (delete-trailing-whitespace))))
-
-;;; Calender setting
-(setq calendar-longitude 103.8)
-(setq calendar-latitude 1.3667)
-(setq calendar-location-name "Singapore")
 
 ;;; Spell checking
 ;; (setq ispell-list-command "list")
