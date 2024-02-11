@@ -33,6 +33,7 @@
 (define-key global-map [ns-drag-file] 'ns-find-file)
 (keymap-global-set "s-$" 'ispell-word)
 (keymap-global-set "M-o" 'other-window)
+(keymap-global-set "C-x C-b" 'ibuffer)
 (setq kill-buffer-query-functions
       (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 (setq doc-view-continuous t)
