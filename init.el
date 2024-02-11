@@ -1,4 +1,6 @@
-;; -*- lexical-binding: t;-*-
+;;; package --- Summary -*- lexical-binding: t;-*-
+;;; Commentary:
+
 
 ;; 快捷键提醒
 ;; C-c @ C-q 展示大纲模式，隐藏其它
@@ -6,6 +8,7 @@
 
 ;; MELPA
 (require 'package)
+;;; Code:
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 
 ;;; 设置环境变量
@@ -14,7 +17,8 @@
 (setenv "LC_ALL" "en_US.UTF-8")
 
 ;;; 设置语言
-(setq default-buffer-file-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-buffer-file-coding-system 'utf-8)
 (setq default-process-coding-system '(utf-8 . utf-8))
 (setq system-time-locale "C")
 
@@ -36,7 +40,6 @@
 (keymap-global-set "C-x C-b" 'ibuffer)
 (setq kill-buffer-query-functions
       (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
-(setq doc-view-continuous t)
 (toggle-frame-fullscreen)
 (add-hook 'before-save-hook
           (lambda ()
@@ -219,6 +222,7 @@
  '(display-time-day-and-date t)
  '(display-time-default-load-average nil)
  '(display-time-mode t)
+ '(doc-view-continuous t)
  '(emacs-lisp-mode-hook '(enable-paredit-mode))
  '(fido-mode t)
  '(gap-executable "/usr/local/bin/gap")
@@ -240,6 +244,16 @@
  '(lisp-mode-hook '(enable-paredit-mode))
  '(ls-lisp-dirs-first t)
  '(ls-lisp-use-insert-directory-program nil)
+ '(mood-line-glyph-alist
+   '((:checker-info . 8627) (:checker-issues . 9873)
+     (:checker-good . 10004) (:checker-checking . 10227)
+     (:checker-errored . 10006) (:checker-interrupted . 9208)
+     (:vc-added . 128932) (:vc-needs-merge . 10231)
+     (:vc-needs-update . 8595) (:vc-conflict . 128932)
+     (:vc-good . 10004) (:buffer-narrowed . 9660)
+     (:buffer-modified . 9679) (:buffer-read-only . 9632)
+     (:frame-client . 8645) (:count-separator . 10005)))
+ '(mood-line-mode t)
  '(mouse-avoidance-mode 'animate nil (avoid))
  '(ns-alternate-modifier 'super)
  '(ns-command-modifier 'meta)
@@ -330,20 +344,14 @@
   (interactive "nCelsius (°C): ")
   (message "%s °F" (+ (/ (* celsius 9.0) 5.0) 32)))
 
-(mood-line-mode)
-(setq mood-line-glyph-alist mood-line-glyphs-unicode)
-
-
 ;; Lean 4 mode
 (setq load-path (cons "/Users/shengyiwang/Program/Lisp/lean4-mode" load-path))
-
-(setq lean4-mode-required-packages '(dash f flycheck lsp-mode magit-section s))
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (package-initialize)
 (let ((need-to-refresh t))
-  (dolist (p lean4-mode-required-packages)
+  (dolist (p '(dash f flycheck lsp-mode magit-section s))
     (when (not (package-installed-p p))
       (when need-to-refresh
         (package-refresh-contents)
