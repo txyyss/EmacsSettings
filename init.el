@@ -9,8 +9,8 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "~/.ghcup/bin:/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.11.1/bin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("~/.ghcup/bin" "/opt/homebrew/bin" "/opt/homebrew/sbin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.11.1/bin")))
+(setenv "PATH" (concat "~/.ghcup/bin:/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.12/bin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("~/.ghcup/bin" "/opt/homebrew/bin" "/opt/homebrew/sbin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.12/bin")))
 (setenv "LC_ALL" "en_US.UTF-8")
 
 ;;; 设置语言
@@ -28,7 +28,6 @@
 ;;; 常用设置
 (add-hook 'dired-mode-hook 'treemacs-icons-dired-mode)
 (setq default-directory "~/")
-(setq-default c-basic-offset 4)
 (with-eval-after-load 'dired (load "dired-x"))
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (define-key global-map [ns-drag-file] 'ns-find-file)
@@ -73,10 +72,12 @@
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff"
     "#eeeeec"])
  '(blink-cursor-mode nil)
+ '(c-basic-offset 4)
  '(column-number-mode t)
  '(company-backends '(company-math-symbols-unicode))
  '(company-idle-delay 0.3)
  '(company-minimum-prefix-length 2)
+ '(confirm-kill-processes nil)
  '(connection-local-criteria-alist
    '(((:application tramp :machine
                     "dynamic-oit-ip4-wifirestricted01-10-16-217-168.princeton.edu")
@@ -209,6 +210,8 @@
      "6af9a4651ed0662d64b5ee15d74ce56d0421a3101caaf513687b74d7c42853f2"
      default))
  '(delete-selection-mode t)
+ '(dired-kill-when-opening-new-dired-buffer t)
+ '(dired-listing-switches "-alh")
  '(dired-recursive-copies 'always)
  '(dired-recursive-deletes 'always)
  '(display-time-24hr-format t)
@@ -220,6 +223,7 @@
  '(gap-executable "/usr/local/bin/gap")
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
  '(geiser-chez-binary "chez")
+ '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
  '(icomplete-minibuffer-setup-hook '(my-icomplete-styles))
  '(icomplete-mode t)
@@ -253,6 +257,7 @@
  '(tool-bar-mode nil)
  '(tramp-syntax 'default nil (tramp))
  '(user-full-name "Shengyi Wang")
+ '(vc-follow-symlinks t)
  '(visible-bell t)
  '(warning-suppress-log-types '((emacs) (emacs)))
  '(warning-suppress-types '((emacs) (emacs)))
