@@ -38,6 +38,8 @@
 (keymap-global-set "s-$" 'ispell-word)
 (keymap-global-set "M-o" 'other-window)
 (keymap-global-set "C-x C-b" 'ibuffer)
+(keymap-global-set "s-/" 'dabbrev-expand)
+(keymap-global-set "C-x m" 'toggle-frame-fullscreen)
 (setq kill-buffer-query-functions
       (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 (toggle-frame-fullscreen)
@@ -75,6 +77,7 @@
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff"
     "#eeeeec"])
+ '(backup-directory-alist '((".*" . "~/Downloads/")))
  '(blink-cursor-mode nil)
  '(c-basic-offset 4)
  '(column-number-mode t)
@@ -232,7 +235,7 @@
  '(global-hl-line-mode t)
  '(icomplete-minibuffer-setup-hook '(my-icomplete-styles))
  '(icomplete-mode t)
- '(ielm-mode-hook '(enable-paredit-mode))
+ '(ielm-mode-hook '(eldoc-mode))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
