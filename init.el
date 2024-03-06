@@ -373,9 +373,8 @@
 
 (use-package ligature
   :config
-  (ligature-set-ligatures 'prog-mode ligatures-iosevka)
-  (ligature-set-ligatures 'coq-mode ligatures-iosevka)
-  (global-ligature-mode t))
+  (ligature-set-ligatures 'emacs-lisp-mode ligatures-iosevka)
+  (ligature-set-ligatures 'coq-mode ligatures-iosevka))
 
 ;; Local Variables:
 ;; mode: outline-minor;
