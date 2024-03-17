@@ -26,7 +26,7 @@
 (dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
   (set-fontset-font t charset (font-spec :name "Source Han Sans SC")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
-;; Iosevka Version = 28.1.0
+;; Iosevka Version = 29.0.2
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; 常用设置
@@ -40,6 +40,10 @@
 (keymap-global-set "C-x C-b" 'ibuffer)
 (keymap-global-set "s-/" 'dabbrev-expand)
 (keymap-global-set "C-x m" 'toggle-frame-fullscreen)
+(keymap-global-set "s-m" 'delete-other-windows)
+(keymap-global-set "s-<return>" 'magit-status)
+(eval-after-load 'paredit
+  #'(define-key paredit-mode-map (kbd "C-j") nil))
 (setq kill-buffer-query-functions
       (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 (toggle-frame-fullscreen)
@@ -228,6 +232,7 @@
  '(doc-view-continuous t)
  '(emacs-lisp-mode-hook '(enable-paredit-mode))
  '(fido-mode t)
+ '(find-ls-option '("-exec ls -ldh {} +" . "-ldh"))
  '(gap-executable "/usr/local/bin/gap")
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
  '(geiser-chez-binary "chez")
@@ -268,7 +273,7 @@
                   opam-switch-mode org-variable-pitch paredit
                   proof-general transient treemacs-all-the-icons
                   treemacs-icons-dired tron-legacy-theme tuareg
-                  which-key xbm-life))
+                  which-key xbm-life yaml-mode))
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
  '(scroll-bar-mode nil)
