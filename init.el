@@ -48,7 +48,7 @@
 (keymap-global-set "s-}" 'tab-bar-switch-to-next-tab)
 (keymap-global-set "s-t" 'tab-bar-new-tab)
 (keymap-global-set "s-w" 'tab-bar-close-tab)
-
+(defalias 'elisp-repl 'ielm)
 (eval-after-load 'paredit
   #'(define-key paredit-mode-map (kbd "C-j") nil))
 (setq kill-buffer-query-functions
@@ -71,6 +71,7 @@
 (setq ls-lisp-use-insert-directory-program nil)
 
 (defun my-icomplete-styles ()
+  "Customize my icomplete styles."
   (setq-local completion-styles '(basic partial-completion flex)))
 
 ;;; Org Mode 设置
@@ -340,6 +341,7 @@
 
 ;;; 杂项
 (defun zh-count-word ()
+  "Count Chinese words."
   (interactive)
   (let ((beg (point-min)) (end (point-max))
         (eng 0) (non-eng 0))
@@ -377,16 +379,18 @@
  '(org-default ((t nil)))
  '(org-document-title ((t (:foreground "#4BB5BE" :weight bold :height 1.5))))
  '(org-done ((t nil)))
- '(tab-bar ((t (:inherit mode-line))))
- '(tab-bar-tab ((t (:inherit mode-line :background "#3D5666" :foreground "#CBECFF" :box nil :weight bold))))
- '(tab-bar-tab-inactive ((t (:inherit mode-line-inactive :background "#1E1E1E" :foreground "#90ACBC" :box nil))))
+ '(tab-bar ((t (:inherit mode-line :background "#000000"))))
+ '(tab-bar-tab ((t (:inherit mode-line :background "#3D5666" :foreground "#CBECFF" :box (:line-width (4 . 4) :color "#3D5666" :style flat-button) :weight bold))))
+ '(tab-bar-tab-inactive ((t (:inherit mode-line-inactive :background "#1E1E1E" :foreground "#90ACBC" :box (:line-width (4 . 4) :color "#1E1E1E" :style flat-button)))))
  '(variable-pitch ((t (:family "Libertinus Serif")))))
 
 (defun f2c (fahrenheit)
+  "Convert degrees Fahrenheit (FAHRENHEIT) to degrees Celsius."
   (interactive "nFahrenheit (°F): ")
   (message "%s °C" (/ (* 5 (- fahrenheit 32)) 9.0)))
 
 (defun c2f (celsius)
+  "Convert degrees Celsius (CELSIUS) to degrees Fahrenheit."
   (interactive "nCelsius (°C): ")
   (message "%s °F" (+ (/ (* celsius 9.0) 5.0) 32)))
 
@@ -422,3 +426,5 @@
 ;; Local Variables:
 ;; mode: outline-minor;
 ;; End:
+(provide 'init)
+;;; init.el ends here
