@@ -26,7 +26,7 @@
 (dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
   (set-fontset-font t charset (font-spec :name "Source Han Sans SC")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
-;; Iosevka Version = 29.0.2
+;; Iosevka Version = 29.1.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; 常用设置
@@ -34,14 +34,21 @@
 (setq default-directory "~/")
 (with-eval-after-load 'dired (load "dired-x"))
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
+(add-hook 'c-ts-mode-common-hook 'hs-minor-mode)
 (define-key global-map [ns-drag-file] 'ns-find-file)
 (keymap-global-set "s-$" 'ispell-word)
 (keymap-global-set "M-o" 'other-window)
 (keymap-global-set "C-x C-b" 'ibuffer)
 (keymap-global-set "s-/" 'dabbrev-expand)
-(keymap-global-set "C-x m" 'toggle-frame-fullscreen)
+(keymap-global-set "<f13>" 'toggle-frame-fullscreen)
 (keymap-global-set "s-m" 'delete-other-windows)
 (keymap-global-set "s-<return>" 'magit-status)
+(keymap-global-set "s-o" 'occur)
+(keymap-global-set "s-{" 'tab-bar-switch-to-prev-tab)
+(keymap-global-set "s-}" 'tab-bar-switch-to-next-tab)
+(keymap-global-set "s-t" 'tab-bar-new-tab)
+(keymap-global-set "s-w" 'tab-bar-close-tab)
+
 (eval-after-load 'paredit
   #'(define-key paredit-mode-map (kbd "C-j") nil))
 (setq kill-buffer-query-functions
@@ -53,6 +60,7 @@
                        (or (derived-mode-p 'prog-mode)
                            (eq major-mode 'coq-mode)))
               (delete-trailing-whitespace))))
+(add-to-list 'Info-directory-list "/usr/local/texlive/2024/texmf-dist/doc/info")
 
 ;;; Spell checking
 ;; (setq ispell-list-command "list")
@@ -71,6 +79,19 @@
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
 (add-hook 'org-mode-hook 'abbrev-mode)
 (add-hook 'org-mode-hook 'org-variable-pitch-minor-mode)
+
+;;; LSP for LaTeX
+(with-eval-after-load 'tex-mode
+  (add-hook 'tex-mode-hook 'lsp)
+  (add-hook 'latex-mode-hook 'lsp))
+
+;;; eglot for C/C++
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs '((c++-mode c-mode c++-ts-mode c-ts-mode) "clangd")))
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+(add-hook 'c-ts-mode-hook 'eglot-ensure)
+(add-hook 'c++-ts-mode-hook 'eglot-ensure)
 
 ;;; custom-set-variables
 (custom-set-variables
@@ -252,6 +273,10 @@
  '(lisp-mode-hook '(enable-paredit-mode))
  '(ls-lisp-dirs-first t)
  '(ls-lisp-use-insert-directory-program nil)
+ '(lsp-headerline-breadcrumb-enable nil)
+ '(major-mode-remap-alist
+   '((c-mode . c-ts-mode) (c++-mode . c++-ts-mode)
+     (html-mode . html-ts-mode)))
  '(mood-line-glyph-alist
    '((:checker-info . 8627) (:checker-issues . 9873)
      (:checker-good . 10004) (:checker-checking . 10227)
@@ -274,17 +299,27 @@
                   proof-general transient treemacs-all-the-icons
                   treemacs-icons-dired tron-legacy-theme tuareg
                   which-key xbm-life yaml-mode))
+ '(pixel-scroll-precision-mode t)
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
  '(scroll-bar-mode nil)
+ '(switch-to-buffer-obey-display-actions t)
+ '(tab-bar-close-button-show nil)
+ '(tab-bar-mode t)
+ '(tab-bar-new-button-show nil)
+ '(tab-bar-new-tab-choice "*scratch*")
+ '(tab-bar-select-tab-modifiers '(control super))
+ '(tab-bar-show 1)
+ '(tab-bar-tab-hints t)
  '(tool-bar-mode nil)
  '(tramp-syntax 'default nil (tramp))
+ '(treesit-font-lock-level 4)
  '(user-full-name "Shengyi Wang")
  '(vc-follow-symlinks t)
  '(visible-bell t)
  '(warning-suppress-log-types '((emacs) (emacs)))
  '(warning-suppress-types '((emacs) (emacs)))
- '(winum-mode t))
+ '(yas-global-mode t))
 
 ;;; Coq 设置
 (add-hook 'coq-mode-hook #'company-coq-mode)
@@ -342,6 +377,9 @@
  '(org-default ((t nil)))
  '(org-document-title ((t (:foreground "#4BB5BE" :weight bold :height 1.5))))
  '(org-done ((t nil)))
+ '(tab-bar ((t (:inherit mode-line))))
+ '(tab-bar-tab ((t (:inherit mode-line :background "#3D5666" :foreground "#CBECFF" :box nil :weight bold))))
+ '(tab-bar-tab-inactive ((t (:inherit mode-line-inactive :background "#1E1E1E" :foreground "#90ACBC" :box nil))))
  '(variable-pitch ((t (:family "Libertinus Serif")))))
 
 (defun f2c (fahrenheit)
