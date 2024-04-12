@@ -44,8 +44,6 @@
 (keymap-global-set "s-m" 'delete-other-windows)
 (keymap-global-set "s-<return>" 'magit-status)
 (keymap-global-set "s-o" 'occur)
-(keymap-global-set "s-{" 'tab-bar-switch-to-prev-tab)
-(keymap-global-set "s-}" 'tab-bar-switch-to-next-tab)
 (keymap-global-set "s-t" 'tab-bar-new-tab)
 (keymap-global-set "s-w" 'tab-bar-close-tab)
 (defalias 'elisp-repl 'ielm)
@@ -61,7 +59,6 @@
                            (eq major-mode 'coq-mode)))
               (delete-trailing-whitespace))))
 (add-to-list 'Info-directory-list "/usr/local/texlive/2024/texmf-dist/doc/info")
-
 ;;; Spell checking
 ;; (setq ispell-list-command "list")
 
@@ -305,10 +302,13 @@
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
  '(scroll-bar-mode nil)
  '(switch-to-buffer-obey-display-actions t)
+ '(tab-bar-auto-width-max '(440 40))
  '(tab-bar-close-button-show nil)
+ '(tab-bar-format '(tab-bar-format-tabs))
  '(tab-bar-mode t)
  '(tab-bar-new-button-show nil)
  '(tab-bar-new-tab-choice "*scratch*")
+ '(tab-bar-new-tab-to 'rightmost)
  '(tab-bar-select-tab-modifiers '(control super))
  '(tab-bar-show 1)
  '(tab-bar-tab-hints t)
@@ -379,9 +379,9 @@
  '(org-default ((t nil)))
  '(org-document-title ((t (:foreground "#4BB5BE" :weight bold :height 1.5))))
  '(org-done ((t nil)))
- '(tab-bar ((t (:inherit mode-line :background "#000000"))))
- '(tab-bar-tab ((t (:inherit mode-line :background "#3D5666" :foreground "#CBECFF" :box (:line-width (4 . 4) :color "#3D5666" :style flat-button) :weight bold))))
- '(tab-bar-tab-inactive ((t (:inherit mode-line-inactive :background "#1E1E1E" :foreground "#90ACBC" :box (:line-width (4 . 4) :color "#1E1E1E" :style flat-button)))))
+ '(tab-bar ((t nil)))
+ '(tab-bar-tab ((t (:inherit mode-line :background "#3D5666" :foreground "#CBECFF" :box (:line-width (4 . 3) :color "#3D5666" :style flat-button) :weight bold))))
+ '(tab-bar-tab-inactive ((t (:inherit mode-line-inactive :background "#1E1E1E" :foreground "#90ACBC" :box (:line-width (4 . 3) :color "#1E1E1E" :style flat-button)))))
  '(variable-pitch ((t (:family "Libertinus Serif")))))
 
 (defun f2c (fahrenheit)
