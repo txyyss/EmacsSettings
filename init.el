@@ -12,8 +12,8 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "~/.ghcup/bin:/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.12/bin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("~/.ghcup/bin" "/opt/homebrew/bin" "/opt/homebrew/sbin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.12/bin")))
+(setenv "PATH" (concat "~/.ghcup/bin:/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.13/bin:" (getenv "PATH")))
+(setq exec-path (append exec-path '("~/.ghcup/bin" "/opt/homebrew/bin" "/opt/homebrew/sbin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.13/bin")))
 (setenv "LC_ALL" "en_US.UTF-8")
 
 ;;; 设置语言
@@ -26,7 +26,7 @@
 (dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
   (set-fontset-font t charset (font-spec :name "Source Han Sans SC")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
-;; Iosevka Version = 29.1.0
+;; Iosevka Version = 30.3.3
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; 常用设置
@@ -97,6 +97,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(Info-additional-directory-list '("/opt/homebrew/share/info"))
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff"
     "#eeeeec"])
@@ -302,7 +303,7 @@
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
  '(scroll-bar-mode nil)
  '(switch-to-buffer-obey-display-actions t)
- '(tab-bar-auto-width-max '(440 40))
+ '(tab-bar-auto-width-max '(423 40))
  '(tab-bar-close-button-show nil)
  '(tab-bar-format '(tab-bar-format-tabs))
  '(tab-bar-mode t)
@@ -311,11 +312,12 @@
  '(tab-bar-new-tab-to 'rightmost)
  '(tab-bar-select-tab-modifiers '(control super))
  '(tab-bar-show 1)
- '(tab-bar-tab-hints t)
+ '(tab-bar-tab-hints nil)
  '(tool-bar-mode nil)
  '(tramp-syntax 'default nil (tramp))
  '(treesit-font-lock-level 4)
  '(user-full-name "Shengyi Wang")
+ '(utop-command "opam exec -- utop -emacs")
  '(vc-follow-symlinks t)
  '(visible-bell t)
  '(warning-suppress-log-types '((emacs) (emacs)))
@@ -369,6 +371,29 @@
 
 (require 'tuareg)
 (opam-switch-set-switch (tuareg-opam-current-compiler))
+(let ((opam-share "~/.opam/default/share"))
+  (when (and opam-share (file-directory-p opam-share))
+    ;; Register Merlin
+    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
+    (autoload 'merlin-mode "merlin" nil t nil)
+    ;; Automatically start it in OCaml buffers
+    (add-hook 'tuareg-mode-hook 'merlin-mode t)
+    (add-hook 'caml-mode-hook 'merlin-mode t)
+    ;; Use opam switch to lookup ocamlmerlin binary
+    (setq merlin-command 'opam)
+    (require 'ocamlformat)
+    (add-hook 'tuareg-mode-hook
+              (lambda ()
+                (define-key tuareg-mode-map (kbd "C-M-<tab>") #'ocamlformat)
+                (add-hook 'before-save-hook #'ocamlformat-before-save)))
+    (autoload 'utop "utop" "Toplevel for OCaml" t)
+    (autoload 'utop-minor-mode "utop" "Minor mode for utop" t)
+    (add-hook 'tuareg-mode-hook 'utop-minor-mode)
+    (require 'ocp-indent)
+    ;; To easily change opam switches within a given Emacs session, you can
+    ;; install the minor mode https://github.com/ProofGeneral/opam-switch-mode
+    ;; and use one of its "OPSW" menus.
+    ))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -421,7 +446,8 @@
 (use-package ligature
   :config
   (ligature-set-ligatures 'emacs-lisp-mode ligatures-iosevka)
-  (ligature-set-ligatures 'coq-mode ligatures-iosevka))
+  (ligature-set-ligatures 'coq-mode ligatures-iosevka)
+  (ligature-set-ligatures 'lean4-mode ligatures-iosevka))
 
 ;; Local Variables:
 ;; mode: outline-minor;
