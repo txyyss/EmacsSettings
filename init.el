@@ -12,8 +12,8 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 
 ;;; 设置环境变量
-(setenv "PATH" (concat "~/.ghcup/bin:/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.13/bin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("~/.ghcup/bin" "/opt/homebrew/bin" "/opt/homebrew/sbin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.13/bin")))
+;; (setenv "PATH" (concat "/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.14/bin:" (getenv "PATH")))
+;; (setq exec-path (append exec-path '("/opt/homebrew/bin" "/opt/homebrew/sbin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.14/bin")))
 (setenv "LC_ALL" "en_US.UTF-8")
 
 ;;; 设置语言
@@ -26,7 +26,7 @@
 (dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
   (set-fontset-font t charset (font-spec :name "Source Han Sans SC")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
-;; Iosevka Version = 30.3.3
+;; Iosevka Version = 31.7.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; 常用设置
@@ -67,6 +67,7 @@
 (require 'ls-lisp)
 (setq ls-lisp-use-insert-directory-program nil)
 
+;; Trick: Use M-j to confirm without the matching existed.
 (defun my-icomplete-styles ()
   "Customize my icomplete styles."
   (setq-local completion-styles '(basic partial-completion flex)))
@@ -454,3 +455,6 @@
 ;; End:
 (provide 'init)
 ;;; init.el ends here
+
+(load-file (let ((coding-system-for-read 'utf-8))
+                (shell-command-to-string "agda-mode locate")))
