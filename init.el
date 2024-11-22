@@ -26,7 +26,7 @@
 (dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
   (set-fontset-font t charset (font-spec :name "Source Han Sans SC")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
-;; Iosevka Version = 31.7.0
+;; Iosevka Version = 32.1.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; 常用设置
@@ -39,19 +39,27 @@
 (keymap-global-set "s-$" 'ispell-word)
 (keymap-global-set "M-o" 'other-window)
 (keymap-global-set "C-x C-b" 'ibuffer)
+(keymap-global-set "C-x b" 'consult-buffer)
 (keymap-global-set "s-/" 'dabbrev-expand)
+(keymap-global-set "s-l" 'consult-goto-line)
 (keymap-global-set "<f13>" 'toggle-frame-fullscreen)
 (keymap-global-set "s-m" 'delete-other-windows)
 (keymap-global-set "s-<return>" 'magit-status)
 (keymap-global-set "s-o" 'occur)
 (keymap-global-set "s-t" 'tab-bar-new-tab)
 (keymap-global-set "s-w" 'tab-bar-close-tab)
+(keymap-global-unset "M-<drag-mouse-1>")
+(keymap-global-unset "M-<down-mouse-1>")
+(keymap-global-unset "M-<mouse-1>")
+(keymap-global-unset "M-<mouse-2>")
+(keymap-global-unset "M-<mouse-3>")
 (defalias 'elisp-repl 'ielm)
 (eval-after-load 'paredit
   #'(define-key paredit-mode-map (kbd "C-j") nil))
 (setq kill-buffer-query-functions
       (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 (toggle-frame-fullscreen)
+(recentf-mode t)
 (add-hook 'before-save-hook
           (lambda ()
             (when (and (not (string-match ".*makefile.*" (message "%s" major-mode)))
@@ -109,9 +117,13 @@
  '(company-backends '(company-math-symbols-unicode))
  '(company-idle-delay 0.3)
  '(company-minimum-prefix-length 2)
+ '(completion-styles '(basic partial-completion flex))
  '(confirm-kill-processes nil)
  '(connection-local-criteria-alist
-   '(((:application tramp :machine
+   '(((:application vc-git) vc-git-connection-default-profile)
+     ((:application tramp :machine "ShengyiMacBook-Pro.local")
+      tramp-connection-local-darwin-ps-profile)
+     ((:application tramp :machine
                     "dynamic-oit-ip4-wifirestricted01-10-16-217-168.princeton.edu")
       tramp-connection-local-darwin-ps-profile)
      ((:application eshell) eshell-connection-default-profile)
@@ -128,7 +140,8 @@
       tramp-connection-local-default-system-profile
       tramp-connection-local-default-shell-profile)))
  '(connection-local-profile-alist
-   '((eshell-connection-default-profile (eshell-path-env-list))
+   '((vc-git-connection-default-profile (vc-git--program-version))
+     (eshell-connection-default-profile (eshell-path-env-list))
      (tramp-flatpak-connection-local-default-profile
       (tramp-remote-path "/app/bin" tramp-default-remote-path "/bin"
                          "/usr/bin" "/sbin" "/usr/sbin"
@@ -252,7 +265,6 @@
  '(display-time-mode t)
  '(doc-view-continuous t)
  '(emacs-lisp-mode-hook '(enable-paredit-mode))
- '(fido-mode t)
  '(find-ls-option '("-exec ls -ldh {} +" . "-ldh"))
  '(gap-executable "/usr/local/bin/gap")
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
@@ -260,7 +272,6 @@
  '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
  '(icomplete-minibuffer-setup-hook '(my-icomplete-styles))
- '(icomplete-mode t)
  '(ielm-mode-hook '(eldoc-mode))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
@@ -277,6 +288,8 @@
  '(major-mode-remap-alist
    '((c-mode . c-ts-mode) (c++-mode . c++-ts-mode)
      (html-mode . html-ts-mode)))
+ '(marginalia-align 'right)
+ '(marginalia-mode t)
  '(mood-line-glyph-alist
    '((:checker-info . 8627) (:checker-issues . 9873)
      (:checker-good . 10004) (:checker-checking . 10227)
@@ -292,13 +305,14 @@
  '(ns-command-modifier 'meta)
  '(org-support-shift-select t)
  '(package-selected-packages
-   '(async-status company-coq diminish flycheck gap-mode geiser
+   '(async-status company-coq consult diminish flycheck gap-mode geiser
                   geiser-chez geiser-guile geiser-racket haskell-mode
-                  ligature lsp-mode magit magit-section mood-line
-                  opam-switch-mode org-variable-pitch paredit
-                  proof-general transient treemacs-all-the-icons
-                  treemacs-icons-dired tron-legacy-theme tuareg
-                  which-key xbm-life yaml-mode))
+                  ligature lsp-mode magit magit-section marginalia
+                  mood-line opam-switch-mode org-variable-pitch
+                  paredit proof-general transient
+                  treemacs-all-the-icons treemacs-icons-dired
+                  tron-legacy-theme tuareg vertico which-key xbm-life
+                  yaml-mode))
  '(pixel-scroll-precision-mode t)
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
@@ -320,6 +334,10 @@
  '(user-full-name "Shengyi Wang")
  '(utop-command "opam exec -- utop -emacs")
  '(vc-follow-symlinks t)
+ '(vertico-count 12)
+ '(vertico-cycle t)
+ '(vertico-mode t)
+ '(vertico-resize t)
  '(visible-bell t)
  '(warning-suppress-log-types '((emacs) (emacs)))
  '(warning-suppress-types '((emacs) (emacs)))
