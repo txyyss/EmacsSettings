@@ -6,11 +6,6 @@
 ;; C-c @ C-q 展示大纲模式，隐藏其它
 ;; C-c @ C-s 显示子节点
 
-;; MELPA
-(require 'package)
-;;; Code:
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-
 ;;; 设置环境变量
 ;; (setenv "PATH" (concat "/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.14/bin:" (getenv "PATH")))
 ;; (setq exec-path (append exec-path '("/opt/homebrew/bin" "/opt/homebrew/sbin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.14/bin")))
@@ -35,21 +30,27 @@
 (with-eval-after-load 'dired (load "dired-x"))
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (add-hook 'c-ts-mode-common-hook 'hs-minor-mode)
-(define-key global-map [ns-drag-file] 'ns-find-file)
-(keymap-global-set "s-$" 'ispell-word)
-(keymap-global-set "M-o" 'other-window)
+(keymap-global-unset "s-s")
+(keymap-global-set "<f13>" 'toggle-frame-fullscreen)
 (keymap-global-set "C-x C-b" 'ibuffer)
 (keymap-global-set "C-x b" 'consult-buffer)
+(keymap-global-set "C-x t b" 'consult-buffer-other-tab)
+(keymap-global-set "M-g M-g" 'consult-goto-line)
+(keymap-global-set "M-g g" 'consult-goto-line)
+(keymap-global-set "M-o" 'other-window)
+(keymap-global-set "s-$" 'ispell-word)
 (keymap-global-set "s-/" 'dabbrev-expand)
-(keymap-global-set "s-l" 'consult-goto-line)
-(keymap-global-set "<f13>" 'toggle-frame-fullscreen)
-(keymap-global-set "s-m" 'delete-other-windows)
 (keymap-global-set "s-<return>" 'magit-status)
+(keymap-global-set "s-l" 'consult-goto-line)
+(keymap-global-set "s-m" 'delete-other-windows)
 (keymap-global-set "s-o" 'occur)
+(keymap-global-set "s-s f" 'consult-fd)
+(keymap-global-set "s-s l" 'consult-line)
+(keymap-global-set "s-s r" 'consult-ripgrep)
 (keymap-global-set "s-t" 'tab-bar-new-tab)
 (keymap-global-set "s-w" 'tab-bar-close-tab)
-(keymap-global-unset "M-<drag-mouse-1>")
 (keymap-global-unset "M-<down-mouse-1>")
+(keymap-global-unset "M-<drag-mouse-1>")
 (keymap-global-unset "M-<mouse-1>")
 (keymap-global-unset "M-<mouse-2>")
 (keymap-global-unset "M-<mouse-3>")
@@ -66,7 +67,6 @@
                        (or (derived-mode-p 'prog-mode)
                            (eq major-mode 'coq-mode)))
               (delete-trailing-whitespace))))
-(add-to-list 'Info-directory-list "/usr/local/texlive/2024/texmf-dist/doc/info")
 ;;; Spell checking
 ;; (setq ispell-list-command "list")
 
@@ -106,7 +106,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(Info-additional-directory-list '("/opt/homebrew/share/info"))
+ '(Info-additional-directory-list
+   '("/opt/homebrew/share/info"
+     "/usr/local/texlive/2024/texmf-dist/doc/info"))
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff"
     "#eeeeec"])
@@ -271,6 +273,7 @@
  '(geiser-chez-binary "chez")
  '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
+ '(grep-command "rg -nS --no-heading ")
  '(icomplete-minibuffer-setup-hook '(my-icomplete-styles))
  '(ielm-mode-hook '(eldoc-mode))
  '(indent-tabs-mode nil)
@@ -288,7 +291,6 @@
  '(major-mode-remap-alist
    '((c-mode . c-ts-mode) (c++-mode . c++-ts-mode)
      (html-mode . html-ts-mode)))
- '(marginalia-align 'right)
  '(marginalia-mode t)
  '(mood-line-glyph-alist
    '((:checker-info . 8627) (:checker-issues . 9873)
@@ -304,15 +306,21 @@
  '(ns-alternate-modifier 'super)
  '(ns-command-modifier 'meta)
  '(org-support-shift-select t)
+ '(package-archives
+   '(("gnu" . "https://elpa.gnu.org/packages/")
+     ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+     ("melpa" . "http://melpa.org/packages/")))
  '(package-selected-packages
-   '(async-status company-coq consult diminish flycheck gap-mode geiser
-                  geiser-chez geiser-guile geiser-racket haskell-mode
-                  ligature lsp-mode magit magit-section marginalia
-                  mood-line opam-switch-mode org-variable-pitch
-                  paredit proof-general transient
+   '(async-status company-coq consult diminish gap-mode geiser-chez
+                  geiser-guile geiser-racket haskell-mode lean4-mode
+                  ligature magit marginalia mood-line opam-switch-mode
+                  org-variable-pitch paredit proof-general
                   treemacs-all-the-icons treemacs-icons-dired
                   tron-legacy-theme tuareg vertico which-key xbm-life
                   yaml-mode))
+ '(package-vc-selected-packages
+   '((lean4-mode :url
+                 "https://github.com/leanprover-community/lean4-mode.git")))
  '(pixel-scroll-precision-mode t)
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
@@ -437,22 +445,6 @@
   "Convert degrees Celsius (CELSIUS) to degrees Fahrenheit."
   (interactive "nCelsius (°C): ")
   (message "%s °F" (+ (/ (* celsius 9.0) 5.0) 32)))
-
-;; Lean 4 mode
-(setq load-path (cons "/Users/shengyiwang/Program/Lisp/lean4-mode" load-path))
-
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(package-initialize)
-(let ((need-to-refresh t))
-  (dolist (p '(dash f flycheck lsp-mode magit-section s))
-    (when (not (package-installed-p p))
-      (when need-to-refresh
-        (package-refresh-contents)
-        (setq need-to-refresh nil))
-      (package-install p))))
-
-(require 'lean4-mode)
 
 (defvar ligatures-iosevka
   '("-<<" "-<" "-<-" "<--" "<---" "<<-" "<-" "->" "->>" "--->" "-->" "->-" ">-" ">>-"
