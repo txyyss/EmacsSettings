@@ -21,13 +21,17 @@
 (dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
   (set-fontset-font t charset (font-spec :name "Source Han Sans SC")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
-;; Iosevka Version = 32.1.0
+;; Iosevka Version = 32.2.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; 常用设置
-(add-hook 'dired-mode-hook 'treemacs-icons-dired-mode)
 (setq default-directory "~/")
-(with-eval-after-load 'dired (load "dired-x"))
+(with-eval-after-load 'dired (require 'dired-x))
+(add-hook 'dired-mode-hook
+          (lambda ()
+            ;; Set dired-x buffer-local variables here.  For example:
+            (dired-omit-mode 1)
+            ))
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (add-hook 'c-ts-mode-common-hook 'hs-minor-mode)
 (keymap-global-unset "s-s")
@@ -49,6 +53,7 @@
 (keymap-global-set "s-s r" 'consult-ripgrep)
 (keymap-global-set "s-t" 'tab-bar-new-tab)
 (keymap-global-set "s-w" 'tab-bar-close-tab)
+(keymap-global-set "s-z" 'delete-window)
 (keymap-global-unset "M-<down-mouse-1>")
 (keymap-global-unset "M-<drag-mouse-1>")
 (keymap-global-unset "M-<mouse-1>")
@@ -112,6 +117,7 @@
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff"
     "#eeeeec"])
+ '(auto-save-visited-mode t)
  '(backup-directory-alist '((".*" . "~/Downloads/")))
  '(blink-cursor-mode nil)
  '(c-basic-offset 4)
@@ -311,16 +317,17 @@
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")
      ("melpa" . "http://melpa.org/packages/")))
  '(package-selected-packages
-   '(async-status company-coq consult diminish gap-mode geiser-chez
-                  geiser-guile geiser-racket haskell-mode lean4-mode
-                  ligature magit marginalia mood-line opam-switch-mode
-                  org-variable-pitch paredit proof-general
-                  treemacs-all-the-icons treemacs-icons-dired
+   '(async-status company-coq consult gap-mode geiser-chez geiser-guile
+                  geiser-racket haskell-mode lean4-mode ligature magit
+                  marginalia mood-line opam-switch-mode
+                  org-variable-pitch paredit pdf-tools proof-general
                   tron-legacy-theme tuareg vertico which-key xbm-life
                   yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
+ '(pdf-view-use-imagemagick t)
+ '(pdf-view-use-unicode-ligther nil)
  '(pixel-scroll-precision-mode t)
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
@@ -392,10 +399,6 @@
     (message "English words: %d\nNon-English characters: %d"
              eng non-eng)))
 
-(require 'diminish)
-(diminish 'which-key-mode)
-(diminish 'paredit-mode)
-
 (require 'tuareg)
 (opam-switch-set-switch (tuareg-opam-current-compiler))
 (let ((opam-share "~/.opam/default/share"))
@@ -460,11 +463,13 @@
   (ligature-set-ligatures 'coq-mode ligatures-iosevka)
   (ligature-set-ligatures 'lean4-mode ligatures-iosevka))
 
+(pdf-tools-install)
+
 ;; Local Variables:
 ;; mode: outline-minor;
 ;; End:
 (provide 'init)
 ;;; init.el ends here
 
-(load-file (let ((coding-system-for-read 'utf-8))
-                (shell-command-to-string "agda-mode locate")))
+;; (load-file (let ((coding-system-for-read 'utf-8))
+;;                 (shell-command-to-string "agda-mode locate")))
