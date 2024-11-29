@@ -118,7 +118,7 @@
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff"
     "#eeeeec"])
  '(auto-save-visited-mode t)
- '(backup-directory-alist '((".*" . "~/Downloads/")))
+ '(backup-directory-alist '(("." . "~/.emacs.d/backup")))
  '(blink-cursor-mode nil)
  '(c-basic-offset 4)
  '(column-number-mode t)
@@ -262,6 +262,7 @@
      "a21dcd2f5b8c38e799b9dcb91f702d5d864263a794732aa3ac05c73de070d1da"
      "6af9a4651ed0662d64b5ee15d74ce56d0421a3101caaf513687b74d7c42853f2"
      default))
+ '(delete-old-versions t)
  '(delete-selection-mode t)
  '(dired-kill-when-opening-new-dired-buffer t)
  '(dired-listing-switches "-alh")
@@ -271,7 +272,6 @@
  '(display-time-day-and-date t)
  '(display-time-default-load-average nil)
  '(display-time-mode t)
- '(doc-view-continuous t)
  '(emacs-lisp-mode-hook '(enable-paredit-mode))
  '(find-ls-option '("-exec ls -ldh {} +" . "-ldh"))
  '(gap-executable "/usr/local/bin/gap")
@@ -349,6 +349,7 @@
  '(user-full-name "Shengyi Wang")
  '(utop-command "opam exec -- utop -emacs")
  '(vc-follow-symlinks t)
+ '(version-control t)
  '(vertico-count 12)
  '(vertico-cycle t)
  '(vertico-mode t)
