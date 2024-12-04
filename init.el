@@ -34,9 +34,13 @@
             ))
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (add-hook 'c-ts-mode-common-hook 'hs-minor-mode)
-(keymap-global-unset "s-s")
 (keymap-global-set "<f13>" 'toggle-frame-fullscreen)
+(keymap-global-set "C-," 'embark-act)
+(keymap-global-set "C-;" 'embark-dwim)
+(keymap-global-set "C-h B" 'embark-bindings)
 (keymap-global-set "C-x C-b" 'ibuffer)
+(keymap-global-set "C-x C-r" 'consult-recent-file)
+(keymap-global-set "C-x M-r" 'find-file-read-only)
 (keymap-global-set "C-x b" 'consult-buffer)
 (keymap-global-set "C-x t b" 'consult-buffer-other-tab)
 (keymap-global-set "M-g M-g" 'consult-goto-line)
@@ -45,12 +49,12 @@
 (keymap-global-set "s-$" 'ispell-word)
 (keymap-global-set "s-/" 'dabbrev-expand)
 (keymap-global-set "s-<return>" 'magit-status)
-(keymap-global-set "s-l" 'consult-goto-line)
+(keymap-global-set "s-f" 'consult-fd)
+(keymap-global-set "s-g" 'consult-goto-line)
+(keymap-global-set "s-l" 'consult-line)
 (keymap-global-set "s-m" 'delete-other-windows)
 (keymap-global-set "s-o" 'occur)
-(keymap-global-set "s-s f" 'consult-fd)
-(keymap-global-set "s-s l" 'consult-line)
-(keymap-global-set "s-s r" 'consult-ripgrep)
+(keymap-global-set "s-r" 'consult-ripgrep)
 (keymap-global-set "s-t" 'tab-bar-new-tab)
 (keymap-global-set "s-w" 'tab-bar-close-tab)
 (keymap-global-set "s-z" 'delete-window)
@@ -59,6 +63,7 @@
 (keymap-global-unset "M-<mouse-1>")
 (keymap-global-unset "M-<mouse-2>")
 (keymap-global-unset "M-<mouse-3>")
+(keymap-set minibuffer-local-map "C-l" 'embark-export)
 (defalias 'elisp-repl 'ielm)
 (eval-after-load 'paredit
   #'(define-key paredit-mode-map (kbd "C-j") nil))
@@ -125,7 +130,8 @@
  '(company-backends '(company-math-symbols-unicode))
  '(company-idle-delay 0.3)
  '(company-minimum-prefix-length 2)
- '(completion-styles '(basic partial-completion flex))
+ '(completion-pcm-leading-wildcard t)
+ '(completion-styles '(basic partial-completion))
  '(confirm-kill-processes nil)
  '(connection-local-criteria-alist
    '(((:application vc-git) vc-git-connection-default-profile)
@@ -246,6 +252,7 @@
       (shell-file-name . "/bin/sh") (shell-command-switch . "-c"))
      (tramp-connection-local-default-system-profile
       (path-separator . ":") (null-device . "/dev/null"))))
+ '(consult-preview-at-point-mode-hook '(embark-collect-mode))
  '(custom-enabled-themes '(tron-legacy))
  '(custom-safe-themes
    '("7fd9e3ef1d713ffbf413ee6abf9cb0e6f7106cba6dea7c3e89fe1b3449cf99bd"
@@ -273,6 +280,11 @@
  '(display-time-default-load-average nil)
  '(display-time-mode t)
  '(emacs-lisp-mode-hook '(enable-paredit-mode))
+ '(embark-indicators
+   '(embark--vertico-indicator embark-minimal-indicator
+                               embark-highlight-indicator
+                               embark-isearch-highlight-indicator))
+ '(engine-mode t)
  '(find-ls-option '("-exec ls -ldh {} +" . "-ldh"))
  '(gap-executable "/usr/local/bin/gap")
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
@@ -317,12 +329,12 @@
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")
      ("melpa" . "http://melpa.org/packages/")))
  '(package-selected-packages
-   '(async-status company-coq consult gap-mode geiser-chez geiser-guile
-                  geiser-racket haskell-mode lean4-mode ligature magit
-                  marginalia mood-line opam-switch-mode
-                  org-variable-pitch paredit pdf-tools proof-general
-                  tron-legacy-theme tuareg vertico which-key xbm-life
-                  yaml-mode))
+   '(async-status company-coq consult embark embark-consult gap-mode
+                  geiser-chez geiser-guile geiser-racket haskell-mode
+                  lean4-mode ligature magit marginalia mood-line
+                  opam-switch-mode org-variable-pitch paredit
+                  pdf-tools proof-general tron-legacy-theme tuareg
+                  vertico which-key xbm-life yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
