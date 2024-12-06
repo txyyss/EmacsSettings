@@ -26,6 +26,7 @@
 
 ;;; 常用设置
 (setq default-directory "~/")
+(setq completion-ignore-case t)
 (with-eval-after-load 'dired (require 'dired-x))
 (add-hook 'dired-mode-hook
           (lambda ()
@@ -38,9 +39,9 @@
 (keymap-global-set "C-," 'embark-act)
 (keymap-global-set "C-;" 'embark-dwim)
 (keymap-global-set "C-h B" 'embark-bindings)
+(keymap-global-set "C-x /" 'webjump)
 (keymap-global-set "C-x C-b" 'ibuffer)
-(keymap-global-set "C-x C-r" 'consult-recent-file)
-(keymap-global-set "C-x M-r" 'find-file-read-only)
+(keymap-global-set "C-x M-r" 'consult-recent-file)
 (keymap-global-set "C-x b" 'consult-buffer)
 (keymap-global-set "C-x t b" 'consult-buffer-other-tab)
 (keymap-global-set "M-g M-g" 'consult-goto-line)
@@ -280,6 +281,7 @@
  '(display-time-default-load-average nil)
  '(display-time-mode t)
  '(emacs-lisp-mode-hook '(enable-paredit-mode))
+ '(embark-help-key "?")
  '(embark-indicators
    '(embark--vertico-indicator embark-minimal-indicator
                                embark-highlight-indicator
@@ -333,8 +335,8 @@
                   geiser-chez geiser-guile geiser-racket haskell-mode
                   lean4-mode ligature magit marginalia mood-line
                   opam-switch-mode org-variable-pitch paredit
-                  pdf-tools proof-general tron-legacy-theme tuareg
-                  vertico which-key xbm-life yaml-mode))
+                  pdf-tools proof-general slime tron-legacy-theme
+                  tuareg vertico which-key xbm-life yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
@@ -342,6 +344,7 @@
  '(pdf-view-use-unicode-ligther nil)
  '(pixel-scroll-precision-mode t)
  '(python-shell-interpreter "/usr/local/bin/python3")
+ '(read-buffer-completion-ignore-case t)
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
  '(scroll-bar-mode nil)
  '(switch-to-buffer-obey-display-actions t)
@@ -369,6 +372,13 @@
  '(visible-bell t)
  '(warning-suppress-log-types '((emacs) (emacs)))
  '(warning-suppress-types '((emacs) (emacs)))
+ '(webjump-sites
+   '(("Wikipedia"
+      . [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""])
+     ("Google"
+      . [simple-query "www.google.com"
+                      "https://www.google.com/search?ie=utf-8&oe=utf-8&q="
+                      ""])))
  '(yas-global-mode t))
 
 ;;; Coq 设置
@@ -376,6 +386,10 @@
 (add-hook 'coq-mode-hook #'opam-switch-mode)
 
 (setq coq-highlight-hyps-cited-in-response nil)
+
+;;; Lisp
+
+(setq inferior-lisp-program "sbcl")
 
 ;;; 设置sokoban
 ;; (autoload 'sokoban "sokoban.el"
