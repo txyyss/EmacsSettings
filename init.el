@@ -21,7 +21,7 @@
 (dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
   (set-fontset-font t charset (font-spec :name "Source Han Sans SC")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
-;; Iosevka Version = 32.2.0
+;; Iosevka Version = 32.2.1
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; 常用设置
@@ -38,6 +38,8 @@
 (keymap-global-set "<f13>" 'toggle-frame-fullscreen)
 (keymap-global-set "C-," 'embark-act)
 (keymap-global-set "C-;" 'embark-dwim)
+(keymap-global-set "C-c d" 'osx-dictionary-search-word-at-point)
+(keymap-global-set "C-c i" 'osx-dictionary-search-input)
 (keymap-global-set "C-h B" 'embark-bindings)
 (keymap-global-set "C-x /" 'webjump)
 (keymap-global-set "C-x C-b" 'ibuffer)
@@ -274,6 +276,8 @@
      default))
  '(delete-old-versions t)
  '(delete-selection-mode t)
+ '(desktop-save t)
+ '(desktop-save-mode t)
  '(dired-kill-when-opening-new-dired-buffer t)
  '(dired-listing-switches "-alh")
  '(dired-recursive-copies 'always)
@@ -327,6 +331,7 @@
  '(mouse-avoidance-mode 'animate nil (avoid))
  '(ns-alternate-modifier 'super)
  '(ns-command-modifier 'meta)
+ '(orderless-matching-styles '(orderless-regexp orderless-literal orderless-prefixes))
  '(org-support-shift-select t)
  '(package-archives
    '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -337,7 +342,7 @@
                   geiser-chez geiser-guile geiser-racket haskell-mode
                   lean4-mode ligature magit marginalia mood-line
                   opam-switch-mode orderless org-variable-pitch
-                  paredit pdf-tools proof-general slime
+                  osx-dictionary paredit pdf-tools proof-general slime
                   tron-legacy-theme tuareg vertico which-key xbm-life
                   yaml-mode))
  '(package-vc-selected-packages
@@ -359,7 +364,6 @@
  '(tab-bar-new-tab-choice "*scratch*")
  '(tab-bar-new-tab-to 'rightmost)
  '(tab-bar-select-tab-modifiers '(control super))
- '(tab-bar-show 1)
  '(tab-bar-tab-hints nil)
  '(tool-bar-mode nil)
  '(tramp-syntax 'default nil (tramp))
