@@ -131,8 +131,9 @@
  '(company-backends '(company-math-symbols-unicode))
  '(company-idle-delay 0.3)
  '(company-minimum-prefix-length 2)
+ '(completion-category-overrides '((file (styles basic partial-completion))))
  '(completion-pcm-leading-wildcard t)
- '(completion-styles '(basic partial-completion))
+ '(completion-styles '(orderless basic))
  '(confirm-kill-processes nil)
  '(connection-local-criteria-alist
    '(((:application vc-git) vc-git-connection-default-profile)
@@ -254,6 +255,7 @@
      (tramp-connection-local-default-system-profile
       (path-separator . ":") (null-device . "/dev/null"))))
  '(consult-preview-at-point-mode-hook '(embark-collect-mode))
+ '(consult-preview-excluded-files '("\\`/[^/|:]+:" ".+\\.v"))
  '(custom-enabled-themes '(tron-legacy))
  '(custom-safe-themes
    '("7fd9e3ef1d713ffbf413ee6abf9cb0e6f7106cba6dea7c3e89fe1b3449cf99bd"
@@ -334,9 +336,10 @@
    '(async-status company-coq consult embark embark-consult gap-mode
                   geiser-chez geiser-guile geiser-racket haskell-mode
                   lean4-mode ligature magit marginalia mood-line
-                  opam-switch-mode org-variable-pitch paredit
-                  pdf-tools proof-general slime tron-legacy-theme
-                  tuareg vertico which-key xbm-life yaml-mode))
+                  opam-switch-mode orderless org-variable-pitch
+                  paredit pdf-tools proof-general slime
+                  tron-legacy-theme tuareg vertico which-key xbm-life
+                  yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
