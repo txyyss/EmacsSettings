@@ -1,6 +1,4 @@
 ;;; package --- Summary -*- lexical-binding: t;-*-
-;;; Commentary:
-
 
 ;; 快捷键提醒
 ;; C-c @ C-q 展示大纲模式，隐藏其它
@@ -9,6 +7,8 @@
 ;;; 设置环境变量
 ;; (setenv "PATH" (concat "/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.14/bin:" (getenv "PATH")))
 ;; (setq exec-path (append exec-path '("/opt/homebrew/bin" "/opt/homebrew/sbin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.14/bin")))
+;;; Code:
+
 (setenv "LC_ALL" "en_US.UTF-8")
 
 ;;; 设置语言
@@ -125,6 +125,7 @@
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff"
     "#eeeeec"])
+ '(auto-save-visited-interval 3)
  '(auto-save-visited-mode t)
  '(backup-directory-alist '(("." . "~/.emacs.d/backup")))
  '(blink-cursor-mode nil)
@@ -316,6 +317,7 @@
    '((c-mode . c-ts-mode) (c++-mode . c++-ts-mode)
      (html-mode . html-ts-mode)))
  '(marginalia-mode t)
+ '(mood-line-format mood-line-format-default-extended)
  '(mood-line-glyph-alist
    '((:checker-info . 8627) (:checker-issues . 9873)
      (:checker-good . 10004) (:checker-checking . 10227)
@@ -390,6 +392,11 @@
 ;;; Coq 设置
 (add-hook 'coq-mode-hook #'company-coq-mode)
 (add-hook 'coq-mode-hook #'opam-switch-mode)
+(defun allow-consult-preview ()
+  "Allow consult preview when at least one .v file is opened."
+  (when (member ".+\\.v" consult-preview-excluded-files)
+    (delete ".+\\.v" consult-preview-excluded-files)))
+(add-hook 'coq-mode-hook #'allow-consult-preview)
 
 (setq coq-highlight-hyps-cited-in-response nil)
 
@@ -504,11 +511,9 @@
 
 (pdf-tools-install)
 
-;; Local Variables:
-;; mode: outline-minor;
+;; (load-file (let ((coding-system-for-read 'utf-8))
+;;                 (shell-command-to-string "agda-mode locate")))
+
 ;; End:
 (provide 'init)
 ;;; init.el ends here
-
-;; (load-file (let ((coding-system-for-read 'utf-8))
-;;                 (shell-command-to-string "agda-mode locate")))
