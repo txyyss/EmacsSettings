@@ -276,8 +276,6 @@
      default))
  '(delete-old-versions t)
  '(delete-selection-mode t)
- '(desktop-save t)
- '(desktop-save-mode t)
  '(dired-kill-when-opening-new-dired-buffer t)
  '(dired-listing-switches "-alh")
  '(dired-recursive-copies 'always)
@@ -364,6 +362,7 @@
  '(tab-bar-new-tab-choice "*scratch*")
  '(tab-bar-new-tab-to 'rightmost)
  '(tab-bar-select-tab-modifiers '(control super))
+ '(tab-bar-show 1)
  '(tab-bar-tab-hints nil)
  '(tool-bar-mode nil)
  '(tramp-syntax 'default nil (tramp))
@@ -397,6 +396,12 @@
 ;;; Lisp
 
 (setq inferior-lisp-program "sbcl")
+
+;;; Vertico
+(keymap-set vertico-map "RET" #'vertico-directory-enter)
+(keymap-set vertico-map "DEL" #'vertico-directory-delete-char)
+(keymap-set vertico-map "M-DEL" #'vertico-directory-delete-word)
+(add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
 
 ;;; 设置sokoban
 ;; (autoload 'sokoban "sokoban.el"
