@@ -36,6 +36,7 @@
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (add-hook 'c-ts-mode-common-hook 'hs-minor-mode)
 (keymap-global-set "<f13>" 'toggle-frame-fullscreen)
+(keymap-global-set "C-'" 'avy-goto-char-timer)
 (keymap-global-set "C-," 'embark-act)
 (keymap-global-set "C-;" 'embark-dwim)
 (keymap-global-set "C-c d" 'osx-dictionary-search-word-at-point)
@@ -69,7 +70,7 @@
 (keymap-set minibuffer-local-map "C-l" 'embark-export)
 (defalias 'elisp-repl 'ielm)
 (eval-after-load 'paredit
-  #'(define-key paredit-mode-map (kbd "C-j") nil))
+  #'(keymap-unset paredit-mode-map "C-j"))
 (setq kill-buffer-query-functions
       (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 (toggle-frame-fullscreen)
@@ -91,8 +92,6 @@
 ;; Trick: Use M-j to confirm without the matching existed.
 
 ;;; Org Mode 设置
-(define-key global-map [?\C-c ?a] 'org-agenda)
-(define-key global-map [?\C-c ?r] 'org-remember)
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
 (add-hook 'org-mode-hook 'abbrev-mode)
 (add-hook 'org-mode-hook 'org-variable-pitch-minor-mode)
@@ -346,7 +345,7 @@
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")
      ("melpa" . "http://melpa.org/packages/")))
  '(package-selected-packages
-   '(async-status company-coq consult embark embark-consult gap-mode
+   '(async-status avy company-coq consult embark embark-consult gap-mode
                   geiser-chez geiser-guile geiser-racket haskell-mode
                   lean4-mode ligature magit marginalia mood-line
                   opam-switch-mode orderless org-variable-pitch
@@ -464,7 +463,7 @@
     (require 'ocamlformat)
     (add-hook 'tuareg-mode-hook
               (lambda ()
-                (define-key tuareg-mode-map (kbd "C-M-<tab>") #'ocamlformat)
+                (keymap-set tuareg-mode-map "C-M-<tab>" #'ocamlformat)
                 (add-hook 'before-save-hook #'ocamlformat-before-save)))
     (autoload 'utop "utop" "Toplevel for OCaml" t)
     (autoload 'utop-minor-mode "utop" "Minor mode for utop" t)
