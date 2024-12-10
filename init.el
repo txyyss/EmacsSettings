@@ -83,9 +83,6 @@
 ;;; Spell checking
 ;; (setq ispell-list-command "list")
 
-(require 'ls-lisp)
-(setq ls-lisp-use-insert-directory-program nil)
-
 ;; Trick: Use M-j to confirm without the matching existed.
 
 ;;; Org Mode 设置
@@ -289,7 +286,7 @@
  '(display-time-day-and-date t)
  '(display-time-default-load-average nil)
  '(display-time-mode t)
- '(emacs-lisp-mode-hook '(enable-paredit-mode))
+ '(emacs-lisp-mode-hook '(enable-paredit-mode outline-minor-mode))
  '(embark-help-key "?")
  '(embark-indicators
    '(embark--vertico-indicator embark-minimal-indicator
