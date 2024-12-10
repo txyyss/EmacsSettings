@@ -89,9 +89,6 @@
 (setq ls-lisp-use-insert-directory-program nil)
 
 ;; Trick: Use M-j to confirm without the matching existed.
-(defun my-icomplete-styles ()
-  "Customize my icomplete styles."
-  (setq-local completion-styles '(basic partial-completion flex)))
 
 ;;; Org Mode 设置
 (define-key global-map [?\C-c ?a] 'org-agenda)
@@ -113,6 +110,18 @@
 (add-hook 'c-ts-mode-hook 'eglot-ensure)
 (add-hook 'c++-ts-mode-hook 'eglot-ensure)
 
+;;; Useful definitions
+(defconst exclude-file-list '("\\`/[^/|:]+:" ".+\\.v"))
+
+(defun allow-consult-preview ()
+  "Allow consult preview when at least one .v file is opened."
+  (when (member ".+\\.v" consult-preview-excluded-files)
+    (delete ".+\\.v" consult-preview-excluded-files)))
+
+(defun my-icomplete-styles ()
+  "Customize my icomplete styles."
+  (setq-local completion-styles '(basic partial-completion flex)))
+
 ;;; custom-set-variables
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -125,7 +134,7 @@
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff"
     "#eeeeec"])
- '(auto-save-visited-interval 3)
+ '(auto-save-visited-interval 2)
  '(auto-save-visited-mode t)
  '(backup-directory-alist '(("." . "~/.emacs.d/backup")))
  '(blink-cursor-mode nil)
@@ -258,7 +267,7 @@
      (tramp-connection-local-default-system-profile
       (path-separator . ":") (null-device . "/dev/null"))))
  '(consult-preview-at-point-mode-hook '(embark-collect-mode))
- '(consult-preview-excluded-files '("\\`/[^/|:]+:" ".+\\.v"))
+ '(consult-preview-excluded-files exclude-file-list)
  '(custom-enabled-themes '(tron-legacy))
  '(custom-safe-themes
    '("7fd9e3ef1d713ffbf413ee6abf9cb0e6f7106cba6dea7c3e89fe1b3449cf99bd"
@@ -317,7 +326,6 @@
    '((c-mode . c-ts-mode) (c++-mode . c++-ts-mode)
      (html-mode . html-ts-mode)))
  '(marginalia-mode t)
- '(mood-line-format mood-line-format-default-extended)
  '(mood-line-glyph-alist
    '((:checker-info . 8627) (:checker-issues . 9873)
      (:checker-good . 10004) (:checker-checking . 10227)
@@ -392,10 +400,6 @@
 ;;; Coq 设置
 (add-hook 'coq-mode-hook #'company-coq-mode)
 (add-hook 'coq-mode-hook #'opam-switch-mode)
-(defun allow-consult-preview ()
-  "Allow consult preview when at least one .v file is opened."
-  (when (member ".+\\.v" consult-preview-excluded-files)
-    (delete ".+\\.v" consult-preview-excluded-files)))
 (add-hook 'coq-mode-hook #'allow-consult-preview)
 
 (setq coq-highlight-hyps-cited-in-response nil)
