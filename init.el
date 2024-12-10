@@ -47,10 +47,9 @@
 (keymap-global-set "C-x M-r" 'consult-recent-file)
 (keymap-global-set "C-x b" 'consult-buffer)
 (keymap-global-set "C-x t b" 'consult-buffer-other-tab)
-(keymap-global-set "M-g M-g" 'consult-goto-line)
-(keymap-global-set "M-g g" 'consult-goto-line)
 (keymap-global-set "M-o" 'other-window)
 (keymap-global-set "s-$" 'ispell-word)
+(keymap-global-set "s-," 'customize-group)
 (keymap-global-set "s-/" 'dabbrev-expand)
 (keymap-global-set "s-<return>" 'magit-status)
 (keymap-global-set "s-f" 'consult-fd)
@@ -83,8 +82,6 @@
               (delete-trailing-whitespace))))
 ;;; Spell checking
 ;; (setq ispell-list-command "list")
-
-(which-key-mode)
 
 (require 'ls-lisp)
 (setq ls-lisp-use-insert-directory-program nil)
@@ -265,7 +262,6 @@
       (shell-file-name . "/bin/sh") (shell-command-switch . "-c"))
      (tramp-connection-local-default-system-profile
       (path-separator . ":") (null-device . "/dev/null"))))
- '(consult-preview-at-point-mode-hook '(embark-collect-mode))
  '(consult-preview-excluded-files exclude-file-list)
  '(custom-enabled-themes '(tron-legacy))
  '(custom-safe-themes
@@ -380,7 +376,7 @@
  '(utop-command "opam exec -- utop -emacs")
  '(vc-follow-symlinks t)
  '(version-control t)
- '(vertico-count 12)
+ '(vertico-count 15)
  '(vertico-cycle t)
  '(vertico-mode t)
  '(vertico-resize t)
@@ -394,6 +390,7 @@
       . [simple-query "www.google.com"
                       "https://www.google.com/search?ie=utf-8&oe=utf-8&q="
                       ""])))
+ '(which-key-mode t)
  '(yas-global-mode t))
 
 ;;; Coq 设置
@@ -408,10 +405,14 @@
 (setq inferior-lisp-program "sbcl")
 
 ;;; Vertico
-(keymap-set vertico-map "RET" #'vertico-directory-enter)
+(keymap-set vertico-map "C-'" #'vertico-quick-exit)
 (keymap-set vertico-map "DEL" #'vertico-directory-delete-char)
 (keymap-set vertico-map "M-DEL" #'vertico-directory-delete-word)
+(keymap-set vertico-map "RET" #'vertico-directory-enter)
 (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
+
+;;; Embark
+(add-hook 'embark-collect-mode-hook #'consult-preview-at-point-mode)
 
 ;;; 设置sokoban
 ;; (autoload 'sokoban "sokoban.el"
