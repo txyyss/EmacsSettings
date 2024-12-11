@@ -85,6 +85,8 @@
 
 ;; Trick: Use M-j to confirm without the matching existed.
 
+(require 'ls-lisp)
+
 ;;; Org Mode 设置
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
 (add-hook 'org-mode-hook 'abbrev-mode)
