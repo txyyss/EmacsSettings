@@ -7,8 +7,6 @@
 ;;; 设置环境变量
 ;; (setenv "PATH" (concat "/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:/usr/local/bin:/Library/TeX/texbin:/Applications/Racket v8.14/bin:" (getenv "PATH")))
 ;; (setq exec-path (append exec-path '("/opt/homebrew/bin" "/opt/homebrew/sbin" "~/.local/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Applications/Racket v8.14/bin")))
-;;; Code:
-
 (setenv "LC_ALL" "en_US.UTF-8")
 
 ;;; 设置语言
@@ -36,7 +34,6 @@
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (add-hook 'c-ts-mode-common-hook 'hs-minor-mode)
 (keymap-global-set "<f13>" 'toggle-frame-fullscreen)
-(keymap-global-set "C-'" 'avy-goto-char-timer)
 (keymap-global-set "C-," 'embark-act)
 (keymap-global-set "C-;" 'embark-dwim)
 (keymap-global-set "C-c d" 'osx-dictionary-search-word-at-point)
@@ -51,8 +48,11 @@
 (keymap-global-set "s-$" 'ispell-word)
 (keymap-global-set "s-," 'customize-group)
 (keymap-global-set "s-/" 'dabbrev-expand)
+(keymap-global-set "s-;" 'avy-goto-char-timer)
 (keymap-global-set "s-<return>" 'magit-status)
 (keymap-global-set "s-<tab>" 'tab-switch)
+(keymap-global-set "s-[" 'tab-bar-switch-to-prev-tab)
+(keymap-global-set "s-]" 'tab-bar-switch-to-next-tab)
 (keymap-global-set "s-f" 'consult-fd)
 (keymap-global-set "s-g" 'consult-goto-line)
 (keymap-global-set "s-l" 'consult-line)
@@ -68,6 +68,7 @@
 (keymap-global-unset "M-<mouse-2>")
 (keymap-global-unset "M-<mouse-3>")
 (keymap-set minibuffer-local-map "C-l" 'embark-export)
+(keymap-set emacs-lisp-mode-map "C-c C-n" 'emacs-lisp-native-compile)
 (defalias 'elisp-repl 'ielm)
 (eval-after-load 'paredit
   #'(keymap-unset paredit-mode-map "C-j"))
@@ -332,6 +333,7 @@
  '(ns-alternate-modifier 'super)
  '(ns-command-modifier 'meta)
  '(orderless-matching-styles '(orderless-regexp orderless-literal orderless-prefixes))
+ '(org-appear-autoentities t)
  '(org-hide-emphasis-markers t)
  '(org-modern-star 'replace)
  '(org-pretty-entities t)
@@ -344,7 +346,7 @@
    '(async-status avy company-coq consult embark embark-consult gap-mode
                   geiser-chez geiser-guile geiser-racket haskell-mode
                   lean4-mode ligature magit marginalia mood-line
-                  opam-switch-mode orderless org-modern
+                  opam-switch-mode orderless org-appear org-modern
                   org-variable-pitch osx-dictionary paredit pdf-tools
                   proof-general slime tron-legacy-theme tuareg vertico
                   which-key xbm-life yaml-mode))
@@ -392,6 +394,9 @@
                       ""])))
  '(which-key-mode t)
  '(yas-global-mode t))
+
+;;; Org Mode
+(add-hook 'org-mode-hook 'org-appear-mode)
 
 ;;; Coq 设置
 (add-hook 'coq-mode-hook #'company-coq-mode)
