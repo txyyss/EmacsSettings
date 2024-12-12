@@ -396,6 +396,18 @@
  '(which-key-mode t)
  '(yas-global-mode t))
 
+;;; Recentf
+(add-to-list 'recentf-exclude ".+\\.el\\.gz")
+
+;;; Close tab after kill buffer
+(defun close-tab-after-kill-buffer ()
+  (let ((last-tab-p (= 1 (length (funcall tab-bar-tabs-function)))))
+    (unless last-tab-p
+      (let ((tab-index (tab-bar--tab-index-by-name (buffer-name))))
+        (when tab-index
+          (tab-bar-close-tab (1+ tab-index)))))))
+(add-hook 'kill-buffer-hook #'close-tab-after-kill-buffer)
+
 ;;; Org Mode
 (add-hook 'org-mode-hook 'org-appear-mode)
 
