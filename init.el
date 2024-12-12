@@ -18,9 +18,9 @@
 (setq system-time-locale "C")
 
 ;;; 设置字体
-(dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
-  (set-fontset-font t charset (font-spec :name "Source Han Sans SC")))
-(set-fontset-font t 'greek (font-spec :name "Iosevka"))
+;; (dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
+;;   (set-fontset-font t charset (font-spec :name "Source Han Sans SC")))
+;; (set-fontset-font t 'greek (font-spec :name "Iosevka"))
 ;; Iosevka Version = 32.2.1
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
@@ -52,6 +52,7 @@
 (keymap-global-set "s-," 'customize-group)
 (keymap-global-set "s-/" 'dabbrev-expand)
 (keymap-global-set "s-<return>" 'magit-status)
+(keymap-global-set "s-<tab>" 'tab-switch)
 (keymap-global-set "s-f" 'consult-fd)
 (keymap-global-set "s-g" 'consult-goto-line)
 (keymap-global-set "s-l" 'consult-line)
@@ -86,11 +87,6 @@
 ;; Trick: Use M-j to confirm without the matching existed.
 
 (require 'ls-lisp)
-
-;;; Org Mode 设置
-(add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
-(add-hook 'org-mode-hook 'abbrev-mode)
-(add-hook 'org-mode-hook 'org-variable-pitch-minor-mode)
 
 ;;; LSP for LaTeX
 (with-eval-after-load 'tex-mode
@@ -131,6 +127,7 @@
     "#eeeeec"])
  '(auto-save-visited-interval 2)
  '(auto-save-visited-mode t)
+ '(avy-background t)
  '(backup-directory-alist '(("." . "~/.emacs.d/backup")))
  '(blink-cursor-mode nil)
  '(c-basic-offset 4)
@@ -301,6 +298,7 @@
  '(geiser-chez-binary "chez")
  '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
+ '(global-org-modern-mode t)
  '(grep-command "rg -nS --no-heading ")
  '(icomplete-minibuffer-setup-hook '(my-icomplete-styles))
  '(ielm-mode-hook '(eldoc-mode))
@@ -334,6 +332,9 @@
  '(ns-alternate-modifier 'super)
  '(ns-command-modifier 'meta)
  '(orderless-matching-styles '(orderless-regexp orderless-literal orderless-prefixes))
+ '(org-hide-emphasis-markers t)
+ '(org-modern-star 'replace)
+ '(org-pretty-entities t)
  '(org-support-shift-select t)
  '(package-archives
    '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -343,10 +344,10 @@
    '(async-status avy company-coq consult embark embark-consult gap-mode
                   geiser-chez geiser-guile geiser-racket haskell-mode
                   lean4-mode ligature magit marginalia mood-line
-                  opam-switch-mode orderless org-variable-pitch
-                  osx-dictionary paredit pdf-tools proof-general slime
-                  tron-legacy-theme tuareg vertico which-key xbm-life
-                  yaml-mode))
+                  opam-switch-mode orderless org-modern
+                  org-variable-pitch osx-dictionary paredit pdf-tools
+                  proof-general slime tron-legacy-theme tuareg vertico
+                  which-key xbm-life yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
@@ -479,14 +480,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 180 :family "Iosevka"))))
- '(org-default ((t nil)))
- '(org-document-title ((t (:foreground "#4BB5BE" :weight bold :height 1.5))))
- '(org-done ((t nil)))
+ '(default ((t (:height 180 :family "Sarasa Mono SC"))))
+ '(org-modern-symbol ((t (:family "Iosevka"))) t)
  '(tab-bar ((t nil)))
  '(tab-bar-tab ((t (:inherit mode-line :background "#3D5666" :foreground "#CBECFF" :box (:line-width (4 . 3) :color "#3D5666" :style flat-button) :weight bold))))
  '(tab-bar-tab-inactive ((t (:inherit mode-line-inactive :background "#1E1E1E" :foreground "#90ACBC" :box (:line-width (4 . 3) :color "#1E1E1E" :style flat-button)))))
- '(variable-pitch ((t (:family "Libertinus Serif")))))
+ '(variable-pitch ((t (:family "Iosevka Aile")))))
 
 (defun f2c (fahrenheit)
   "Convert degrees Fahrenheit (FAHRENHEIT) to degrees Celsius."
