@@ -44,6 +44,7 @@
 (keymap-global-set "C-x M-r" 'consult-recent-file)
 (keymap-global-set "C-x b" 'consult-buffer)
 (keymap-global-set "C-x t b" 'consult-buffer-other-tab)
+(keymap-global-set "C-x t k" 'tab-bar-close-tab-by-name)
 (keymap-global-set "M-o" 'other-window)
 (keymap-global-set "s-$" 'ispell-word)
 (keymap-global-set "s-," 'customize-group)
@@ -75,7 +76,6 @@
 (setq kill-buffer-query-functions
       (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 (toggle-frame-fullscreen)
-(recentf-mode t)
 (add-hook 'before-save-hook
           (lambda ()
             (when (and (not (string-match ".*makefile.*" (message "%s" major-mode)))
@@ -358,6 +358,7 @@
  '(pixel-scroll-precision-mode t)
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(read-buffer-completion-ignore-case t)
+ '(recentf-mode t)
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
  '(scroll-bar-mode nil)
  '(switch-to-buffer-obey-display-actions t)
@@ -410,7 +411,7 @@
 (setq inferior-lisp-program "sbcl")
 
 ;;; Vertico
-(keymap-set vertico-map "C-'" #'vertico-quick-exit)
+(keymap-set vertico-map "s-;" #'vertico-quick-exit)
 (keymap-set vertico-map "DEL" #'vertico-directory-delete-char)
 (keymap-set vertico-map "M-DEL" #'vertico-directory-delete-word)
 (keymap-set vertico-map "RET" #'vertico-directory-enter)
