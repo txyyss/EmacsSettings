@@ -45,7 +45,7 @@
 (keymap-global-set "C-x b" 'consult-buffer)
 (keymap-global-set "C-x t b" 'consult-buffer-other-tab)
 (keymap-global-set "C-x t k" 'tab-bar-close-tab-by-name)
-(keymap-global-set "M-o" 'other-window)
+(keymap-global-set "M-o" 'occur)
 (keymap-global-set "s-$" 'ispell-word)
 (keymap-global-set "s-," 'customize-group)
 (keymap-global-set "s-/" 'dabbrev-expand)
@@ -62,7 +62,7 @@
 (keymap-global-set "s-g" 'consult-goto-line)
 (keymap-global-set "s-l" 'consult-line)
 (keymap-global-set "s-m" 'delete-other-windows)
-(keymap-global-set "s-o" 'occur)
+(keymap-global-set "s-o" 'other-window)
 (keymap-global-set "s-r" 'consult-ripgrep)
 (keymap-global-set "s-t" 'tab-bar-new-tab)
 (keymap-global-set "s-w" 'tab-bar-close-tab)
@@ -406,8 +406,9 @@
 
 ;;; Close tab after kill buffer
 (defun close-tab-after-kill-buffer ()
-  (let ((last-tab-p (= 1 (length (funcall tab-bar-tabs-function)))))
-    (unless last-tab-p
+  (let ((last-tab-p (= 1 (length (funcall tab-bar-tabs-function))))
+        (current-p (equal (buffer-name) (tab-bar-tab-name-current))))
+    (unless (or last-tab-p current-p)
       (let ((tab-index (tab-bar--tab-index-by-name (buffer-name))))
         (when tab-index
           (tab-bar-close-tab (1+ tab-index)))))))
