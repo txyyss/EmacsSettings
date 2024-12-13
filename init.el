@@ -352,9 +352,9 @@
                   geiser-chez geiser-guile geiser-racket haskell-mode
                   lean4-mode ligature magit marginalia mood-line
                   opam-switch-mode orderless org-appear org-modern
-                  org-variable-pitch osx-dictionary paredit pdf-tools
-                  proof-general slime tron-legacy-theme tuareg vertico
-                  which-key xbm-life yaml-mode))
+                  osx-dictionary paredit pdf-tools proof-general slime
+                  tron-legacy-theme tuareg vertico which-key xbm-life
+                  yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
@@ -509,7 +509,7 @@
  '(tab-bar ((t nil)))
  '(tab-bar-tab ((t (:inherit mode-line :background "#3D5666" :foreground "#CBECFF" :box (:line-width (4 . 3) :color "#3D5666" :style flat-button) :weight bold))))
  '(tab-bar-tab-inactive ((t (:inherit mode-line-inactive :background "#1E1E1E" :foreground "#90ACBC" :box (:line-width (4 . 3) :color "#1E1E1E" :style flat-button)))))
- '(variable-pitch ((t (:family "Libertinus Serif")))))
+ '(variable-pitch ((t (:height 180 :family "Libertinus Serif")))))
 
 (defun f2c (fahrenheit)
   "Convert degrees Fahrenheit (FAHRENHEIT) to degrees Celsius."
