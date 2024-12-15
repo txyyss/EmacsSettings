@@ -84,7 +84,8 @@
           (lambda ()
             (when (and (not (string-match ".*makefile.*" (message "%s" major-mode)))
                        (or (derived-mode-p 'prog-mode)
-                           (eq major-mode 'coq-mode)))
+                           (eq major-mode 'coq-mode)
+                           (eq major-mode 'org-mode)))
               (delete-trailing-whitespace))))
 ;;; Spell checking
 ;; (setq ispell-list-command "list")
@@ -339,6 +340,8 @@
  '(ns-command-modifier 'meta)
  '(orderless-matching-styles '(orderless-regexp orderless-literal orderless-prefixes))
  '(org-appear-autoentities t)
+ '(org-babel-load-languages '((emacs-lisp . t) (lisp . t)))
+ '(org-confirm-babel-evaluate nil)
  '(org-hide-emphasis-markers t)
  '(org-modern-star 'replace)
  '(org-pretty-entities t)
@@ -509,7 +512,7 @@
  '(tab-bar ((t nil)))
  '(tab-bar-tab ((t (:inherit mode-line :background "#3D5666" :foreground "#CBECFF" :box (:line-width (4 . 3) :color "#3D5666" :style flat-button) :weight bold))))
  '(tab-bar-tab-inactive ((t (:inherit mode-line-inactive :background "#1E1E1E" :foreground "#90ACBC" :box (:line-width (4 . 3) :color "#1E1E1E" :style flat-button)))))
- '(variable-pitch ((t (:height 180 :family "Libertinus Serif")))))
+ '(variable-pitch ((t (:family "Libertinus Serif")))))
 
 (defun f2c (fahrenheit)
   "Convert degrees Fahrenheit (FAHRENHEIT) to degrees Celsius."
