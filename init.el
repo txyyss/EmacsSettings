@@ -266,7 +266,7 @@
      (tramp-connection-local-default-system-profile
       (path-separator . ":") (null-device . "/dev/null"))))
  '(consult-preview-excluded-files exclude-file-list)
- '(custom-enabled-themes '(tron-legacy))
+ '(custom-enabled-themes '(modus-vivendi))
  '(custom-safe-themes
    '("7fd9e3ef1d713ffbf413ee6abf9cb0e6f7106cba6dea7c3e89fe1b3449cf99bd"
      "c87e2c5c3b8a4a0375e2cd73dcb9b8eb56e8f8da465d2bdad252d96de08764b5"
@@ -284,6 +284,7 @@
      default))
  '(delete-old-versions t)
  '(delete-selection-mode t)
+ '(dired-dwim-target 'dired-dwim-target-next)
  '(dired-kill-when-opening-new-dired-buffer t)
  '(dired-listing-switches "-alh")
  '(dired-recursive-copies 'always)
@@ -325,6 +326,12 @@
    '((c-mode . c-ts-mode) (c++-mode . c++-ts-mode)
      (html-mode . html-ts-mode)))
  '(marginalia-mode t)
+ '(modus-themes-bold-constructs t)
+ '(modus-themes-common-palette-overrides
+   '((border-mode-line-active unspecified)
+     (border-mode-line-inactive unspecified) (bg-tab-bar bg-main)
+     (bg-tab-current bg-active) (bg-tab-other bg-dim)
+     (fringe unspecified) ,@modus-themes-preset-overrides-faint))
  '(mood-line-glyph-alist
    '((:checker-info . 8627) (:checker-issues . 9873)
      (:checker-good . 10004) (:checker-checking . 10227)
@@ -356,8 +363,7 @@
                   lean4-mode ligature magit marginalia mood-line
                   opam-switch-mode orderless org-appear org-modern
                   osx-dictionary paredit pdf-tools proof-general slime
-                  tron-legacy-theme tuareg vertico which-key xbm-life
-                  yaml-mode))
+                  tuareg vertico xbm-life yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
@@ -508,10 +514,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 180 :family "Sarasa Mono SC"))))
+ '(bold ((t (:weight semi-bold))))
  '(org-modern-symbol ((t (:family "Iosevka"))) t)
- '(tab-bar ((t nil)))
- '(tab-bar-tab ((t (:inherit mode-line :background "#3D5666" :foreground "#CBECFF" :box (:line-width (4 . 3) :color "#3D5666" :style flat-button) :weight bold))))
- '(tab-bar-tab-inactive ((t (:inherit mode-line-inactive :background "#1E1E1E" :foreground "#90ACBC" :box (:line-width (4 . 3) :color "#1E1E1E" :style flat-button)))))
  '(variable-pitch ((t (:family "Libertinus Serif")))))
 
 (defun f2c (fahrenheit)
