@@ -25,7 +25,7 @@
 ;;; 常用设置
 (setq default-directory "~/")
 (setq completion-ignore-case t)
-(with-eval-after-load 'dired (require 'dired-x))
+(with-eval-after-load 'dired (require 'ls-lisp) (require 'dired-x))
 (add-hook 'dired-mode-hook
           (lambda ()
             ;; Set dired-x buffer-local variables here.  For example:
@@ -92,8 +92,6 @@
 
 ;; Trick: Use M-j to confirm without the matching existed.
 
-(require 'ls-lisp)
-
 ;;; LSP for LaTeX
 (with-eval-after-load 'tex-mode
   (add-hook 'tex-mode-hook 'lsp)
@@ -107,13 +105,8 @@
 (add-hook 'c-ts-mode-hook 'eglot-ensure)
 (add-hook 'c++-ts-mode-hook 'eglot-ensure)
 
-;;; Useful definitions
+;;; Useful Definitions
 (defconst exclude-file-list '("\\`/[^/|:]+:" ".+\\.v"))
-
-(defun allow-consult-preview ()
-  "Allow consult preview when at least one .v file is opened."
-  (when (member ".+\\.v" consult-preview-excluded-files)
-    (delete ".+\\.v" consult-preview-excluded-files)))
 
 (defun my-icomplete-styles ()
   "Customize my icomplete styles."
@@ -295,10 +288,21 @@
 ;;; Org Mode
 (add-hook 'org-mode-hook 'org-appear-mode)
 
-;;; Coq 设置
+;;; Coq Settings
+(defun allow-consult-preview ()
+  "Allow consult preview when at least one .v file is opened."
+  (when (member ".+\\.v" consult-preview-excluded-files)
+    (delete ".+\\.v" consult-preview-excluded-files)))
+
+(defun set-current-switch ()
+  "Set current opam switch for Coq"
+  (require 'tuareg)
+  (opam-switch-set-switch (tuareg-opam-current-compiler)))
+
 (add-hook 'coq-mode-hook #'company-coq-mode)
 (add-hook 'coq-mode-hook #'opam-switch-mode)
 (add-hook 'coq-mode-hook #'allow-consult-preview)
+(add-hook 'coq-mode-hook #'set-current-switch)
 
 (setq coq-highlight-hyps-cited-in-response nil)
 
@@ -350,32 +354,6 @@
                (forward-char)))))
     (message "English words: %d\nNon-English characters: %d"
              eng non-eng)))
-
-(require 'tuareg)
-(opam-switch-set-switch (tuareg-opam-current-compiler))
-(let ((opam-share "~/.opam/default/share"))
-  (when (and opam-share (file-directory-p opam-share))
-    ;; Register Merlin
-    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
-    (autoload 'merlin-mode "merlin" nil t nil)
-    ;; Automatically start it in OCaml buffers
-    (add-hook 'tuareg-mode-hook 'merlin-mode t)
-    (add-hook 'caml-mode-hook 'merlin-mode t)
-    ;; Use opam switch to lookup ocamlmerlin binary
-    (setq merlin-command 'opam)
-    (require 'ocamlformat)
-    (add-hook 'tuareg-mode-hook
-              (lambda ()
-                (keymap-set tuareg-mode-map "C-M-<tab>" #'ocamlformat)
-                (add-hook 'before-save-hook #'ocamlformat-before-save)))
-    (autoload 'utop "utop" "Toplevel for OCaml" t)
-    (autoload 'utop-minor-mode "utop" "Minor mode for utop" t)
-    (add-hook 'tuareg-mode-hook 'utop-minor-mode)
-    (require 'ocp-indent)
-    ;; To easily change opam switches within a given Emacs session, you can
-    ;; install the minor mode https://github.com/ProofGeneral/opam-switch-mode
-    ;; and use one of its "OPSW" menus.
-    ))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
