@@ -22,6 +22,12 @@
 ;; Iosevka Version = 32.2.1
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
+(defun quit-other-window ()
+  "Quit other window while the focus is not."
+  (interactive)
+  (other-window 1)
+  (quit-window))
+
 ;;; 常用设置
 (setq default-directory "~/")
 (setq completion-ignore-case t)
@@ -48,7 +54,7 @@
 (keymap-global-set "M-o" 'occur)
 (keymap-global-set "s-$" 'ispell-word)
 (keymap-global-set "s-," 'customize-group)
-(keymap-global-set "s-/" 'dabbrev-expand)
+(keymap-global-set "s-/" 'dabbrev-completion)
 (keymap-global-set "s-;" 'avy-goto-char-timer)
 (keymap-global-set "s-<down>" 'windmove-down)
 (keymap-global-set "s-<left>" 'windmove-left)
@@ -62,8 +68,8 @@
 (keymap-global-set "s-g" 'consult-goto-line)
 (keymap-global-set "s-l" 'consult-line)
 (keymap-global-set "s-m" 'delete-other-windows)
-(keymap-global-set "s-o" 'other-window)
 (keymap-global-set "s-r" 'consult-ripgrep)
+(keymap-global-set "s-q" 'quit-other-window)
 (keymap-global-set "s-t" 'tab-bar-new-tab)
 (keymap-global-set "s-w" 'tab-bar-close-tab)
 (keymap-global-set "s-z" 'delete-window)
@@ -75,8 +81,9 @@
 (keymap-set minibuffer-local-map "C-l" 'embark-export)
 (keymap-set emacs-lisp-mode-map "C-c C-n" 'emacs-lisp-native-compile)
 (defalias 'elisp-repl 'ielm)
-(eval-after-load 'paredit
-  #'(keymap-unset paredit-mode-map "C-j"))
+(with-eval-after-load 'paredit
+  (keymap-unset paredit-mode-map "C-j")
+  (keymap-unset paredit-mode-map "RET"))
 (setq kill-buffer-query-functions
       (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 (toggle-frame-fullscreen)
@@ -165,6 +172,8 @@
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
  '(geiser-chez-binary "chez")
  '(global-auto-revert-mode t)
+ '(global-corfu-mode t)
+ '(global-corfu-modes '((not coq-mode) t))
  '(global-hl-line-mode t)
  '(global-org-modern-mode t)
  '(grep-command "rg -nS --no-heading ")
@@ -178,7 +187,7 @@
  '(ispell-program-name "aspell")
  '(latex-run-command "xelatex -shell-escape")
  '(lisp-interaction-mode-hook '(enable-paredit-mode))
- '(lisp-mode-hook '(enable-paredit-mode))
+ '(lisp-mode-hook '(sly-editing-mode enable-paredit-mode))
  '(ls-lisp-dirs-first t)
  '(ls-lisp-use-insert-directory-program nil)
  '(lsp-headerline-breadcrumb-enable nil)
@@ -219,12 +228,12 @@
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")
      ("melpa" . "http://melpa.org/packages/")))
  '(package-selected-packages
-   '(async-status avy company-coq consult embark embark-consult gap-mode
-                  geiser-chez geiser-guile geiser-racket haskell-mode
-                  lean4-mode ligature magit marginalia mood-line
-                  opam-switch-mode orderless org-appear org-modern
-                  osx-dictionary paredit pdf-tools proof-general slime
-                  tuareg vertico yaml-mode))
+   '(async-status avy company-coq consult corfu embark embark-consult
+                  gap-mode geiser-chez geiser-guile geiser-racket
+                  haskell-mode lean4-mode ligature magit marginalia
+                  mood-line opam-switch-mode orderless org-appear
+                  org-modern osx-dictionary paredit pdf-tools
+                  proof-general sly tuareg vertico yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
@@ -236,6 +245,7 @@
  '(recentf-mode t)
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
  '(scroll-bar-mode nil)
+ '(sly-symbol-completion-mode nil)
  '(switch-to-buffer-obey-display-actions t)
  '(tab-always-indent 'complete)
  '(tab-bar-auto-width-max '(423 40))
@@ -309,6 +319,7 @@
 ;;; Lisp
 
 (setq inferior-lisp-program "sbcl")
+(add-hook 'sly-mrepl-mode-hook #'enable-paredit-mode)
 
 ;;; Vertico
 (keymap-set vertico-map "s-;" #'vertico-quick-exit)
