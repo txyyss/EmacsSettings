@@ -119,6 +119,12 @@
   "Customize my icomplete styles."
   (setq-local completion-styles '(basic partial-completion flex)))
 
+(defun restart ()
+  "Toggle fullscreen and then restart Emacs."
+  (interactive)
+  (toggle-frame-fullscreen)
+  (restart-emacs))
+
 ;;; custom-set-variables
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -131,7 +137,7 @@
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff"
     "#eeeeec"])
- '(auto-save-visited-interval 2)
+ '(auto-save-visited-interval 3)
  '(auto-save-visited-mode t)
  '(avy-background t)
  '(backup-directory-alist '(("." . "~/.emacs.d/backup")))
@@ -242,6 +248,7 @@
  '(pixel-scroll-precision-mode t)
  '(python-shell-interpreter "/usr/local/bin/python3")
  '(read-buffer-completion-ignore-case t)
+ '(recentf-exclude '(".+\\.el\\.gz" "~/\\.emacs\\.d/bookmarks"))
  '(recentf-mode t)
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
  '(scroll-bar-mode nil)
@@ -281,9 +288,6 @@
                       ""])))
  '(which-key-mode t)
  '(yas-global-mode t))
-
-;;; Recentf
-(add-to-list 'recentf-exclude ".+\\.el\\.gz")
 
 ;;; Close tab after kill buffer
 (defun close-tab-after-kill-buffer ()
