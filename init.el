@@ -22,11 +22,12 @@
 ;; Iosevka Version = 32.2.1
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
-(defun quit-other-window ()
-  "Quit other window while the focus is not."
+(defun restart ()
+  "Toggle fullscreen and then restart Emacs."
   (interactive)
-  (other-window 1)
-  (quit-window))
+  (when (y-or-n-p "Restart Emacs?")
+    (toggle-frame-fullscreen)
+    (restart-emacs)))
 
 ;;; 常用设置
 (setq default-directory "~/")
@@ -40,6 +41,7 @@
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (add-hook 'c-ts-mode-common-hook 'hs-minor-mode)
 (keymap-global-set "<f13>" 'toggle-frame-fullscreen)
+(keymap-global-set "<f14>" 'restart)
 (keymap-global-set "C-," 'embark-act)
 (keymap-global-set "C-;" 'embark-dwim)
 (keymap-global-set "C-c d" 'osx-dictionary-search-word-at-point)
@@ -49,27 +51,24 @@
 (keymap-global-set "C-x C-b" 'ibuffer)
 (keymap-global-set "C-x M-r" 'consult-recent-file)
 (keymap-global-set "C-x b" 'consult-buffer)
-(keymap-global-set "C-x t b" 'consult-buffer-other-tab)
 (keymap-global-set "C-x t k" 'tab-bar-close-tab-by-name)
 (keymap-global-set "M-o" 'occur)
 (keymap-global-set "s-$" 'ispell-word)
 (keymap-global-set "s-," 'customize-group)
 (keymap-global-set "s-/" 'dabbrev-completion)
 (keymap-global-set "s-;" 'avy-goto-char-timer)
-(keymap-global-set "s-<down>" 'windmove-down)
-(keymap-global-set "s-<left>" 'windmove-left)
 (keymap-global-set "s-<return>" 'magit-status)
-(keymap-global-set "s-<right>" 'windmove-right)
 (keymap-global-set "s-<tab>" 'tab-switch)
-(keymap-global-set "s-<up>" 'windmove-up)
 (keymap-global-set "s-[" 'tab-bar-switch-to-prev-tab)
 (keymap-global-set "s-]" 'tab-bar-switch-to-next-tab)
+(keymap-global-set "s-b" 'consult-buffer-other-tab)
 (keymap-global-set "s-f" 'consult-fd)
 (keymap-global-set "s-g" 'consult-goto-line)
+(keymap-global-set "s-i" 'consult-info)
 (keymap-global-set "s-l" 'consult-line)
 (keymap-global-set "s-m" 'delete-other-windows)
+(keymap-global-set "s-o" 'other-window)
 (keymap-global-set "s-r" 'consult-ripgrep)
-(keymap-global-set "s-q" 'quit-other-window)
 (keymap-global-set "s-t" 'tab-bar-new-tab)
 (keymap-global-set "s-w" 'tab-bar-close-tab)
 (keymap-global-set "s-z" 'delete-window)
@@ -119,12 +118,6 @@
   "Customize my icomplete styles."
   (setq-local completion-styles '(basic partial-completion flex)))
 
-(defun restart ()
-  "Toggle fullscreen and then restart Emacs."
-  (interactive)
-  (toggle-frame-fullscreen)
-  (restart-emacs))
-
 ;;; custom-set-variables
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -140,6 +133,12 @@
  '(auto-save-visited-interval 3)
  '(auto-save-visited-mode t)
  '(avy-background t)
+ '(avy-dispatch-alist
+   '((120 . avy-action-kill-move) (88 . avy-action-kill-stay)
+     (116 . avy-action-teleport) (109 . avy-action-mark)
+     (119 . avy-action-copy) (121 . avy-action-yank)
+     (89 . avy-action-yank-line) (105 . avy-action-ispell)
+     (122 . avy-action-zap-to-char)))
  '(backup-directory-alist '(("." . "~/.emacs.d/backup")))
  '(blink-cursor-mode nil)
  '(c-basic-offset 4)
@@ -287,6 +286,9 @@
                       "https://www.google.com/search?ie=utf-8&oe=utf-8&q="
                       ""])))
  '(which-key-mode t)
+ '(windmove-default-keybindings '(nil super))
+ '(windmove-delete-default-keybindings '(nil control super))
+ '(windmove-mode t)
  '(yas-global-mode t))
 
 ;;; Close tab after kill buffer
