@@ -16,14 +16,14 @@
 (setq system-time-locale "C")
 
 ;;; 设置字体
-;; (dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
-;;   (set-fontset-font t charset (font-spec :name "Source Han Sans SC")))
-;; (set-fontset-font t 'greek (font-spec :name "Iosevka"))
-;; Iosevka Version = 32.2.1
+(dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
+  (set-fontset-font t charset (font-spec :name "LXGW WenKai")))
+(set-fontset-font t 'greek (font-spec :name "Iosevka"))
+;; Iosevka Version = 32.3.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 (defun restart ()
-  "Toggle fullscreen and then restart Emacs."
+  "Toggle full screen and then restart Emacs."
   (interactive)
   (when (y-or-n-p "Restart Emacs?")
     (toggle-frame-fullscreen)
@@ -51,9 +51,11 @@
 (keymap-global-set "C-x C-b" 'ibuffer)
 (keymap-global-set "C-x M-r" 'consult-recent-file)
 (keymap-global-set "C-x b" 'consult-buffer)
+(keymap-global-set "C-x t b" 'consult-buffer-other-tab)
 (keymap-global-set "C-x t k" 'tab-bar-close-tab-by-name)
+(keymap-global-set "M-[" 'tab-bar-switch-to-prev-tab)
+(keymap-global-set "M-]" 'tab-bar-switch-to-next-tab)
 (keymap-global-set "M-o" 'occur)
-(keymap-global-set "s-$" 'ispell-word)
 (keymap-global-set "s-," 'customize-group)
 (keymap-global-set "s-/" 'dabbrev-completion)
 (keymap-global-set "s-;" 'avy-goto-char-timer)
@@ -64,7 +66,7 @@
 (keymap-global-set "s-b" 'consult-buffer-other-tab)
 (keymap-global-set "s-f" 'consult-fd)
 (keymap-global-set "s-g" 'consult-goto-line)
-(keymap-global-set "s-i" 'consult-info)
+(keymap-global-set "s-i" 'ispell-word)
 (keymap-global-set "s-l" 'consult-line)
 (keymap-global-set "s-m" 'delete-other-windows)
 (keymap-global-set "s-o" 'other-window)
@@ -377,7 +379,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 180 :family "Sarasa Mono SC"))))
+ '(default ((t (:height 180 :family "Iosevka"))))
  '(bold ((t (:weight semi-bold))))
  '(org-modern-symbol ((t (:family "Iosevka"))) t)
  '(variable-pitch ((t (:family "Libertinus Serif")))))
