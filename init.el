@@ -22,6 +22,10 @@
 ;; Iosevka Version = 32.3.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
+;;; Startup Message
+(defun display-startup-echo-area-message ()
+  (message "Shengyi, Welcome Back!"))
+
 (defun restart ()
   "Toggle full screen and then restart Emacs."
   (interactive)
@@ -30,6 +34,9 @@
     (restart-emacs)))
 
 ;;; 常用设置
+(setq ns-use-thin-smoothing t)
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(ns-appearance . dark))
 (setq default-directory "~/")
 (setq completion-ignore-case t)
 (with-eval-after-load 'dired (require 'ls-lisp) (require 'dired-x))
@@ -99,11 +106,6 @@
 ;; (setq ispell-list-command "list")
 
 ;; Trick: Use M-j to confirm without the matching existed.
-
-;;; LSP for LaTeX
-(with-eval-after-load 'tex-mode
-  (add-hook 'tex-mode-hook 'lsp)
-  (add-hook 'latex-mode-hook 'lsp))
 
 ;;; eglot for C/C++
 (with-eval-after-load 'eglot
