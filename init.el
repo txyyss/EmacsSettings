@@ -1,10 +1,12 @@
 ;;; package --- Summary -*- lexical-binding: t;-*-
 
-;; 快捷键提醒
+;;; Commentary:
+;; My Init Settings for Emacs
 ;; C-c @ C-q 展示大纲模式，隐藏其它
 ;; C-c @ C-s 显示子节点
 
-;;; 设置环境变量
+;;; Code:
+
 (setenv "PATH" (concat "/opt/homebrew/bin:/opt/homebrew/sbin:" (getenv "PATH")))
 (setq exec-path (append exec-path '("/opt/homebrew/bin" "/opt/homebrew/sbin")))
 (setenv "LC_ALL" "en_US.UTF-8")
@@ -24,7 +26,8 @@
 
 ;;; Startup Message
 (defun display-startup-echo-area-message ()
-  (message "Shengyi, Welcome Back!"))
+  "Override the default one with my name and welcome."
+  (message "Welcome back, Shengyi!"))
 
 (defun restart ()
   "Toggle full screen and then restart Emacs."
@@ -297,6 +300,7 @@
 
 ;;; Close tab after kill buffer
 (defun close-tab-after-kill-buffer ()
+  "Close tab after kill buffer, if it is not the current one or the only one."
   (let ((last-tab-p (= 1 (length (funcall tab-bar-tabs-function))))
         (current-p (equal (buffer-name) (tab-bar-tab-name-current))))
     (unless (or last-tab-p current-p)
@@ -315,7 +319,7 @@
     (delete ".+\\.v" consult-preview-excluded-files)))
 
 (defun set-current-switch ()
-  "Set current opam switch for Coq"
+  "Set current opam switch for Coq."
   (require 'tuareg)
   (opam-switch-set-switch (tuareg-opam-current-compiler)))
 
@@ -412,9 +416,6 @@
 
 (pdf-tools-install)
 
-;; (load-file (let ((coding-system-for-read 'utf-8))
-;;                 (shell-command-to-string "agda-mode locate")))
-
-;; End:
 (provide 'init)
+
 ;;; init.el ends here
