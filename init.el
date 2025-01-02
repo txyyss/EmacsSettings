@@ -68,7 +68,7 @@
 (keymap-global-set "M-o" 'occur)
 (keymap-global-set "s-," 'customize-group)
 (keymap-global-set "s-/" 'dabbrev-completion)
-(keymap-global-set "s-;" 'avy-goto-char-timer)
+(keymap-global-set "s-\\" 'avy-goto-char-timer)
 (keymap-global-set "s-<return>" 'magit-status)
 (keymap-global-set "s-<tab>" 'tab-switch)
 (keymap-global-set "s-[" 'tab-bar-switch-to-prev-tab)
@@ -185,7 +185,7 @@
  '(geiser-chez-binary "chez")
  '(global-auto-revert-mode t)
  '(global-corfu-mode t)
- '(global-corfu-modes '((not coq-mode) t))
+ '(global-corfu-modes '((not coq-mode) (not lisp-mode) t))
  '(global-hl-line-mode t)
  '(global-org-modern-mode t)
  '(grep-command "rg -nS --no-heading ")
@@ -199,7 +199,8 @@
  '(ispell-program-name "aspell")
  '(latex-run-command "xelatex -shell-escape")
  '(lisp-interaction-mode-hook '(enable-paredit-mode))
- '(lisp-mode-hook '(sly-editing-mode enable-paredit-mode))
+ '(lisp-mode-hook
+   '(common-lisp-lisp-mode-hook slime-lisp-mode-hook enable-paredit-mode))
  '(ls-lisp-dirs-first t)
  '(ls-lisp-use-insert-directory-program nil)
  '(lsp-headerline-breadcrumb-enable nil)
@@ -213,6 +214,7 @@
      (border-mode-line-inactive unspecified) (bg-tab-bar bg-main)
      (bg-tab-current bg-active) (bg-tab-other bg-dim)
      (fringe unspecified)))
+ '(modus-themes-italic-constructs t)
  '(mood-line-glyph-alist
    '((:checker-info . 8627) (:checker-issues . 9873)
      (:checker-good . 10004) (:checker-checking . 10227)
@@ -245,7 +247,7 @@
                   haskell-mode lean4-mode ligature magit marginalia
                   mood-line opam-switch-mode orderless org-appear
                   org-modern osx-dictionary paredit pdf-tools
-                  proof-general sly tuareg vertico yaml-mode))
+                  proof-general slime tuareg vertico yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
@@ -258,7 +260,6 @@
  '(recentf-mode t)
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
  '(scroll-bar-mode nil)
- '(sly-symbol-completion-mode nil)
  '(switch-to-buffer-obey-display-actions t)
  '(tab-always-indent 'complete)
  '(tab-bar-auto-width-max '(423 40))
@@ -333,7 +334,6 @@
 ;;; Lisp
 
 (setq inferior-lisp-program "sbcl")
-(add-hook 'sly-mrepl-mode-hook #'enable-paredit-mode)
 
 ;;; Vertico
 (keymap-set vertico-map "s-;" #'vertico-quick-exit)
@@ -386,7 +386,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 180 :family "Iosevka"))))
- '(bold ((t (:weight semi-bold))))
  '(org-modern-symbol ((t (:family "Iosevka"))) t)
  '(variable-pitch ((t (:family "Libertinus Serif")))))
 
