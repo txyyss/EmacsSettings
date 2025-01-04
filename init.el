@@ -210,10 +210,13 @@
  '(marginalia-mode t)
  '(modus-themes-bold-constructs t)
  '(modus-themes-common-palette-overrides
-   '((border-mode-line-active unspecified)
+   '((bg-mode-line-active bg-cyan-intense)
+     (bg-mode-line-inactive bg-cyan-subtle)
+     (border-mode-line-active unspecified)
      (border-mode-line-inactive unspecified) (bg-tab-bar bg-main)
-     (bg-tab-current bg-active) (bg-tab-other bg-dim)
-     (fringe unspecified)))
+     (bg-tab-current bg-cyan-intense) (bg-tab-other bg-cyan-subtle)
+     (fringe unspecified)
+     ,@modus-themes-preset-overrides-intense))
  '(modus-themes-italic-constructs t)
  '(mood-line-glyph-alist
    '((:checker-info . 8627) (:checker-issues . 9873)
