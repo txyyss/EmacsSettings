@@ -21,7 +21,7 @@
 (dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
   (set-fontset-font t charset (font-spec :name "LXGW WenKai")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
-;; Iosevka Version = 32.3.0
+;; Iosevka Version = 32.3.1
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; Startup Message
@@ -215,9 +215,9 @@
      (border-mode-line-active unspecified)
      (border-mode-line-inactive unspecified) (bg-tab-bar bg-main)
      (bg-tab-current bg-cyan-intense) (bg-tab-other bg-cyan-subtle)
-     (fringe unspecified)
-     ,@modus-themes-preset-overrides-intense))
+     (fringe unspecified)))
  '(modus-themes-italic-constructs t)
+ '(modus-themes-prompts '(extrabold))
  '(mood-line-glyph-alist
    '((:checker-info . 8627) (:checker-issues . 9873)
      (:checker-good . 10004) (:checker-checking . 10227)
@@ -390,8 +390,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:height 180 :family "Iosevka"))))
+ '(fixed-pitch ((t (:family "Iosevka"))))
+ '(fixed-pitch-serif ((t (:family "Iosevka Slab"))))
  '(org-modern-symbol ((t (:family "Iosevka"))) t)
- '(variable-pitch ((t (:family "Libertinus Serif")))))
+ '(variable-pitch ((t (:family "Iosevka Aile")))))
 
 (defun f2c (fahrenheit)
   "Convert degrees Fahrenheit (FAHRENHEIT) to degrees Celsius."
