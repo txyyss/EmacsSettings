@@ -185,7 +185,7 @@
  '(geiser-chez-binary "chez")
  '(global-auto-revert-mode t)
  '(global-corfu-mode t)
- '(global-corfu-modes '((not coq-mode) (not lisp-mode) t))
+ '(global-corfu-modes '((not lisp-mode) t))
  '(global-hl-line-mode t)
  '(global-org-modern-mode t)
  '(grep-command "rg -nS --no-heading ")
@@ -220,10 +220,10 @@
      (:checker-good . 10004) (:checker-checking . 10227)
      (:checker-errored . 10006) (:checker-interrupted . 9208)
      (:vc-added . 128932) (:vc-needs-merge . 10231)
-     (:vc-needs-update . 8595) (:vc-conflict . 128932)
-     (:vc-good . 10004) (:buffer-narrowed . 9660)
-     (:buffer-modified . 9679) (:buffer-read-only . 9632)
-     (:frame-client . 8645) (:count-separator . 10005)))
+     (:vc-needs-update . 8595) (:vc-conflict . 215) (:vc-good . 10004)
+     (:buffer-narrowed . 9660) (:buffer-modified . 9679)
+     (:buffer-read-only . 9632) (:frame-client . 8645)
+     (:count-separator . 10005)))
  '(mood-line-mode t)
  '(mouse-avoidance-mode 'animate nil (avoid))
  '(ns-alternate-modifier 'super)
@@ -316,7 +316,8 @@
 ;;; Coq Settings
 (defun allow-consult-preview ()
   "Allow consult preview when at least one .v file is opened."
-  (when (member ".+\\.v" consult-preview-excluded-files)
+  (when (and (boundp 'consult-preview-excluded-files)
+             (member ".+\\.v" consult-preview-excluded-files))
     (delete ".+\\.v" consult-preview-excluded-files)))
 
 (defun set-current-switch ()
