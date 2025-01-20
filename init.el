@@ -21,7 +21,8 @@
 (dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
   (set-fontset-font t charset (font-spec :name "LXGW WenKai")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
-;; Iosevka Version = 32.3.1
+(set-fontset-font t 'cyrillic (font-spec :name "Iosevka"))
+;; Iosevka Version = 32.4.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; Startup Message
@@ -54,7 +55,6 @@
 (keymap-global-set "<f14>" 'restart)
 (keymap-global-set "C-," 'embark-act)
 (keymap-global-set "C-;" 'embark-dwim)
-(keymap-global-set "C-c d" 'osx-dictionary-search-word-at-point)
 (keymap-global-set "C-c i" 'osx-dictionary-search-input)
 (keymap-global-set "C-h B" 'embark-bindings)
 (keymap-global-set "C-x /" 'webjump)
@@ -68,7 +68,7 @@
 (keymap-global-set "M-o" 'occur)
 (keymap-global-set "s-," 'customize-group)
 (keymap-global-set "s-/" 'dabbrev-completion)
-(keymap-global-set "s-\\" 'avy-goto-char-timer)
+(keymap-global-set "s-;" 'avy-goto-char-timer)
 (keymap-global-set "s-<return>" 'magit-status)
 (keymap-global-set "s-<tab>" 'tab-switch)
 (keymap-global-set "s-[" 'tab-bar-switch-to-prev-tab)
@@ -80,6 +80,7 @@
 (keymap-global-set "s-l" 'consult-line)
 (keymap-global-set "s-m" 'delete-other-windows)
 (keymap-global-set "s-o" 'other-window)
+(keymap-global-set "s-p" 'osx-dictionary-search-word-at-point)
 (keymap-global-set "s-r" 'consult-ripgrep)
 (keymap-global-set "s-t" 'tab-bar-new-tab)
 (keymap-global-set "s-w" 'tab-bar-close-tab)
@@ -215,7 +216,7 @@
      (border-mode-line-active unspecified)
      (border-mode-line-inactive unspecified) (bg-tab-bar bg-main)
      (bg-tab-current bg-cyan-intense) (bg-tab-other bg-cyan-subtle)
-     (fringe unspecified)))
+     (fringe unspecified) (bg-hl-line bg-cyan-nuanced)))
  '(modus-themes-italic-constructs t)
  '(modus-themes-prompts '(extrabold))
  '(mood-line-glyph-alist
