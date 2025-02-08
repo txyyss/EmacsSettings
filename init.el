@@ -1,3 +1,4 @@
+
 ;;; package --- Summary -*- lexical-binding: t;-*-
 
 ;;; Commentary:
@@ -22,7 +23,7 @@
   (set-fontset-font t charset (font-spec :name "LXGW WenKai")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
 (set-fontset-font t 'cyrillic (font-spec :name "Iosevka"))
-;; Iosevka Version = 32.4.0
+;; Iosevka Version = 32.5.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; Startup Message
@@ -34,8 +35,9 @@
   "Toggle full screen and then restart Emacs."
   (interactive)
   (when (y-or-n-p "Restart Emacs?")
-    (toggle-frame-fullscreen)
-    (restart-emacs)))
+    (let ((confirm-kill-emacs nil))
+      (toggle-frame-fullscreen)
+      (restart-emacs))))
 
 ;;; 常用设置
 (setq ns-use-thin-smoothing t)
@@ -159,6 +161,7 @@
  '(completion-cycle-threshold 3)
  '(completion-pcm-leading-wildcard t)
  '(completion-styles '(orderless basic))
+ '(confirm-kill-emacs 'y-or-n-p)
  '(confirm-kill-processes nil)
  '(consult-preview-excluded-files exclude-file-list)
  '(custom-enabled-themes '(modus-vivendi))
@@ -301,6 +304,7 @@
  '(windmove-default-keybindings '(nil super))
  '(windmove-delete-default-keybindings '(nil control super))
  '(windmove-mode t)
+ '(windmove-wrap-around t)
  '(yas-global-mode t))
 
 ;;; Close tab after kill buffer
