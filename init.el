@@ -1,4 +1,3 @@
-
 ;;; package --- Summary -*- lexical-binding: t;-*-
 
 ;;; Commentary:
@@ -23,7 +22,7 @@
   (set-fontset-font t charset (font-spec :name "LXGW WenKai")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
 (set-fontset-font t 'cyrillic (font-spec :name "Iosevka"))
-;; Iosevka Version = 32.5.0
+;; Iosevka Version = 33.2.4
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; Startup Message
@@ -36,6 +35,7 @@
   (interactive)
   (when (y-or-n-p "Restart Emacs?")
     (let ((confirm-kill-emacs nil))
+      (delete-other-frames)
       (toggle-frame-fullscreen)
       (restart-emacs))))
 
@@ -57,7 +57,6 @@
 (keymap-global-set "<f14>" 'restart)
 (keymap-global-set "C-," 'embark-act)
 (keymap-global-set "C-;" 'embark-dwim)
-(keymap-global-set "C-c i" 'osx-dictionary-search-input)
 (keymap-global-set "C-h B" 'embark-bindings)
 (keymap-global-set "C-x /" 'webjump)
 (keymap-global-set "C-x C-b" 'ibuffer)
@@ -74,12 +73,13 @@
 (keymap-global-set "s-<return>" 'magit-status)
 (keymap-global-set "s-<tab>" 'tab-switch)
 (keymap-global-set "s-[" 'tab-bar-switch-to-prev-tab)
+(keymap-global-set "s-\\" 'consult-line)
 (keymap-global-set "s-]" 'tab-bar-switch-to-next-tab)
 (keymap-global-set "s-b" 'consult-buffer-other-tab)
+(keymap-global-set "s-d" 'osx-dictionary-search-input)
 (keymap-global-set "s-f" 'consult-fd)
 (keymap-global-set "s-g" 'consult-goto-line)
 (keymap-global-set "s-i" 'ispell-word)
-(keymap-global-set "s-l" 'consult-line)
 (keymap-global-set "s-m" 'delete-other-windows)
 (keymap-global-set "s-o" 'other-window)
 (keymap-global-set "s-p" 'osx-dictionary-search-word-at-point)
@@ -149,6 +149,7 @@
      (119 . avy-action-copy) (121 . avy-action-yank)
      (89 . avy-action-yank-line) (105 . avy-action-ispell)
      (122 . avy-action-zap-to-char)))
+ '(avy-orders-alist '((avy-goto-char-timer . avy-order-closest)))
  '(backup-directory-alist '(("." . "~/.emacs.d/backup")))
  '(blink-cursor-mode nil)
  '(c-basic-offset 4)
@@ -262,6 +263,7 @@
  '(pdf-view-use-unicode-ligther nil)
  '(pixel-scroll-precision-mode t)
  '(python-shell-interpreter "/usr/local/bin/python3")
+ '(quit-window-kill-buffer t)
  '(read-buffer-completion-ignore-case t)
  '(recentf-exclude '(".+\\.el\\.gz" "~/\\.emacs\\.d/bookmarks"))
  '(recentf-mode t)
@@ -309,10 +311,9 @@
 
 ;;; Close tab after kill buffer
 (defun close-tab-after-kill-buffer ()
-  "Close tab after kill buffer, if it is not the current one or the only one."
-  (let ((last-tab-p (= 1 (length (funcall tab-bar-tabs-function))))
-        (current-p (equal (buffer-name) (tab-bar-tab-name-current))))
-    (unless (or last-tab-p current-p)
+  "Close tab after kill buffer, if it is not the only one tab."
+  (let ((last-tab-p (= 1 (length (funcall tab-bar-tabs-function)))))
+    (unless last-tab-p
       (let ((tab-index (tab-bar--tab-index-by-name (buffer-name))))
         (when tab-index
           (tab-bar-close-tab (1+ tab-index)))))))
