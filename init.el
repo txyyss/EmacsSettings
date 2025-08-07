@@ -22,7 +22,7 @@
   (set-fontset-font t charset (font-spec :name "LXGW WenKai")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
 (set-fontset-font t 'cyrillic (font-spec :name "Iosevka"))
-;; Iosevka Version = 33.2.4
+;; Iosevka Version = 33.2.6
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; Startup Message
@@ -80,6 +80,7 @@
 (keymap-global-set "s-f" 'consult-fd)
 (keymap-global-set "s-g" 'consult-goto-line)
 (keymap-global-set "s-i" 'ispell-word)
+(keymap-global-set "s-l" 'consult-goto-line)
 (keymap-global-set "s-m" 'delete-other-windows)
 (keymap-global-set "s-o" 'other-window)
 (keymap-global-set "s-p" 'osx-dictionary-search-word-at-point)
