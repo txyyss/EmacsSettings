@@ -22,7 +22,7 @@
   (set-fontset-font t charset (font-spec :name "LXGW WenKai")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
 (set-fontset-font t 'cyrillic (font-spec :name "Iosevka"))
-;; Iosevka Version = 33.2.6
+;; Iosevka Version = 33.2.8
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; Startup Message
@@ -313,8 +313,10 @@
 ;;; Close tab after kill buffer
 (defun close-tab-after-kill-buffer ()
   "Close tab after kill buffer, if it is not the only one tab."
-  (let ((last-tab-p (= 1 (length (funcall tab-bar-tabs-function)))))
-    (unless last-tab-p
+  (let ((last-tab-p (= 1 (length (funcall tab-bar-tabs-function))))
+        (multiple-windows-p
+         (< 1 (length (delete-dups (mapcar #'window-buffer (window-list)))))))
+    (unless (or last-tab-p multiple-windows-p)
       (let ((tab-index (tab-bar--tab-index-by-name (buffer-name))))
         (when tab-index
           (tab-bar-close-tab (1+ tab-index)))))))
