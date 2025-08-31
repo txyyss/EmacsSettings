@@ -39,18 +39,34 @@
       (toggle-frame-fullscreen)
       (restart-emacs))))
 
+(defun dired-show-only (regexp)
+  "In Dired, show only files whose names match REGEXP.
+Other lines are removed from the listing (buffer-only; files are untouched).
+Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
+  (interactive "sFiles to show (regexp): ")
+  (dired-mark-files-regexp regexp)
+  (dired-toggle-marks)
+  (dired-do-kill-lines)
+  (message "Dired: showing only files matching %s" regexp))
+
 ;;; 常用设置
 (setq ns-use-thin-smoothing t)
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . dark))
 (setq default-directory "~/")
 (setq completion-ignore-case t)
-(with-eval-after-load 'dired (require 'ls-lisp) (require 'dired-x))
+(with-eval-after-load 'dired
+  (require 'ls-lisp)
+  (require 'dired-x)
+  (keymap-set dired-mode-map "% s" #'dired-show-only))
 (add-hook 'dired-mode-hook
           (lambda ()
             ;; Set dired-x buffer-local variables here.  For example:
             (dired-omit-mode 1)
             ))
+(with-eval-after-load 'which-key
+  ;; Show a friendly name for "% s".
+  (which-key-add-keymap-based-replacements dired-mode-map "% s" "show only (regexp)"))
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (add-hook 'c-ts-mode-common-hook 'hs-minor-mode)
 (keymap-global-set "<f13>" 'toggle-frame-fullscreen)
@@ -154,7 +170,6 @@
  '(backup-directory-alist '(("." . "~/.emacs.d/backup")))
  '(blink-cursor-mode nil)
  '(c-basic-offset 4)
- '(column-number-mode t)
  '(comint-process-echoes t)
  '(company-backends '(company-math-symbols-unicode))
  '(company-idle-delay 0.3)
@@ -210,10 +225,25 @@
  '(ls-lisp-dirs-first t)
  '(ls-lisp-use-insert-directory-program nil)
  '(lsp-headerline-breadcrumb-enable nil)
+ '(lsp-modeline-code-action-fallback-icon "✦")
+ '(lsp-pyright-langserver-command "basedpyright")
  '(major-mode-remap-alist
    '((c-mode . c-ts-mode) (c++-mode . c++-ts-mode)
      (html-mode . html-ts-mode)))
  '(marginalia-mode t)
+ '(mode-line-format
+   '("%e" mode-line-front-space
+     (:eval
+      (cond
+       (buffer-read-only (propertize " ■ " 'face '(:weight "bold")))
+       ((and buffer-file-name (buffer-modified-p))
+        (propertize " ● " 'face '(:foreground "red" :weight "bold")))))
+     (:propertize " %b " face mode-line-buffer-id) " %l:%c "
+     (project-mode-line project-mode-line-format) (vc-mode vc-mode)
+     mode-line-format-right-align
+     (:eval (propertize mode-name 'face 'mode-line)) " "
+     mode-line-misc-info mode-line-end-spaces))
+ '(mode-line-right-align-edge 'right-margin)
  '(modus-themes-bold-constructs t)
  '(modus-themes-common-palette-overrides
    '((bg-mode-line-active bg-cyan-intense)
@@ -224,16 +254,6 @@
      (fringe unspecified) (bg-hl-line bg-cyan-nuanced)))
  '(modus-themes-italic-constructs t)
  '(modus-themes-prompts '(extrabold))
- '(mood-line-glyph-alist
-   '((:checker-info . 8627) (:checker-issues . 9873)
-     (:checker-good . 10004) (:checker-checking . 10227)
-     (:checker-errored . 10006) (:checker-interrupted . 9208)
-     (:vc-added . 128932) (:vc-needs-merge . 10231)
-     (:vc-needs-update . 8595) (:vc-conflict . 215) (:vc-good . 10004)
-     (:buffer-narrowed . 9660) (:buffer-modified . 9679)
-     (:buffer-read-only . 9632) (:frame-client . 8645)
-     (:count-separator . 10005)))
- '(mood-line-mode t)
  '(mouse-avoidance-mode 'animate nil (avoid))
  '(ns-alternate-modifier 'super)
  '(ns-command-modifier 'meta)
@@ -255,23 +275,23 @@
      ("melpa" . "http://melpa.org/packages/")))
  '(package-selected-packages
    '(async-status avy company-coq consult corfu embark embark-consult
-                  gap-mode geiser-chez geiser-guile geiser-racket
-                  haskell-mode lean4-mode ligature magit marginalia
-                  mood-line opam-switch-mode orderless org-appear
-                  org-modern osx-dictionary paredit pdf-tools
-                  proof-general slime tuareg vertico yaml-mode))
+                  envrc gap-mode geiser-chez geiser-guile
+                  geiser-racket haskell-mode lean4-mode ligature
+                  lsp-pyright lsp-ui magit marginalia opam-switch-mode
+                  orderless org-appear org-modern osx-dictionary
+                  paredit pdf-tools proof-general slime tuareg vertico
+                  yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
  '(pdf-view-use-imagemagick t)
  '(pdf-view-use-unicode-ligther nil)
  '(pixel-scroll-precision-mode t)
- '(python-shell-interpreter "/usr/local/bin/python3")
  '(quit-window-kill-buffer t)
  '(read-buffer-completion-ignore-case t)
  '(recentf-exclude '(".+\\.el\\.gz" "~/\\.emacs\\.d/bookmarks"))
  '(recentf-mode t)
- '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode))
+ '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
  '(scroll-bar-mode nil)
  '(switch-to-buffer-obey-display-actions t)
  '(tab-always-indent 'complete)
@@ -367,10 +387,6 @@
 ;; (autoload 'sokoban-mode "sokoban.el"
 ;;   "Play Sokoban in current buffer." t)
 ;; (setq sokoban-levels-dir "c:/Useful/Open/emacs/site-lisp/sokoban-levels")
-
-;; Python
-;; (elpy-enable)
-;; (setq elpy-rpc-python-command "python3")
 
 ;;; 杂项
 (defun zh-count-word ()
@@ -497,6 +513,20 @@ Unicode code points."
           (kill-new out)
           (insert out)
           (message (if decode? "Decoded and yanked." "Encoded and yanked.")))))))
+
+(use-package lsp-mode
+  :ensure t
+  :hook ((python-mode . lsp-deferred)))
+
+(use-package lsp-ui
+  :ensure t
+  :hook (lsp-mode . lsp-ui-mode))
+
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda () (require 'lsp-pyright))))
+
+(add-hook 'after-init-hook 'envrc-global-mode)
 
 (provide 'init)
 
