@@ -22,7 +22,7 @@
   (set-fontset-font t charset (font-spec :name "LXGW WenKai")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
 (set-fontset-font t 'cyrillic (font-spec :name "Iosevka"))
-;; Iosevka Version = 33.2.8
+;; Iosevka Version = 33.2.9
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; Startup Message
@@ -128,7 +128,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 ;;; Spell checking
 ;; (setq ispell-list-command "list")
 
-;; Trick: Use M-j to confirm without the matching existed.
+;; Trick: Use M-RET to confirm without the matching existed.
 
 ;;; eglot for C/C++
 (with-eval-after-load 'eglot
@@ -170,6 +170,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
  '(backup-directory-alist '(("." . "~/.emacs.d/backup")))
  '(blink-cursor-mode nil)
  '(c-basic-offset 4)
+ '(column-number-mode t)
  '(comint-process-echoes t)
  '(company-backends '(company-math-symbols-unicode))
  '(company-idle-delay 0.3)
