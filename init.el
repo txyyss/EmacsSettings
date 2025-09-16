@@ -22,7 +22,7 @@
   (set-fontset-font t charset (font-spec :name "LXGW WenKai")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
 (set-fontset-font t 'cyrillic (font-spec :name "Iosevka"))
-;; Iosevka Version = 33.2.9
+;; Iosevka Version = 33.3.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; Startup Message
@@ -71,6 +71,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (add-hook 'c-ts-mode-common-hook 'hs-minor-mode)
 (keymap-global-set "<f13>" 'toggle-frame-fullscreen)
 (keymap-global-set "<f14>" 'restart)
+(keymap-global-set "<f15>" 'list-packages)
 (keymap-global-set "C-," 'embark-act)
 (keymap-global-set "C-;" 'embark-dwim)
 (keymap-global-set "C-h B" 'embark-bindings)
@@ -220,6 +221,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
  '(ispell-local-dictionary "en_US")
  '(ispell-program-name "aspell")
  '(latex-run-command "xelatex -shell-escape")
+ '(lean4-delete-trailing-whitespace t)
  '(lisp-interaction-mode-hook '(enable-paredit-mode))
  '(lisp-mode-hook
    '(common-lisp-lisp-mode-hook slime-lisp-mode-hook enable-paredit-mode))
@@ -235,7 +237,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
  '(mode-line-format
    '("%e" mode-line-front-space
      (:eval
-      (cond (buffer-read-only " ■ ")
+      (cond ((and buffer-file-name buffer-read-only) " ■ ")
             ((and buffer-file-name (buffer-modified-p))
              (propertize " ● " 'face '(:foreground "red")))))
      (:propertize " %b " face mode-line-buffer-id) " %l:%c "
@@ -276,10 +278,10 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
  '(package-selected-packages
    '(async-status avy company-coq consult corfu embark embark-consult
                   envrc gap-mode geiser-chez geiser-guile
-                  geiser-racket haskell-mode lean4-mode ligature
-                  lsp-pyright lsp-ui magit marginalia opam-switch-mode
-                  orderless org-appear org-modern osx-dictionary
-                  paredit pdf-tools proof-general slime tuareg vertico
+                  geiser-racket lean4-mode ligature lsp-pyright lsp-ui
+                  magit marginalia opam-switch-mode orderless
+                  org-appear org-modern osx-dictionary paredit
+                  pdf-tools proof-general slime tuareg vertico
                   yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
@@ -287,6 +289,8 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
  '(pdf-view-use-imagemagick t)
  '(pdf-view-use-unicode-ligther nil)
  '(pixel-scroll-precision-mode t)
+ '(python-indent-guess-indent-offset nil)
+ '(python-indent-offset 4)
  '(quit-window-kill-buffer t)
  '(read-buffer-completion-ignore-case t)
  '(recentf-exclude '(".+\\.el\\.gz" "~/\\.emacs\\.d/bookmarks"))
