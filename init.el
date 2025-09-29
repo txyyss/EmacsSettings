@@ -233,6 +233,8 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
    '((c-mode . c-ts-mode) (c++-mode . c++-ts-mode)
      (html-mode . html-ts-mode)))
  '(marginalia-mode t)
+ '(mode-line-collapse-minor-modes t)
+ '(mode-line-collapse-minor-modes-to " ❖")
  '(mode-line-format
    '("%e" mode-line-front-space
      (:eval
@@ -241,9 +243,9 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
              (propertize " ● " 'face '(:foreground "red")))))
      (:propertize " %b " face mode-line-buffer-id) " %l:%c "
      (project-mode-line project-mode-line-format) (vc-mode vc-mode)
-     mode-line-format-right-align
-     (:eval (propertize mode-name 'face 'mode-line-buffer-id)) " "
-     mode-line-misc-info mode-line-end-spaces))
+     mode-line-format-right-align mode-line-modes mode-line-misc-info
+     mode-line-end-spaces))
+ '(mode-line-modes-delimiters nil)
  '(mode-line-right-align-edge 'right-margin)
  '(modus-themes-bold-constructs t)
  '(modus-themes-common-palette-overrides
