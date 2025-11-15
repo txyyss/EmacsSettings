@@ -22,7 +22,7 @@
   (set-fontset-font t charset (font-spec :name "LXGW WenKai")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
 (set-fontset-font t 'cyrillic (font-spec :name "Iosevka"))
-;; Iosevka Version = 33.3.0
+;; Iosevka Version = 33.3.4
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; Startup Message
@@ -74,6 +74,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (keymap-global-set "<f15>" 'list-packages)
 (keymap-global-set "C-," 'embark-act)
 (keymap-global-set "C-;" 'embark-dwim)
+(keymap-global-set "C-c a" 'org-agenda)
 (keymap-global-set "C-h B" 'embark-bindings)
 (keymap-global-set "C-x /" 'webjump)
 (keymap-global-set "C-x C-b" 'ibuffer)
@@ -261,6 +262,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
  '(ns-alternate-modifier 'super)
  '(ns-command-modifier 'meta)
  '(orderless-matching-styles '(orderless-regexp orderless-literal orderless-prefixes))
+ '(org-agenda-files '("~/Documents/Org/Tasks.org"))
  '(org-appear-autoentities t)
  '(org-appear-autosubmarkers t)
  '(org-babel-load-languages '((emacs-lisp . t) (lisp . t)))
@@ -278,11 +280,11 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
      ("melpa" . "http://melpa.org/packages/")))
  '(package-selected-packages
    '(async-status avy company-coq consult corfu embark embark-consult
-                  envrc gap-mode geiser-chez geiser-guile
-                  geiser-racket lean4-mode ligature lsp-pyright lsp-ui
-                  magit marginalia opam-switch-mode orderless
-                  org-appear org-modern osx-dictionary paredit
-                  pdf-tools proof-general slime tuareg vertico
+                  envrc gap-mode geiser-chez geiser-guile lean4-mode
+                  ligature llama lsp-pyright lsp-ui magit marginalia
+                  ocaml-eglot opam-switch-mode orderless org-appear
+                  org-modern osx-dictionary paredit pdf-tools
+                  proof-general racket-mode slime tuareg vertico
                   yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
@@ -531,7 +533,23 @@ Unicode code points."
   :ensure t
   :hook (python-mode . (lambda () (require 'lsp-pyright))))
 
+;;; OCaml
+
+(use-package tuareg
+  :ensure t
+  :hook
+  (tuareg-mode . set-current-switch)
+  (tuareg-mode . company-mode))
+
+(use-package ocaml-eglot
+  :ensure t
+  :after tuareg
+  :hook
+  (tuareg-mode . ocaml-eglot)
+  (ocaml-eglot . eglot-ensure))
+
 (add-hook 'after-init-hook 'envrc-global-mode)
+(load-theme 'modus-vivendi)
 
 (provide 'init)
 
