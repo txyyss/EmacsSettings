@@ -99,7 +99,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (keymap-global-set "s-i" 'ispell-word)
 (keymap-global-set "s-l" 'consult-goto-line)
 (keymap-global-set "s-m" 'delete-other-windows)
-(keymap-global-set "s-o" 'other-window)
+(keymap-global-set "s-o" 'find-file-other-tab)
 (keymap-global-set "s-p" 'osx-dictionary-search-word-at-point)
 (keymap-global-set "s-r" 'consult-ripgrep)
 (keymap-global-set "s-t" 'tab-bar-new-tab)
