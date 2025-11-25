@@ -22,7 +22,7 @@
   (set-fontset-font t charset (font-spec :name "LXGW WenKai")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
 (set-fontset-font t 'cyrillic (font-spec :name "Iosevka"))
-;; Iosevka Version = 33.3.4
+;; Iosevka Version = 33.3.5
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; Startup Message
@@ -75,6 +75,8 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (keymap-global-set "C-," 'embark-act)
 (keymap-global-set "C-;" 'embark-dwim)
 (keymap-global-set "C-c a" 'org-agenda)
+(keymap-global-set "C-c l" 'org-store-link)
+(keymap-global-set "C-c t" 'org-todo-list)
 (keymap-global-set "C-h B" 'embark-bindings)
 (keymap-global-set "C-x /" 'webjump)
 (keymap-global-set "C-x C-b" 'ibuffer)
@@ -195,6 +197,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
  '(display-time-day-and-date t)
  '(display-time-default-load-average nil)
  '(display-time-mode t)
+ '(elisp-fontify-semantically t)
  '(emacs-lisp-mode-hook '(enable-paredit-mode outline-minor-mode))
  '(embark-help-key "?")
  '(embark-indicators
@@ -273,7 +276,9 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
    '(ol-bibtex ol-docview ol-doi ol-eww ol-info org-mouse org-tempo
                ol-w3m))
  '(org-pretty-entities t)
+ '(org-startup-folded 'fold)
  '(org-support-shift-select t)
+ '(org-tags-column -90)
  '(package-archives
    '(("gnu" . "https://elpa.gnu.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")
