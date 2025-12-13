@@ -22,7 +22,7 @@
   (set-fontset-font t charset (font-spec :name "LXGW WenKai")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
 (set-fontset-font t 'cyrillic (font-spec :name "Iosevka"))
-;; Iosevka Version = 33.3.5
+;; Iosevka Version = 33.3.6
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; Startup Message
@@ -69,9 +69,10 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
   (which-key-add-keymap-based-replacements dired-mode-map "% s" "show only (regexp)"))
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (add-hook 'c-ts-mode-common-hook 'hs-minor-mode)
-(keymap-global-set "<f13>" 'toggle-frame-fullscreen)
-(keymap-global-set "<f14>" 'restart)
-(keymap-global-set "<f15>" 'list-packages)
+(keymap-global-set "<f16>" 'toggle-frame-fullscreen)
+(keymap-global-set "<f17>" 'restart)
+(keymap-global-set "<f18>" 'list-packages)
+(keymap-global-set "<f19>" 'save-buffers-kill-terminal)
 (keymap-global-set "C-," 'embark-act)
 (keymap-global-set "C-;" 'embark-dwim)
 (keymap-global-set "C-c a" 'org-agenda)
@@ -204,7 +205,6 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
    '(embark--vertico-indicator embark-minimal-indicator
                                embark-highlight-indicator
                                embark-isearch-highlight-indicator))
- '(engine-mode t)
  '(find-ls-option '("-exec ls -ldh {} +" . "-ldh"))
  '(gap-executable "/usr/local/bin/gap")
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
@@ -289,7 +289,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
                   ligature llama lsp-pyright lsp-ui magit marginalia
                   ocaml-eglot opam-switch-mode orderless org-appear
                   org-modern osx-dictionary paredit pdf-tools
-                  proof-general racket-mode slime tuareg vertico
+                  proof-general racket-mode slime tuareg utop vertico
                   yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
@@ -540,11 +540,15 @@ Unicode code points."
 
 ;;; OCaml
 
+(use-package utop
+  :ensure t)
+
 (use-package tuareg
   :ensure t
   :hook
   (tuareg-mode . set-current-switch)
-  (tuareg-mode . company-mode))
+  (tuareg-mode . company-mode)
+  (tuareg-mode . utop-minor-mode))
 
 (use-package ocaml-eglot
   :ensure t
@@ -552,6 +556,8 @@ Unicode code points."
   :hook
   (tuareg-mode . ocaml-eglot)
   (ocaml-eglot . eglot-ensure))
+
+
 
 (add-hook 'after-init-hook 'envrc-global-mode)
 (load-theme 'modus-vivendi)
