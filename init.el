@@ -215,6 +215,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
  '(global-hl-line-mode t)
  '(global-org-modern-mode t)
  '(grep-command "rg -nS --no-heading ")
+ '(help-window-select t)
  '(icomplete-minibuffer-setup-hook '(my-icomplete-styles))
  '(ielm-mode-hook '(eldoc-mode))
  '(indent-tabs-mode nil)
@@ -561,7 +562,7 @@ Unicode code points."
 
 (add-hook 'after-init-hook 'envrc-global-mode)
 (load-theme 'modus-vivendi)
-
+(server-start)
 (provide 'init)
 
 ;;; init.el ends here
