@@ -291,7 +291,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
                   ocaml-eglot opam-switch-mode orderless org-appear
                   org-modern osx-dictionary paredit pdf-tools
                   proof-general racket-mode slime tuareg utop vertico
-                  yaml-mode))
+                  vterm yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
@@ -558,6 +558,16 @@ Unicode code points."
   (tuareg-mode . ocaml-eglot)
   (ocaml-eglot . eglot-ensure))
 
+;;; VTerm
+(use-package vterm
+  :ensure t
+  :hook (vterm-mode . my/disable-hl-line)
+  :config
+  (defun my/disable-hl-line ()
+    "Disable hl-line in vterm buffers."
+    (when (bound-and-true-p global-hl-line-mode)
+      (setq-local global-hl-line-mode nil))
+    (hl-line-mode -1)))
 
 
 (add-hook 'after-init-hook 'envrc-global-mode)
