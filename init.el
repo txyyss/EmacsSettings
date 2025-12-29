@@ -151,7 +151,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 
 (defun my-mode-line-separator (side)
   "Return a mode-line separator for SIDE.
-SIDE should be either the symbol 'left or 'right."
+SIDE should be either the symbol \='left or \='right."
   (let ((bg (face-attribute 'default :background))
         (sep (pcase side
                ('left  " ")
