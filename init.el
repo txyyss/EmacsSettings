@@ -243,10 +243,10 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
  '(mode-line-format
    '("%e" mode-line-front-space
      (:eval
-      (cond ((and buffer-file-name buffer-read-only) " ■ ")
+      (cond ((and buffer-file-name buffer-read-only) "  ")
             ((and buffer-file-name (buffer-modified-p))
              (propertize " ● " 'face '(:foreground "red")))))
-     (:propertize " %b " face mode-line-buffer-id) " %p %l:%c "
+     (:propertize " %b " face mode-line-buffer-id) " %p  %l  %c "
      (project-mode-line project-mode-line-format) (vc-mode vc-mode)
      mode-line-format-right-align mode-line-modes mode-line-misc-info
      mode-line-end-spaces))
