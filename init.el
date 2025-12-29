@@ -149,6 +149,16 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
   "Customize my icomplete styles."
   (setq-local completion-styles '(basic partial-completion flex)))
 
+(defun my-mode-line-separator (side)
+  "Return a mode-line separator for SIDE.
+SIDE should be either the symbol 'left or 'right."
+  (let ((bg (face-attribute 'default :background))
+        (sep (pcase side
+               ('left  " ")
+               ('right " ")
+               (_      " ")))) ; fallback
+    (propertize sep 'face `(:foreground ,bg))))
+
 ;;; custom-set-variables
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -243,13 +253,20 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
  '(mode-line-format
    '("%e" mode-line-front-space
      (:eval
-      (cond ((and buffer-file-name buffer-read-only) "  ")
+      (cond ((and buffer-file-name buffer-read-only) "")
             ((and buffer-file-name (buffer-modified-p))
-             (propertize " ● " 'face '(:foreground "red")))))
-     (:propertize " %b " face mode-line-buffer-id) " %p  %l  %c "
-     (project-mode-line project-mode-line-format) (vc-mode vc-mode)
-     mode-line-format-right-align mode-line-modes mode-line-misc-info
-     mode-line-end-spaces))
+             (propertize "●" 'face '(:foreground "red")))))
+     (:propertize " %b" face mode-line-buffer-id)
+     (:eval (my-mode-line-separator 'left))
+     " %p  %l  %c"
+     (:eval (my-mode-line-separator 'left))
+     (project-mode-line project-mode-line-format)
+     (:eval
+      (when vc-mode
+        (concat vc-mode (my-mode-line-separator 'left))))
+     mode-line-format-right-align (:eval (my-mode-line-separator 'right))
+     mode-line-modes (:eval (my-mode-line-separator 'right))
+     mode-line-misc-info mode-line-end-spaces))
  '(mode-line-modes-delimiters nil)
  '(mode-line-right-align-edge 'right-margin)
  '(modus-themes-bold-constructs t)
