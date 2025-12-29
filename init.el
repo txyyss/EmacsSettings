@@ -257,16 +257,15 @@ SIDE should be either the symbol \='left or \='right."
             ((and buffer-file-name (buffer-modified-p))
              (propertize "●" 'face '(:foreground "red")))))
      (:propertize " %b" face mode-line-buffer-id)
-     (:eval (my-mode-line-separator 'left))
-     " %p  %l  %c"
+     (:eval (my-mode-line-separator 'left)) " %p  %l  %c"
      (:eval (my-mode-line-separator 'left))
      (project-mode-line project-mode-line-format)
      (:eval
-      (when vc-mode
-        (concat vc-mode (my-mode-line-separator 'left))))
-     mode-line-format-right-align (:eval (my-mode-line-separator 'right))
-     mode-line-modes (:eval (my-mode-line-separator 'right))
-     mode-line-misc-info mode-line-end-spaces))
+      (when vc-mode (concat vc-mode (my-mode-line-separator 'left))))
+     mode-line-format-right-align
+     (:eval (my-mode-line-separator 'right)) mode-line-modes
+     (:eval (my-mode-line-separator 'right)) mode-line-misc-info
+     mode-line-end-spaces))
  '(mode-line-modes-delimiters nil)
  '(mode-line-right-align-edge 'right-margin)
  '(modus-themes-bold-constructs t)
@@ -325,7 +324,7 @@ SIDE should be either the symbol \='left or \='right."
  '(scroll-bar-mode nil)
  '(switch-to-buffer-obey-display-actions t)
  '(tab-always-indent 'complete)
- '(tab-bar-auto-width-max '(423 40))
+ '(tab-bar-auto-width-max nil)
  '(tab-bar-close-button-show nil)
  '(tab-bar-format '(tab-bar-format-tabs))
  '(tab-bar-mode t)
