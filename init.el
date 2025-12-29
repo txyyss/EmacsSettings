@@ -407,9 +407,6 @@ SIDE should be either the symbol \='left or \='right."
 (keymap-set vertico-map "RET" #'vertico-directory-enter)
 (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
 
-;;; Embark
-(add-hook 'embark-collect-mode-hook #'consult-preview-at-point-mode)
-
 ;;; 设置sokoban
 ;; (autoload 'sokoban "sokoban.el"
 ;;   "Start a new game of Sokoban." t)
