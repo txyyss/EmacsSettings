@@ -22,7 +22,7 @@
   (set-fontset-font t charset (font-spec :name "LXGW WenKai")))
 (set-fontset-font t 'greek (font-spec :name "Iosevka"))
 (set-fontset-font t 'cyrillic (font-spec :name "Iosevka"))
-;; Iosevka Version = 33.3.6
+;; Iosevka Version = 34.0.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 ;;; Startup Message

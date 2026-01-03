@@ -105,4 +105,5 @@ keybind = super+shift+z=unbind
 keybind = super+x=toggle_command_palette
 macos-icon = blueprint
 shell-integration-features = no-cursor
+split-divider-color = #cc0000
 theme = Dracula
