@@ -273,7 +273,7 @@ SIDE should be either the symbol \='left or \='right."
    '((bg-mode-line-active bg-cyan-intense)
      (bg-mode-line-inactive bg-cyan-subtle)
      (border-mode-line-active unspecified)
-     (border-mode-line-inactive unspecified) (bg-tab-bar bg-main)
+     (border-mode-line-inactive unspecified) (bg-tab-bar bg-cyan-subtle)
      (bg-tab-current bg-cyan-intense) (bg-tab-other bg-cyan-subtle)
      (fringe unspecified) (bg-hl-line bg-cyan-nuanced)))
  '(modus-themes-italic-constructs t)
@@ -331,9 +331,9 @@ SIDE should be either the symbol \='left or \='right."
  '(tab-bar-new-button-show nil)
  '(tab-bar-new-tab-choice "*scratch*")
  '(tab-bar-new-tab-to 'rightmost)
- '(tab-bar-select-tab-modifiers '(control super))
+ '(tab-bar-select-tab-modifiers '(super))
  '(tab-bar-show 1)
- '(tab-bar-tab-hints nil)
+ '(tab-bar-tab-hints t)
  '(tool-bar-mode nil)
  '(tramp-syntax 'default nil (tramp))
  '(treesit-font-lock-level 4)
@@ -585,6 +585,10 @@ Unicode code points."
 
 (add-hook 'after-init-hook 'envrc-global-mode)
 (load-theme 'modus-vivendi)
+(setq tab-bar-separator
+      (propertize "  "
+                  'face `(:inherit tab-bar-tab-inactive
+                          :foreground ,(face-attribute 'default :background))))
 (server-start)
 (provide 'init)
 
