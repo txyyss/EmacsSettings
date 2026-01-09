@@ -273,9 +273,10 @@ SIDE should be either the symbol \='left or \='right."
    '((bg-mode-line-active bg-cyan-intense)
      (bg-mode-line-inactive bg-cyan-subtle)
      (border-mode-line-active unspecified)
-     (border-mode-line-inactive unspecified) (bg-tab-bar bg-cyan-subtle)
-     (bg-tab-current bg-cyan-intense) (bg-tab-other bg-cyan-subtle)
-     (fringe unspecified) (bg-hl-line bg-cyan-nuanced)))
+     (border-mode-line-inactive unspecified)
+     (bg-tab-bar bg-cyan-subtle) (bg-tab-current bg-cyan-intense)
+     (bg-tab-other bg-cyan-subtle) (fringe unspecified)
+     (bg-hl-line bg-cyan-nuanced)))
  '(modus-themes-italic-constructs t)
  '(modus-themes-prompts '(extrabold))
  '(mouse-avoidance-mode 'animate nil (avoid))
@@ -582,13 +583,12 @@ Unicode code points."
       (setq-local global-hl-line-mode nil))
     (hl-line-mode -1)))
 
+;;; 杂项
 
 (add-hook 'after-init-hook 'envrc-global-mode)
 (load-theme 'modus-vivendi)
-(setq tab-bar-separator
-      (propertize "  "
-                  'face `(:inherit tab-bar-tab-inactive
-                          :foreground ,(face-attribute 'default :background))))
+(with-eval-after-load 'tab-bar
+  (keymap-unset tab-bar-mode-map "s-0"))
 (server-start)
 (provide 'init)
 
