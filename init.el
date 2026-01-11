@@ -17,14 +17,6 @@
 (setq default-process-coding-system '(utf-8 . utf-8))
 (setq system-time-locale "C")
 
-;;; 设置字体
-(dolist (charset '(kana han cjk-misc bopomofo chinese-gbk gb18030))
-  (set-fontset-font t charset (font-spec :name "LXGW WenKai")))
-(set-fontset-font t 'greek (font-spec :name "Iosevka"))
-(set-fontset-font t 'cyrillic (font-spec :name "Iosevka"))
-;; Iosevka Version = 34.0.0
-;; Download from https://github.com/be5invis/Iosevka/releases
-
 ;;; Startup Message
 (defun display-startup-echo-area-message ()
   "Override the default one with my name and welcome."
@@ -89,18 +81,19 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (keymap-global-set "M-]" 'tab-bar-switch-to-next-tab)
 (keymap-global-set "M-o" 'occur)
 (keymap-global-set "s-," 'customize-group)
+(keymap-global-set "s-." 'consult-buffer)
 (keymap-global-set "s-/" 'consult-line)
 (keymap-global-set "s-;" 'avy-goto-char-timer)
 (keymap-global-set "s-<return>" 'magit-status)
 (keymap-global-set "s-<tab>" 'tab-switch)
 (keymap-global-set "s-[" 'tab-bar-switch-to-prev-tab)
+(keymap-global-set "s-\\" 'find-file)
 (keymap-global-set "s-]" 'tab-bar-switch-to-next-tab)
 (keymap-global-set "s-b" 'consult-buffer-other-tab)
-(keymap-global-set "s-d" 'osx-dictionary-search-input)
-(keymap-global-set "s-f" 'consult-fd)
+(keymap-global-set "s-d" 'dired-other-tab)
 (keymap-global-set "s-g" 'consult-goto-line)
 (keymap-global-set "s-i" 'ispell-word)
-(keymap-global-set "s-l" 'consult-goto-line)
+(keymap-global-set "s-l" 'consult-fd)
 (keymap-global-set "s-m" 'delete-other-windows)
 (keymap-global-set "s-o" 'find-file-other-tab)
 (keymap-global-set "s-p" 'osx-dictionary-search-word-at-point)
@@ -439,6 +432,7 @@ SIDE should be either the symbol \='left or \='right."
     (message "English words: %d\nNon-English characters: %d"
              eng non-eng)))
 
+;;; 设置字体
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -449,6 +443,15 @@ SIDE should be either the symbol \='left or \='right."
  '(fixed-pitch-serif ((t (:family "Iosevka Slab"))))
  '(org-modern-symbol ((t (:family "Iosevka"))) t)
  '(variable-pitch ((t (:family "Iosevka Aile")))))
+
+(dolist (script '(latin greek cyrillic symbol))
+  (set-fontset-font t script (font-spec :family "Iosevka") nil 'prepend))
+(dolist (script '(han kana hangul cjk-misc bopomofo))
+  (set-fontset-font t script (font-spec :family "LXGW WenKai") nil 'prepend))
+(set-fontset-font t '(#xe000 . #xf8ff) (font-spec :family "Iosevka") nil 'prepend)
+;; Iosevka Version = 34.0.0
+;; Download from https://github.com/be5invis/Iosevka/releases
+
 
 (defun f2c (fahrenheit)
   "Convert degrees Fahrenheit (FAHRENHEIT) to degrees Celsius."
