@@ -47,10 +47,12 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (add-to-list 'default-frame-alist '(ns-appearance . dark))
 (setq default-directory "~/")
 (setq completion-ignore-case t)
+(setq read-process-output-max 1048576)
 (with-eval-after-load 'dired
   (require 'ls-lisp)
   (require 'dired-x)
-  (keymap-set dired-mode-map "% s" #'dired-show-only))
+  (keymap-set dired-mode-map "% s" #'dired-show-only)
+  (keymap-set dired-mode-map "," #'browse-url-of-dired-file))
 (add-hook 'dired-mode-hook
           (lambda ()
             ;; Set dired-x buffer-local variables here.  For example:
@@ -176,6 +178,7 @@ SIDE should be either the symbol \='left or \='right."
  '(avy-orders-alist '((avy-goto-char-timer . avy-order-closest)))
  '(backup-directory-alist '(("." . "~/.emacs.d/backup")))
  '(blink-cursor-mode nil)
+ '(browse-url-browser-function 'eww-browse-url)
  '(c-basic-offset 4)
  '(column-number-mode t)
  '(comint-process-echoes t)
@@ -193,10 +196,11 @@ SIDE should be either the symbol \='left or \='right."
  '(delete-old-versions t)
  '(delete-selection-mode t)
  '(dired-dwim-target 'dired-dwim-target-next)
- '(dired-kill-when-opening-new-dired-buffer t)
  '(dired-listing-switches "-alh")
  '(dired-recursive-copies 'always)
  '(dired-recursive-deletes 'always)
+ '(display-buffer-alist
+   '(("\\*\\(Help\\|Packages\\|Apropos\\|info\\)\\*" display-buffer-in-new-tab)))
  '(display-time-24hr-format t)
  '(display-time-day-and-date t)
  '(display-time-default-load-average nil)
@@ -211,6 +215,7 @@ SIDE should be either the symbol \='left or \='right."
  '(find-ls-option '("-exec ls -ldh {} +" . "-ldh"))
  '(gap-executable "/usr/local/bin/gap")
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
+ '(gc-cons-threshold 100000000)
  '(geiser-chez-binary "chez")
  '(global-auto-revert-mode t)
  '(global-corfu-mode t)
@@ -321,6 +326,7 @@ SIDE should be either the symbol \='left or \='right."
  '(tab-bar-auto-width-max nil)
  '(tab-bar-close-button-show nil)
  '(tab-bar-format '(tab-bar-format-tabs))
+ '(tab-bar-history-mode t)
  '(tab-bar-mode t)
  '(tab-bar-new-button-show nil)
  '(tab-bar-new-tab-choice "*scratch*")
@@ -391,8 +397,10 @@ SIDE should be either the symbol \='left or \='right."
 (setq coq-highlight-hyps-cited-in-response nil)
 
 ;;; Lisp
-
+(add-hook 'slime-repl-mode-hook #'enable-paredit-mode)
 (setq inferior-lisp-program "sbcl")
+(setq common-lisp-hyperspec-root
+      (concat "file://" (expand-file-name "~/Dropbox/Documents/HyperSpec/")))
 
 ;;; Vertico
 (keymap-set vertico-map "s-;" #'vertico-quick-exit)
@@ -449,7 +457,7 @@ SIDE should be either the symbol \='left or \='right."
 (dolist (script '(han kana hangul cjk-misc bopomofo))
   (set-fontset-font t script (font-spec :family "LXGW WenKai") nil 'prepend))
 (set-fontset-font t '(#xe000 . #xf8ff) (font-spec :family "Iosevka") nil 'prepend)
-;; Iosevka Version = 34.0.0
+;; Iosevka Version = 34.3.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 
@@ -572,8 +580,8 @@ Unicode code points."
   :ensure t
   :after tuareg
   :hook
-  (tuareg-mode . ocaml-eglot)
-  (ocaml-eglot . eglot-ensure))
+  (tuareg-mode . ocaml-eglot-mode)
+  (ocaml-eglot-mode . eglot-ensure))
 
 ;;; VTerm
 (use-package vterm
