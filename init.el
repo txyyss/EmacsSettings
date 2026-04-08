@@ -94,11 +94,12 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (keymap-global-set "s-b" 'consult-buffer-other-tab)
 (keymap-global-set "s-d" 'dired-other-tab)
 (keymap-global-set "s-g" 'consult-goto-line)
-(keymap-global-set "s-i" 'ispell-word)
+(keymap-global-set "s-i" 'jinx-correct)
 (keymap-global-set "s-l" 'consult-fd)
 (keymap-global-set "s-m" 'delete-other-windows)
+(keymap-global-set "s-n" 'jinx-next)
 (keymap-global-set "s-o" 'find-file-other-tab)
-(keymap-global-set "s-p" 'osx-dictionary-search-word-at-point)
+(keymap-global-set "s-p" 'jinx-previous)
 (keymap-global-set "s-r" 'consult-ripgrep)
 (keymap-global-set "s-t" 'tab-bar-new-tab)
 (keymap-global-set "s-w" 'tab-bar-close-tab)
@@ -124,8 +125,11 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
                            (eq major-mode 'coq-mode)
                            (eq major-mode 'org-mode)))
               (delete-trailing-whitespace))))
+(add-hook 'after-save-hook
+          #'executable-make-buffer-file-executable-if-script-p)
+
 ;;; Spell checking
-;; (setq ispell-list-command "list")
+(modify-syntax-entry '(#x4E00 . #x9FFF) "_" (standard-syntax-table))
 
 ;; Trick: Use M-RET to confirm without the matching existed.
 
@@ -173,12 +177,11 @@ SIDE should be either the symbol \='left or \='right."
    '((120 . avy-action-kill-move) (88 . avy-action-kill-stay)
      (116 . avy-action-teleport) (109 . avy-action-mark)
      (119 . avy-action-copy) (121 . avy-action-yank)
-     (89 . avy-action-yank-line) (105 . avy-action-ispell)
-     (122 . avy-action-zap-to-char)))
+     (89 . avy-action-yank-line) (122 . avy-action-zap-to-char)))
  '(avy-orders-alist '((avy-goto-char-timer . avy-order-closest)))
  '(backup-directory-alist '(("." . "~/.emacs.d/backup")))
+ '(bidi-paragraph-direction 'left-to-right)
  '(blink-cursor-mode nil)
- '(browse-url-browser-function 'eww-browse-url)
  '(c-basic-offset 4)
  '(column-number-mode t)
  '(comint-process-echoes t)
@@ -200,7 +203,8 @@ SIDE should be either the symbol \='left or \='right."
  '(dired-recursive-copies 'always)
  '(dired-recursive-deletes 'always)
  '(display-buffer-alist
-   '(("\\*\\(Help\\|Packages\\|Apropos\\|info\\)\\*" display-buffer-in-new-tab)))
+   '(("\\*\\(Packages\\|vterm\\|Apropos\\|info\\|Customize .+*\\)\\*"
+      display-buffer-in-tab)))
  '(display-time-24hr-format t)
  '(display-time-day-and-date t)
  '(display-time-default-load-average nil)
@@ -221,6 +225,7 @@ SIDE should be either the symbol \='left or \='right."
  '(global-corfu-mode t)
  '(global-corfu-modes '((not lisp-mode) t))
  '(global-hl-line-mode t)
+ '(global-jinx-mode t)
  '(global-org-modern-mode t)
  '(grep-command "rg -nS --no-heading ")
  '(help-window-select t)
@@ -229,9 +234,6 @@ SIDE should be either the symbol \='left or \='right."
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
- '(ispell-extra-args '("-a"))
- '(ispell-local-dictionary "en_US")
- '(ispell-program-name "aspell")
  '(latex-run-command "xelatex -shell-escape")
  '(lean4-delete-trailing-whitespace t)
  '(lisp-interaction-mode-hook '(enable-paredit-mode))
@@ -301,12 +303,12 @@ SIDE should be either the symbol \='left or \='right."
      ("melpa" . "http://melpa.org/packages/")))
  '(package-selected-packages
    '(async-status avy company-coq consult corfu embark embark-consult
-                  envrc gap-mode geiser-chez geiser-guile lean4-mode
-                  ligature llama lsp-pyright lsp-ui magit marginalia
-                  ocaml-eglot opam-switch-mode orderless org-appear
-                  org-modern osx-dictionary paredit pdf-tools
-                  proof-general racket-mode slime tuareg utop vertico
-                  vterm yaml-mode))
+                  envrc gap-mode geiser-chez geiser-guile jinx
+                  lean4-mode ligature llama lsp-pyright lsp-ui magit
+                  marginalia ocaml-eglot opam-switch-mode orderless
+                  org-appear org-modern osx-dictionary paredit
+                  pdf-tools proof-general racket-mode slime tuareg
+                  utop vertico vterm yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
@@ -319,6 +321,7 @@ SIDE should be either the symbol \='left or \='right."
  '(read-buffer-completion-ignore-case t)
  '(recentf-exclude '(".+\\.el\\.gz" "~/\\.emacs\\.d/bookmarks"))
  '(recentf-mode t)
+ '(repeat-mode t)
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
  '(scroll-bar-mode nil)
  '(switch-to-buffer-obey-display-actions t)
