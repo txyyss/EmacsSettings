@@ -229,6 +229,7 @@ SIDE should be either the symbol \='left or \='right."
  '(global-org-modern-mode t)
  '(grep-command "rg -nS --no-heading ")
  '(help-window-select t)
+ '(history-length 200)
  '(icomplete-minibuffer-setup-hook '(my-icomplete-styles))
  '(ielm-mode-hook '(eldoc-mode))
  '(indent-tabs-mode nil)
@@ -322,6 +323,7 @@ SIDE should be either the symbol \='left or \='right."
  '(recentf-exclude '(".+\\.el\\.gz" "~/\\.emacs\\.d/bookmarks"))
  '(recentf-mode t)
  '(repeat-mode t)
+ '(savehist-mode t)
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
  '(scroll-bar-mode nil)
  '(switch-to-buffer-obey-display-actions t)
@@ -460,7 +462,7 @@ SIDE should be either the symbol \='left or \='right."
 (dolist (script '(han kana hangul cjk-misc bopomofo))
   (set-fontset-font t script (font-spec :family "LXGW WenKai") nil 'prepend))
 (set-fontset-font t '(#xe000 . #xf8ff) (font-spec :family "Iosevka") nil 'prepend)
-;; Iosevka Version = 34.3.0
+;; Iosevka Version = 34.4.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 
