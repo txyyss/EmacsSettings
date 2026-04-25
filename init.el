@@ -41,6 +41,18 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
   (dired-do-kill-lines)
   (message "Dired: showing only files matching %s" regexp))
 
+;;; Close tab after kill buffer
+(defun kill-buffer-and-close-tab ()
+  "Kill the current buffer and close its tab when appropriate."
+  (interactive)
+  (let ((tab-index (1+ (tab-bar--current-tab-index)))
+        (last-tab-p (= 1 (length (funcall tab-bar-tabs-function))))
+        (multiple-windows-p
+         (< 1 (length (delete-dups (mapcar #'window-buffer (window-list)))))))
+    (when (kill-current-buffer)
+      (unless (or last-tab-p multiple-windows-p)
+        (tab-bar-close-tab tab-index)))))
+
 ;;; 常用设置
 (setq ns-use-thin-smoothing t)
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
@@ -66,28 +78,11 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 
 (defvar-keymap my-file-map
   :doc "File commands"
-  "d" #'dired-other-tab
   "f" #'find-file
   "o" #'find-file-other-tab
   "r" #'consult-recent-file)
 (keymap-global-unset "s-f")
 (keymap-global-set "s-f" my-file-map)
-
-(defvar-keymap my-search-map
-  :doc "Search commands"
-  "f" #'consult-fd
-  "g" #'consult-goto-line
-  "l" #'consult-line
-  "r" #'consult-ripgrep)
-(keymap-global-unset "s-s")
-(keymap-global-set "s-s" my-search-map)
-
-(defvar-keymap my-buffer-map
-  :doc "Buffer commands"
-  "b" #'consult-buffer
-  "o" #'consult-buffer-other-tab)
-(keymap-global-unset "s-b")
-(keymap-global-set "s-b" my-buffer-map)
 
 (defvar-keymap my-spell-map
   :doc "Spell commands"
@@ -97,42 +92,51 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (keymap-global-unset "s-j")
 (keymap-global-set "s-j" my-spell-map)
 
-(keymap-global-set "<f16>" 'toggle-frame-fullscreen)
-(keymap-global-set "<f17>" 'restart)
-(keymap-global-set "<f18>" 'list-packages)
-(keymap-global-set "<f19>" 'save-buffers-kill-terminal)
-(keymap-global-set "C-," 'embark-act)
-(keymap-global-set "C-;" 'embark-dwim)
-(keymap-global-set "C-c a" 'org-agenda)
-(keymap-global-set "C-c l" 'org-store-link)
-(keymap-global-set "C-c t" 'org-todo-list)
-(keymap-global-set "C-h B" 'embark-bindings)
-(keymap-global-set "C-x /" 'webjump)
-(keymap-global-set "C-x C-b" 'ibuffer)
-(keymap-global-set "C-x M-r" 'consult-recent-file)
-(keymap-global-set "C-x b" 'consult-buffer)
-(keymap-global-set "C-x t b" 'consult-buffer-other-tab)
-(keymap-global-set "C-x t k" 'tab-bar-close-tab-by-name)
-(keymap-global-set "M-[" 'tab-bar-switch-to-prev-tab)
-(keymap-global-set "M-]" 'tab-bar-switch-to-next-tab)
-(keymap-global-set "M-o" 'occur)
-(keymap-global-set "s-," 'customize-group)
-(keymap-global-set "s-;" 'avy-goto-char-timer)
-(keymap-global-set "s-<return>" 'magit-status)
-(keymap-global-set "s-<tab>" 'tab-switch)
-(keymap-global-set "s-[" 'tab-bar-switch-to-prev-tab)
-(keymap-global-set "s-]" 'tab-bar-switch-to-next-tab)
-(keymap-global-set "s-m" 'delete-other-windows)
-(keymap-global-set "s-t" 'tab-bar-new-tab)
-(keymap-global-set "s-w" 'tab-bar-close-tab)
-(keymap-global-set "s-z" 'delete-window)
+(keymap-global-set "<f16>" #'toggle-frame-fullscreen)
+(keymap-global-set "<f17>" #'restart)
+(keymap-global-set "<f18>" #'list-packages)
+(keymap-global-set "<f19>" #'save-buffers-kill-terminal)
+(keymap-global-set "C-," #'embark-act)
+(keymap-global-set "C-;" #'embark-dwim)
+(keymap-global-set "C-c a" #'org-agenda)
+(keymap-global-set "C-c l" #'org-store-link)
+(keymap-global-set "C-c t" #'org-todo-list)
+(keymap-global-set "C-h B" #'embark-bindings)
+(keymap-global-set "C-x /" #'webjump)
+(keymap-global-set "C-x C-b" #'ibuffer)
+(keymap-global-set "C-x M-r" #'consult-recent-file)
+(keymap-global-set "C-x b" #'consult-buffer)
+(keymap-global-set "C-x t b" #'consult-buffer-other-tab)
+(keymap-global-set "C-x t k" #'tab-bar-close-tab-by-name)
+(keymap-global-set "M-[" #'tab-bar-switch-to-prev-tab)
+(keymap-global-set "M-]" #'tab-bar-switch-to-next-tab)
+(keymap-global-set "M-o" #'occur)
+(keymap-global-set "s-," #'customize-group)
+(keymap-global-set "s-/" #'consult-line)
+(keymap-global-set "s-;" #'avy-goto-char-timer)
+(keymap-global-set "s-<return>" #'magit-status)
+(keymap-global-set "s-<tab>" #'tab-switch)
+(keymap-global-set "s-K" #'kill-current-buffer)
+(keymap-global-set "s-[" #'tab-bar-switch-to-prev-tab)
+(keymap-global-set "s-]" #'tab-bar-switch-to-next-tab)
+(keymap-global-set "s-b" #'consult-buffer)
+(keymap-global-set "s-d" #'dired-other-tab)
+(keymap-global-set "s-k" #'kill-buffer-and-close-tab)
+(keymap-global-set "s-l" #'consult-goto-line)
+(keymap-global-set "s-m" #'delete-other-windows)
+(keymap-global-set "s-o" #'consult-buffer-other-tab)
+(keymap-global-set "s-r" #'consult-ripgrep)
+(keymap-global-set "s-s" #'consult-fd)
+(keymap-global-set "s-t" #'tab-bar-new-tab)
+(keymap-global-set "s-w" #'tab-bar-close-tab)
+(keymap-global-set "s-z" #'delete-window)
 (keymap-global-unset "M-<down-mouse-1>")
 (keymap-global-unset "M-<drag-mouse-1>")
 (keymap-global-unset "M-<mouse-1>")
 (keymap-global-unset "M-<mouse-2>")
 (keymap-global-unset "M-<mouse-3>")
-(keymap-set minibuffer-local-map "C-l" 'embark-export)
-(keymap-set emacs-lisp-mode-map "C-c C-n" 'emacs-lisp-native-compile)
+(keymap-set minibuffer-local-map "C-l" #'embark-export)
+(keymap-set emacs-lisp-mode-map "C-c C-n" #'emacs-lisp-native-compile)
 (defalias 'elisp-repl 'ielm)
 (with-eval-after-load 'paredit
   (keymap-unset paredit-mode-map "C-j")
@@ -388,18 +392,6 @@ SIDE should be either the symbol \='left or \='right."
  '(windmove-mode t)
  '(windmove-wrap-around t)
  '(yas-global-mode t))
-
-;;; Close tab after kill buffer
-(defun close-tab-after-kill-buffer ()
-  "Close tab after kill buffer, if it is not the only one tab."
-  (let ((last-tab-p (= 1 (length (funcall tab-bar-tabs-function))))
-        (multiple-windows-p
-         (< 1 (length (delete-dups (mapcar #'window-buffer (window-list)))))))
-    (unless (or last-tab-p multiple-windows-p)
-      (let ((tab-index (tab-bar--tab-index-by-name (buffer-name))))
-        (when tab-index
-          (tab-bar-close-tab (1+ tab-index)))))))
-(add-hook 'kill-buffer-hook #'close-tab-after-kill-buffer)
 
 ;;; Org Mode
 (add-hook 'org-mode-hook 'org-appear-mode)
