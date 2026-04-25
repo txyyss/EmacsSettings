@@ -63,6 +63,40 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
   (which-key-add-keymap-based-replacements dired-mode-map "% s" "show only (regexp)"))
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (add-hook 'c-ts-mode-common-hook 'hs-minor-mode)
+
+(defvar-keymap my-file-map
+  :doc "File commands"
+  "d" #'dired-other-tab
+  "f" #'find-file
+  "o" #'find-file-other-tab
+  "r" #'consult-recent-file)
+(keymap-global-unset "s-f")
+(keymap-global-set "s-f" my-file-map)
+
+(defvar-keymap my-search-map
+  :doc "Search commands"
+  "f" #'consult-fd
+  "g" #'consult-goto-line
+  "l" #'consult-line
+  "r" #'consult-ripgrep)
+(keymap-global-unset "s-s")
+(keymap-global-set "s-s" my-search-map)
+
+(defvar-keymap my-buffer-map
+  :doc "Buffer commands"
+  "b" #'consult-buffer
+  "o" #'consult-buffer-other-tab)
+(keymap-global-unset "s-b")
+(keymap-global-set "s-b" my-buffer-map)
+
+(defvar-keymap my-spell-map
+  :doc "Spell commands"
+  "c" #'jinx-correct
+  "n" #'jinx-next
+  "p" #'jinx-previous)
+(keymap-global-unset "s-j")
+(keymap-global-set "s-j" my-spell-map)
+
 (keymap-global-set "<f16>" 'toggle-frame-fullscreen)
 (keymap-global-set "<f17>" 'restart)
 (keymap-global-set "<f18>" 'list-packages)
@@ -83,24 +117,12 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (keymap-global-set "M-]" 'tab-bar-switch-to-next-tab)
 (keymap-global-set "M-o" 'occur)
 (keymap-global-set "s-," 'customize-group)
-(keymap-global-set "s-." 'consult-buffer)
-(keymap-global-set "s-/" 'consult-line)
 (keymap-global-set "s-;" 'avy-goto-char-timer)
 (keymap-global-set "s-<return>" 'magit-status)
 (keymap-global-set "s-<tab>" 'tab-switch)
 (keymap-global-set "s-[" 'tab-bar-switch-to-prev-tab)
-(keymap-global-set "s-\\" 'find-file)
 (keymap-global-set "s-]" 'tab-bar-switch-to-next-tab)
-(keymap-global-set "s-b" 'consult-buffer-other-tab)
-(keymap-global-set "s-d" 'dired-other-tab)
-(keymap-global-set "s-g" 'consult-goto-line)
-(keymap-global-set "s-i" 'jinx-correct)
-(keymap-global-set "s-l" 'consult-fd)
 (keymap-global-set "s-m" 'delete-other-windows)
-(keymap-global-set "s-n" 'jinx-next)
-(keymap-global-set "s-o" 'find-file-other-tab)
-(keymap-global-set "s-p" 'jinx-previous)
-(keymap-global-set "s-r" 'consult-ripgrep)
 (keymap-global-set "s-t" 'tab-bar-new-tab)
 (keymap-global-set "s-w" 'tab-bar-close-tab)
 (keymap-global-set "s-z" 'delete-window)
