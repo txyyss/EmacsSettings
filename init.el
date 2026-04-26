@@ -76,14 +76,6 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (add-hook 'c-ts-mode-common-hook 'hs-minor-mode)
 
-(defvar-keymap my-file-map
-  :doc "File commands"
-  "f" #'find-file
-  "o" #'find-file-other-tab
-  "r" #'consult-recent-file)
-(keymap-global-unset "s-f")
-(keymap-global-set "s-f" my-file-map)
-
 (defvar-keymap my-spell-map
   :doc "Spell commands"
   "c" #'jinx-correct
@@ -116,11 +108,14 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (keymap-global-set "s-;" #'avy-goto-char-timer)
 (keymap-global-set "s-<return>" #'magit-status)
 (keymap-global-set "s-<tab>" #'tab-switch)
+(keymap-global-set "s-F" #'find-file-other-tab)
 (keymap-global-set "s-K" #'kill-current-buffer)
+(keymap-global-set "s-R" #'consult-recent-file)
 (keymap-global-set "s-[" #'tab-bar-switch-to-prev-tab)
 (keymap-global-set "s-]" #'tab-bar-switch-to-next-tab)
 (keymap-global-set "s-b" #'consult-buffer)
 (keymap-global-set "s-d" #'dired-other-tab)
+(keymap-global-set "s-f" #'find-file)
 (keymap-global-set "s-k" #'kill-buffer-and-close-tab)
 (keymap-global-set "s-l" #'consult-goto-line)
 (keymap-global-set "s-m" #'delete-other-windows)
