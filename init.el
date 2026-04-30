@@ -115,6 +115,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (keymap-global-set "s-]" #'tab-bar-switch-to-next-tab)
 (keymap-global-set "s-b" #'consult-buffer)
 (keymap-global-set "s-d" #'dired-other-tab)
+(keymap-global-set "s-e" #'consult-flymake)
 (keymap-global-set "s-f" #'find-file)
 (keymap-global-set "s-k" #'kill-buffer-and-close-tab)
 (keymap-global-set "s-l" #'consult-goto-line)
@@ -125,6 +126,8 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (keymap-global-set "s-t" #'tab-bar-new-tab)
 (keymap-global-set "s-w" #'tab-bar-close-tab)
 (keymap-global-set "s-z" #'delete-window)
+(keymap-global-set "s-{" #'tab-bar-history-back)
+(keymap-global-set "s-}" #'tab-bar-history-forward)
 (keymap-global-unset "M-<down-mouse-1>")
 (keymap-global-unset "M-<drag-mouse-1>")
 (keymap-global-unset "M-<mouse-1>")
@@ -154,13 +157,26 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 
 ;; Trick: Use M-RET to confirm without the matching existed.
 
-;;; eglot for C/C++
+;;; Eglot
 (with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs '((c++-mode c-mode c++-ts-mode c-ts-mode) "clangd")))
-(add-hook 'c-mode-hook 'eglot-ensure)
-(add-hook 'c++-mode-hook 'eglot-ensure)
-(add-hook 'c-ts-mode-hook 'eglot-ensure)
-(add-hook 'c++-ts-mode-hook 'eglot-ensure)
+  (add-to-list 'eglot-server-programs
+               '((c++-mode c-mode c++-ts-mode c-ts-mode)
+                 "clangd"))
+
+  (add-to-list 'eglot-server-programs
+               '((python-mode python-ts-mode)
+                 "basedpyright-langserver" "--stdio"))
+
+  (keymap-set eglot-mode-map "s-E" #'eglot-code-actions)
+  (keymap-set eglot-mode-map "s-i" #'eldoc-doc-buffer))
+
+(dolist (hook '(c-mode-hook
+                c++-mode-hook
+                c-ts-mode-hook
+                c++-ts-mode-hook
+                python-mode-hook
+                python-ts-mode-hook))
+  (add-hook hook #'eglot-ensure))
 
 ;;; Useful Definitions
 (defconst exclude-file-list '("\\`/[^/|:]+:" ".+\\.v"))
@@ -224,12 +240,13 @@ SIDE should be either the symbol \='left or \='right."
  '(dired-recursive-copies 'always)
  '(dired-recursive-deletes 'always)
  '(display-buffer-alist
-   '(("\\*\\(Packages\\|vterm\\|Apropos\\|info\\|Customize .+*\\)\\*"
+   '(("\\*\\(Packages\\|vterm\\|Apropos\\|info\\|Customize .*\\)\\*"
       display-buffer-in-tab)))
  '(display-time-24hr-format t)
  '(display-time-day-and-date t)
  '(display-time-default-load-average nil)
  '(display-time-mode t)
+ '(eglot-code-action-indications '(margin))
  '(elisp-fontify-semantically t)
  '(emacs-lisp-mode-hook '(enable-paredit-mode outline-minor-mode))
  '(embark-help-key "?")
@@ -265,7 +282,6 @@ SIDE should be either the symbol \='left or \='right."
  '(ls-lisp-use-insert-directory-program nil)
  '(lsp-headerline-breadcrumb-enable nil)
  '(lsp-modeline-code-action-fallback-icon "✦")
- '(lsp-pyright-langserver-command "basedpyright")
  '(major-mode-remap-alist
    '((c-mode . c-ts-mode) (c++-mode . c++-ts-mode)
      (html-mode . html-ts-mode)))
@@ -322,15 +338,15 @@ SIDE should be either the symbol \='left or \='right."
  '(package-archives
    '(("gnu" . "https://elpa.gnu.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-     ("melpa" . "http://melpa.org/packages/")))
+     ("melpa" . "https://melpa.org/packages/")))
  '(package-selected-packages
    '(async-status avy company-coq consult corfu embark embark-consult
                   envrc gap-mode geiser-chez geiser-guile jinx
-                  lean4-mode ligature llama lsp-pyright lsp-ui magit
-                  marginalia ocaml-eglot opam-switch-mode orderless
-                  org-appear org-modern osx-dictionary paredit
-                  pdf-tools proof-general racket-mode slime tuareg
-                  utop vertico vterm yaml-mode))
+                  lean4-mode ligature llama lsp-ui magit marginalia
+                  ocaml-eglot opam-switch-mode orderless org-appear
+                  org-modern osx-dictionary paredit pdf-tools
+                  proof-general racket-mode slime tuareg utop vertico
+                  vterm yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
@@ -344,6 +360,7 @@ SIDE should be either the symbol \='left or \='right."
  '(recentf-exclude '(".+\\.el\\.gz" "~/\\.emacs\\.d/bookmarks"))
  '(recentf-mode t)
  '(repeat-mode t)
+ '(save-place-mode t)
  '(savehist-mode t)
  '(scheme-mode-hook '(geiser-mode--maybe-activate enable-paredit-mode) t)
  '(scroll-bar-mode nil)
@@ -566,17 +583,9 @@ Unicode code points."
           (insert out)
           (message (if decode? "Decoded and yanked." "Encoded and yanked.")))))))
 
-(use-package lsp-mode
-  :ensure t
-  :hook ((python-mode . lsp-deferred)))
-
 (use-package lsp-ui
   :ensure t
   :hook (lsp-mode . lsp-ui-mode))
-
-(use-package lsp-pyright
-  :ensure t
-  :hook (python-mode . (lambda () (require 'lsp-pyright))))
 
 ;;; OCaml
 
@@ -587,7 +596,6 @@ Unicode code points."
   :ensure t
   :hook
   (tuareg-mode . set-current-switch)
-  (tuareg-mode . company-mode)
   (tuareg-mode . utop-minor-mode))
 
 (use-package ocaml-eglot
