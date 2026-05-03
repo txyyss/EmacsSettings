@@ -109,7 +109,6 @@
      (:eval (my-mode-line-separator 'right)) mode-line-misc-info
      mode-line-end-spaces))
  '(mode-line-modes-delimiters nil)
- '(mode-line-right-align-edge 'right-margin)
  '(modus-themes-bold-constructs t)
  '(modus-themes-common-palette-overrides
    '((bg-mode-line-active bg-cyan-intense)
@@ -146,7 +145,7 @@
      ("melpa" . "https://melpa.org/packages/")))
  '(package-selected-packages
    '(async-status avy company-coq consult corfu embark embark-consult
-                  envrc gap-mode geiser-chez geiser-guile jinx
+                  envrc gap-mode geiser-chez geiser-guile helpful jinx
                   lean4-mode ligature llama lsp-ui magit marginalia
                   ocaml-eglot opam-switch-mode orderless org-appear
                   org-modern osx-dictionary paredit pdf-tools

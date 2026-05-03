@@ -7,8 +7,18 @@
 
 ;;; Custom Files
 (setq custom-file (locate-user-emacs-file "custom.el"))
-(when (file-exists-p custom-file)
-  (load custom-file))
+
+(defun my-mode-line-separator (side)
+  "Return a mode-line separator for SIDE.
+SIDE should be either the symbol \='left or \='right."
+  (let ((bg (face-attribute 'default :background))
+        (sep (pcase side
+               ('left  " ")
+               ('right " ")
+               (_      " ")))) ; fallback
+    (propertize sep 'face `(:foreground ,bg))))
+
+(load custom-file 'noerror 'nomessage) ; missing-ok, nomessage
 
 ;;; PATH
 (setenv "PATH" (concat "/opt/homebrew/bin:/opt/homebrew/sbin:" (getenv "PATH")))
@@ -186,16 +196,6 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (defun my-icomplete-styles ()
   "Customize my icomplete styles."
   (setq-local completion-styles '(basic partial-completion flex)))
-
-(defun my-mode-line-separator (side)
-  "Return a mode-line separator for SIDE.
-SIDE should be either the symbol \='left or \='right."
-  (let ((bg (face-attribute 'default :background))
-        (sep (pcase side
-               ('left  " ")
-               ('right " ")
-               (_      " ")))) ; fallback
-    (propertize sep 'face `(:foreground ,bg))))
 
 ;;; Org Mode
 (add-hook 'org-mode-hook 'org-appear-mode)
@@ -400,6 +400,16 @@ Unicode code points."
     (when (bound-and-true-p global-hl-line-mode)
       (setq-local global-hl-line-mode nil))
     (hl-line-mode -1)))
+
+;;; Helpful
+(use-package helpful
+  :ensure t
+  :bind
+  (("C-h f" . helpful-callable)
+   ("C-h v" . helpful-variable)
+   ("C-h k" . helpful-key)
+   ("C-h x" . helpful-command)
+   ("C-h ." . helpful-at-point)))
 
 ;;; 杂项
 
