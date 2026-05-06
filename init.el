@@ -41,7 +41,8 @@ SIDE should be either the symbol \='left or \='right."
   (interactive)
   (when (y-or-n-p "Restart Emacs?")
     (let ((confirm-kill-emacs nil))
-      (delete-other-frames)
+      (when (frame-parameter nil 'fullscreen)
+        (set-frame-parameter nil 'fullscreen nil))
       (restart-emacs))))
 
 (defun dired-show-only (regexp)
@@ -103,9 +104,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (keymap-global-set "<f19>" #'save-buffers-kill-terminal)
 (keymap-global-set "C-," #'embark-act)
 (keymap-global-set "C-;" #'embark-dwim)
-(keymap-global-set "C-c a" #'org-agenda)
 (keymap-global-set "C-c l" #'org-store-link)
-(keymap-global-set "C-c t" #'org-todo-list)
 (keymap-global-set "C-h B" #'embark-bindings)
 (keymap-global-set "C-x /" #'webjump)
 (keymap-global-set "C-x C-b" #'ibuffer)
@@ -116,7 +115,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (keymap-global-set "M-[" #'tab-bar-switch-to-prev-tab)
 (keymap-global-set "M-]" #'tab-bar-switch-to-next-tab)
 (keymap-global-set "M-o" #'occur)
-(keymap-global-set "s-," #'customize-group)
+(keymap-global-set "s-," #'customize-option)
 (keymap-global-set "s-/" #'consult-line)
 (keymap-global-set "s-;" #'avy-goto-char-timer)
 (keymap-global-set "s-<return>" #'magit-status)
@@ -130,6 +129,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (keymap-global-set "s-d" #'dired-other-tab)
 (keymap-global-set "s-e" #'consult-flymake)
 (keymap-global-set "s-f" #'find-file)
+(keymap-global-set "s-h" #'consult-org-heading)
 (keymap-global-set "s-k" #'kill-buffer-and-close-tab)
 (keymap-global-set "s-l" #'consult-goto-line)
 (keymap-global-set "s-m" #'delete-other-windows)
@@ -207,15 +207,8 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
              (member ".+\\.v" consult-preview-excluded-files))
     (delete ".+\\.v" consult-preview-excluded-files)))
 
-(defun set-current-switch ()
-  "Set current opam switch for Coq."
-  (require 'tuareg)
-  (opam-switch-set-switch (tuareg-opam-current-compiler)))
-
 (add-hook 'coq-mode-hook #'company-coq-mode)
-(add-hook 'coq-mode-hook #'opam-switch-mode)
 (add-hook 'coq-mode-hook #'allow-consult-preview)
-(add-hook 'coq-mode-hook #'set-current-switch)
 
 (setq coq-highlight-hyps-cited-in-response nil)
 
@@ -380,7 +373,6 @@ Unicode code points."
 (use-package tuareg
   :ensure t
   :hook
-  (tuareg-mode . set-current-switch)
   (tuareg-mode . utop-minor-mode))
 
 (use-package ocaml-eglot

@@ -88,7 +88,7 @@
  '(magit-status-margin '(t age magit-log-margin-width nil 18))
  '(major-mode-remap-alist
    '((c-mode . c-ts-mode) (c++-mode . c++-ts-mode)
-     (html-mode . html-ts-mode)))
+     (html-mode . html-ts-mode) (markdown-mode . markdown-ts-mode)))
  '(marginalia-mode t)
  '(mode-line-collapse-minor-modes t)
  '(mode-line-collapse-minor-modes-to " ❖")
@@ -125,7 +125,6 @@
  '(ns-alternate-modifier 'super)
  '(ns-command-modifier 'meta)
  '(orderless-matching-styles '(orderless-regexp orderless-literal orderless-prefixes))
- '(org-agenda-files '("~/Documents/Org/Tasks.org"))
  '(org-appear-autoentities t)
  '(org-appear-autosubmarkers t)
  '(org-babel-load-languages '((emacs-lisp . t) (lisp . t)))
@@ -147,10 +146,10 @@
    '(async-status avy company-coq consult corfu embark embark-consult
                   envrc gap-mode geiser-chez geiser-guile helpful jinx
                   lean4-mode ligature llama lsp-ui magit marginalia
-                  ocaml-eglot opam-switch-mode orderless org-appear
-                  org-modern osx-dictionary paredit pdf-tools
-                  proof-general racket-mode slime tuareg utop vertico
-                  vterm yaml-mode))
+                  ocaml-eglot orderless org-appear org-modern
+                  osx-dictionary paredit pdf-tools proof-general
+                  racket-mode slime tuareg utop vertico vterm
+                  yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
@@ -206,8 +205,7 @@
  '(windmove-default-keybindings '(nil super))
  '(windmove-delete-default-keybindings '(nil control super))
  '(windmove-mode t)
- '(windmove-wrap-around t)
- '(yas-global-mode t))
+ '(windmove-wrap-around t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
