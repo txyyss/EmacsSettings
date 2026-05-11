@@ -130,6 +130,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (keymap-global-set "s-e" #'consult-flymake)
 (keymap-global-set "s-f" #'find-file)
 (keymap-global-set "s-h" #'consult-org-heading)
+(keymap-global-set "s-i" #'osx-dictionary-search-word-at-point)
 (keymap-global-set "s-k" #'kill-buffer-and-close-tab)
 (keymap-global-set "s-l" #'consult-goto-line)
 (keymap-global-set "s-m" #'delete-other-windows)
@@ -262,11 +263,11 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 
 ;;; 设置字体
 (dolist (script '(latin greek cyrillic symbol))
-  (set-fontset-font t script (font-spec :family "Iosevka") nil 'prepend))
+  (set-fontset-font t script (font-spec :family "Iosevka Curly") nil 'prepend))
 (dolist (script '(han kana hangul cjk-misc bopomofo))
   (set-fontset-font t script (font-spec :family "LXGW WenKai") nil 'prepend))
-(set-fontset-font t '(#xe000 . #xf8ff) (font-spec :family "Iosevka") nil 'prepend)
-;; Iosevka Version = 34.4.0
+(set-fontset-font t '(#xe000 . #xf8ff) (font-spec :family "Iosevka Curly") nil 'prepend)
+;; Iosevka Version = 34.5.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 
