@@ -267,7 +267,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (dolist (script '(han kana hangul cjk-misc bopomofo))
   (set-fontset-font t script (font-spec :family "LXGW WenKai") nil 'prepend))
 (set-fontset-font t '(#xe000 . #xf8ff) (font-spec :family "Iosevka Curly") nil 'prepend)
-;; Iosevka Version = 34.5.0
+;; Iosevka Version = 34.8.0
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 

@@ -156,6 +156,7 @@
  '(pdf-view-use-imagemagick t)
  '(pdf-view-use-unicode-ligther nil)
  '(pixel-scroll-precision-mode t)
+ '(proof-three-window-mode-policy 'hybrid)
  '(python-indent-guess-indent-offset nil)
  '(python-indent-offset 4)
  '(quit-window-kill-buffer t)
