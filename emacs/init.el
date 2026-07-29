@@ -45,7 +45,7 @@ SIDE should be either the symbol \='left or \='right."
   (message "Welcome back, Shengyi!"))
 
 (require 'my-dashboard)
-(add-hook 'window-setup-hook #'my-dashboard-maybe-show)
+(add-hook 'window-setup-hook #'my-dashboard--maybe-show)
 
 (defun restart ()
   "Restart Emacs."

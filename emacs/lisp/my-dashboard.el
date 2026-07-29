@@ -27,28 +27,30 @@
 
 (defconst my-dashboard--action-rows
   '((("f" "Open File" find-file)
-     ("r" "Recent Files" my-dashboard-recent-file)
-     ("b" "Switch Buffer" my-dashboard-switch-buffer))
+     ("r" "Recent Files" my-dashboard--recent-file)
+     ("b" "Switch Buffer" my-dashboard--switch-buffer))
     (("d" "Dired" dired-other-tab)
-     ("t" "VTerm" my-dashboard-open-vterm)))
+     ("t" "VTerm" my-dashboard--open-vterm)
+     ("g" "Refresh" my-dashboard--refresh)))
   "Rows of dashboard actions.
 Each action is a list of its key, label, and interactive command.")
 
-(defvar-keymap my-dashboard-mode-map
-  :doc "Keymap for `my-dashboard-mode'."
+(defvar-keymap my-dashboard--mode-map
+  :doc "Keymap for the internal dashboard mode."
   :parent special-mode-map
   "f" #'find-file
-  "r" #'my-dashboard-recent-file
-  "b" #'my-dashboard-switch-buffer
+  "r" #'my-dashboard--recent-file
+  "b" #'my-dashboard--switch-buffer
   "d" #'dired-other-tab
-  "t" #'my-dashboard-open-vterm
-  "g" #'my-dashboard-refresh
+  "t" #'my-dashboard--open-vterm
+  "g" #'my-dashboard--refresh
   "RET" #'push-button
   "<tab>" #'forward-button
   "<backtab>" #'backward-button)
 
-(define-derived-mode my-dashboard-mode special-mode "Dashboard"
+(define-derived-mode my-dashboard--mode special-mode "Dashboard"
   "Major mode for the personal startup dashboard."
+  :interactive nil
   (setq-local header-line-format nil
               line-spacing 0
               truncate-lines t
@@ -68,9 +70,9 @@ Each action is a list of its key, label, and interactive command.")
   (when (bound-and-true-p jinx-mode)
     (jinx-mode -1)))
 
-(add-hook 'my-dashboard-mode-hook #'my-dashboard--disable-local-modes)
+(add-hook 'my-dashboard--mode-hook #'my-dashboard--disable-local-modes)
 
-(defun my-dashboard-recent-file ()
+(defun my-dashboard--recent-file ()
   "Open a recently visited file."
   (interactive)
   (cond
@@ -81,14 +83,14 @@ Each action is a list of its key, label, and interactive command.")
    (t
     (user-error "No recent-file command is available"))))
 
-(defun my-dashboard-switch-buffer ()
+(defun my-dashboard--switch-buffer ()
   "Switch to another buffer."
   (interactive)
   (if (fboundp 'consult-buffer)
       (call-interactively #'consult-buffer)
     (call-interactively #'switch-to-buffer)))
 
-(defun my-dashboard-open-vterm ()
+(defun my-dashboard--open-vterm ()
   "Open VTerm when it is available."
   (interactive)
   (if (fboundp 'vterm)
@@ -99,11 +101,16 @@ Each action is a list of its key, label, and interactive command.")
   "Run the interactive command stored in BUTTON."
   (call-interactively (button-get button 'my-dashboard-command)))
 
+(defun my-dashboard--action-label (action)
+  "Return the displayed label for ACTION."
+  (pcase-let ((`(,key ,label ,_) action))
+    (format "[%s] %s" key label)))
+
 (defun my-dashboard--action-button (action)
   "Return a text button for ACTION."
   (pcase-let ((`(,key ,label ,command) action))
     (make-text-button
-     (format "[%s] %s" key label) nil
+     (my-dashboard--action-label action) nil
      'action #'my-dashboard--button-action
      'my-dashboard-command command
      'follow-link t
@@ -153,19 +160,62 @@ Each action is a list of its key, label, and interactive command.")
     (<= (+ (string-width text) 2)
         (window-body-width))))
 
-(defun my-dashboard--insert-action-row (actions)
-  "Insert a centered row containing ACTIONS."
-  (let* ((buttons (mapcar #'my-dashboard--action-button actions))
-         (row (mapconcat #'identity buttons "      ")))
-    (if (my-dashboard--text-fits-p row)
-        (my-dashboard--insert-centered row)
-      (dolist (button buttons)
-        (my-dashboard--insert-centered button)))))
+(defun my-dashboard--fixed-spaces (count)
+  "Return COUNT spaces displayed with the fixed-pitch face."
+  (propertize (make-string count ?\s) 'face 'fixed-pitch))
 
-(defun my-dashboard-refresh ()
+(defun my-dashboard--action-column-widths ()
+  "Return the maximum label width of each dashboard action column."
+  (let ((widths
+         (make-vector
+          (apply #'max 0 (mapcar #'length my-dashboard--action-rows))
+          0)))
+    (dolist (actions my-dashboard--action-rows)
+      (let ((column 0))
+        (dolist (action actions)
+          (aset widths column
+                (max (aref widths column)
+                     (string-width (my-dashboard--action-label action))))
+          (setq column (1+ column)))))
+    widths))
+
+(defun my-dashboard--aligned-action-row (actions column-widths)
+  "Return ACTIONS aligned to COLUMN-WIDTHS as one fixed-pitch row."
+  (let ((column 0)
+        cells)
+    (dolist (action actions)
+      (let* ((label (my-dashboard--action-label action))
+             (padding
+              (- (aref column-widths column) (string-width label))))
+        (push
+         (concat (my-dashboard--action-button action)
+                 (my-dashboard--fixed-spaces padding))
+         cells))
+      (setq column (1+ column)))
+    (mapconcat #'identity
+               (nreverse cells)
+               (my-dashboard--fixed-spaces 6))))
+
+(defun my-dashboard--insert-actions ()
+  "Insert dashboard actions as aligned rows or individual buttons."
+  (let* ((column-widths (my-dashboard--action-column-widths))
+         (rows
+          (mapcar
+           (lambda (actions)
+             (my-dashboard--aligned-action-row actions column-widths))
+           my-dashboard--action-rows)))
+    (if (not (memq nil (mapcar #'my-dashboard--text-fits-p rows)))
+        (dolist (row rows)
+          (my-dashboard--insert-centered row))
+      (dolist (actions my-dashboard--action-rows)
+        (dolist (action actions)
+          (my-dashboard--insert-centered
+           (my-dashboard--action-button action)))))))
+
+(defun my-dashboard--refresh ()
   "Render the dashboard in the current buffer."
   (interactive)
-  (unless (and (derived-mode-p 'my-dashboard-mode)
+  (unless (and (derived-mode-p 'my-dashboard--mode)
                (equal (buffer-name) my-dashboard-buffer-name))
     (user-error "Dashboard refresh is only available in %s"
                 my-dashboard-buffer-name))
@@ -182,34 +232,33 @@ Each action is a list of its key, label, and interactive command.")
       (my-dashboard--insert-centered
        (propertize "Emacs" 'face '(:inherit fixed-pitch :weight bold))))
     (insert "\n\n")
-    (dolist (actions my-dashboard--action-rows)
-      (my-dashboard--insert-action-row actions))
+    (my-dashboard--insert-actions)
     (goto-char (point-min))
     (ignore-errors (forward-button 1))
     (set-buffer-modified-p nil)))
 
 ;;;###autoload
-(defun my-dashboard-open ()
-  "Open and refresh the personal dashboard."
+(defun my-dashboard ()
+  "Show the personal dashboard, creating it when necessary."
   (interactive)
   (let ((buffer (get-buffer my-dashboard-buffer-name)))
     (when buffer
       (unless (with-current-buffer buffer
-                (derived-mode-p 'my-dashboard-mode))
+                (derived-mode-p 'my-dashboard--mode))
         (user-error "Buffer %s is already in use"
                     my-dashboard-buffer-name))))
   (switch-to-buffer (get-buffer-create my-dashboard-buffer-name))
-  (unless (derived-mode-p 'my-dashboard-mode)
-    (my-dashboard-mode))
-  (my-dashboard-refresh))
+  (unless (derived-mode-p 'my-dashboard--mode)
+    (my-dashboard--mode))
+  (my-dashboard--refresh))
 
-(defun my-dashboard-maybe-show ()
+(defun my-dashboard--maybe-show ()
   "Show the dashboard for an empty, ordinary graphical startup."
   (when (and (display-graphic-p)
              (not (daemonp))
              (eq (current-buffer) (get-buffer "*scratch*"))
              (zerop (buffer-size)))
-    (my-dashboard-open)))
+    (my-dashboard)))
 
 (provide 'my-dashboard)
 
