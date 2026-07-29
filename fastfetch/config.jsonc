@@ -1,0 +1,61 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
+  "logo": {
+    "source": "${XDG_CONFIG_HOME:-$HOME/.config}/fastfetch/logos/NameFastFetch?.txt",
+    "color": {
+      "1": "#cc0000",
+      "2": "#6f6f6f",
+      "3": "#e6e6dc"
+    },
+    "padding": {
+      "top": 2,
+      "left": 3
+    }
+  },
+  "display": {
+    "color": {
+      "keys": "#ffd700"
+    },
+    "key": {
+        "width": 26,
+        "type": "string"
+    },
+    "disableLinewrap": true
+  },
+  "modules": [
+    {
+      "type": "title",
+      "color": {
+        "user": "#cc0000",
+        "at": "#ffd700",
+        "host": "#cc0000"
+      }
+    },
+    {
+        "type": "custom",
+        "format": "╭─────────────────────────────────────────────────────────────────────╮"
+    },
+    "os",
+    "kernel",
+    "packages",
+    "shell",
+    "font",
+    "terminal",
+    "terminalfont",
+    "cpu",
+    "gpu",
+    "display",
+    "memory",
+    "swap",
+    "disk",
+    "battery",
+    "poweradapter",
+    "uptime",
+    "datetime",
+    {
+        "type": "custom",
+        "format": "╰─────────────────────────────────────────────────────────────────────╯"
+    },
+    "break"
+  ]
+}
