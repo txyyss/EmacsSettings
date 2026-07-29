@@ -89,15 +89,16 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
   (require 'ls-lisp)
   (require 'dired-x)
   (keymap-set dired-mode-map "% s" #'dired-show-only)
-  (keymap-set dired-mode-map "," #'browse-url-of-dired-file))
+  (keymap-set dired-mode-map "," #'browse-url-of-dired-file)
+  (with-eval-after-load 'which-key
+    ;; Show a friendly name for "% s".
+    (which-key-add-keymap-based-replacements
+     dired-mode-map "% s" "show only (regexp)")))
 (add-hook 'dired-mode-hook
           (lambda ()
             ;; Set dired-x buffer-local variables here.  For example:
             (dired-omit-mode 1)
             ))
-(with-eval-after-load 'which-key
-  ;; Show a friendly name for "% s".
-  (which-key-add-keymap-based-replacements dired-mode-map "% s" "show only (regexp)"))
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 (add-hook 'c-ts-mode-common-hook 'hs-minor-mode)
 
@@ -211,6 +212,8 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 
 ;;; Org Mode
 (add-hook 'org-mode-hook 'org-appear-mode)
+(with-eval-after-load 'org
+  (global-org-modern-mode 1))
 
 ;;; Coq Settings
 (defun allow-consult-preview ()
@@ -306,7 +309,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
   (ligature-set-ligatures 'coq-mode ligatures-iosevka)
   (ligature-set-ligatures 'lean4-mode ligatures-iosevka))
 
-(pdf-tools-install)
+(pdf-loader-install)
 
 ;; Closure capturing private state so we only expose one public function.
 (let ((encode-table nil)   ;; ASCII -> Fraktur (built on first use)
