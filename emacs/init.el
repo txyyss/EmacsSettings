@@ -8,6 +8,14 @@
 ;;; Custom Files
 (setq custom-file (locate-user-emacs-file "custom.el"))
 
+(defconst my-emacs-config-directory
+  (file-name-directory
+   (file-truename (or load-file-name user-init-file)))
+  "Directory containing the real init file behind its symbolic link.")
+
+(add-to-list 'load-path
+             (expand-file-name "lisp" my-emacs-config-directory))
+
 (defun my-mode-line-separator (side)
   "Return a mode-line separator for SIDE.
 SIDE should be either the symbol \='left or \='right."
@@ -35,6 +43,9 @@ SIDE should be either the symbol \='left or \='right."
 (defun display-startup-echo-area-message ()
   "Override the default one with my name and welcome."
   (message "Welcome back, Shengyi!"))
+
+(require 'my-dashboard)
+(add-hook 'window-setup-hook #'my-dashboard-maybe-show)
 
 (defun restart ()
   "Restart Emacs."
