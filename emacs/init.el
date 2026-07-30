@@ -167,6 +167,14 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
   (keymap-unset paredit-mode-map "RET"))
 (setq kill-buffer-query-functions
       (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
+
+(defun my-compile-init-after-save ()
+  "Compile the user init file after saving it."
+  (when (file-equal-p buffer-file-name user-init-file)
+    (let ((source (file-truename buffer-file-name)))
+      (when (byte-compile-file source)
+        (native-compile-async source)))))
+
 (add-hook 'before-save-hook
           (lambda ()
             (when (and (not (string-match ".*makefile.*" (message "%s" major-mode)))
@@ -176,6 +184,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
               (delete-trailing-whitespace))))
 (add-hook 'after-save-hook
           #'executable-make-buffer-file-executable-if-script-p)
+(add-hook 'after-save-hook #'my-compile-init-after-save)
 
 ;;; Spell checking
 (modify-syntax-entry '(#x4E00 . #x9FFF) "_" (standard-syntax-table))
