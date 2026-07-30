@@ -26,10 +26,10 @@
   "Name of the dashboard buffer.")
 
 (defconst my-dashboard--action-rows
-  '((("f" "Open File" find-file)
+  '((("f" "Open File" my-dashboard--find-file)
      ("r" "Recent Files" my-dashboard--recent-file)
      ("b" "Switch Buffer" my-dashboard--switch-buffer))
-    (("d" "Dired" dired-other-tab)
+    (("d" "Dired" my-dashboard--open-dired)
      ("t" "VTerm" my-dashboard--open-vterm)
      ("g" "Refresh" my-dashboard--refresh)))
   "Rows of dashboard actions.
@@ -38,10 +38,10 @@ Each action is a list of its key, label, and interactive command.")
 (defvar-keymap my-dashboard--mode-map
   :doc "Keymap for the internal dashboard mode."
   :parent special-mode-map
-  "f" #'find-file
+  "f" #'my-dashboard--find-file
   "r" #'my-dashboard--recent-file
   "b" #'my-dashboard--switch-buffer
-  "d" #'dired-other-tab
+  "d" #'my-dashboard--open-dired
   "t" #'my-dashboard--open-vterm
   "g" #'my-dashboard--refresh
   "RET" #'push-button
@@ -71,6 +71,18 @@ Each action is a list of its key, label, and interactive command.")
     (jinx-mode -1)))
 
 (add-hook 'my-dashboard--mode-hook #'my-dashboard--disable-local-modes)
+
+(defun my-dashboard--find-file ()
+  "Open a file using Emacs minibuffer completion."
+  (interactive)
+  (let ((use-file-dialog nil))
+    (call-interactively #'find-file)))
+
+(defun my-dashboard--open-dired ()
+  "Open Dired using Emacs minibuffer completion."
+  (interactive)
+  (let ((use-file-dialog nil))
+    (call-interactively #'dired-other-tab)))
 
 (defun my-dashboard--recent-file ()
   "Open a recently visited file."
