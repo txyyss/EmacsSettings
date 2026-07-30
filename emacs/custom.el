@@ -59,7 +59,6 @@
  '(find-ls-option '("-exec ls -ldh {} +" . "-ldh"))
  '(gap-executable "/usr/local/bin/gap")
  '(gap-start-options '("-f" "-b" "-m" "2m" "-E"))
- '(gc-cons-threshold 100000000)
  '(geiser-chez-binary "chez")
  '(global-auto-revert-mode t)
  '(global-corfu-mode t)
@@ -140,6 +139,7 @@
    '(("gnu" . "https://elpa.gnu.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")
      ("melpa" . "https://melpa.org/packages/")))
+ '(package-native-compile t)
  '(package-selected-packages
    '(async-status avy company-coq consult corfu embark embark-consult
                   envrc gap-mode geiser-chez geiser-guile helpful jinx
