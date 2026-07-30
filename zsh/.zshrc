@@ -13,9 +13,6 @@ fi
 
 if [[ -n ${HOMEBREW_PREFIX:-} ]]; then
     export BREW_PREFIX="$HOMEBREW_PREFIX"
-    export CFLAGS="-I$HOMEBREW_PREFIX/include"
-    export LDFLAGS="-L$HOMEBREW_PREFIX/lib"
-    export PKG_CONFIG_PATH="$HOMEBREW_PREFIX/lib/pkgconfig"
 
     if [[ -d "$HOMEBREW_PREFIX/opt/bison/bin" ]]; then
         path=("$HOMEBREW_PREFIX/opt/bison/bin" "${path[@]}")
