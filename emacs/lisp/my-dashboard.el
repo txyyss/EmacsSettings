@@ -25,6 +25,9 @@
 (defconst my-dashboard-buffer-name "*Dashboard*"
   "Name of the dashboard buffer.")
 
+(defvar-local my-dashboard--recent-files nil
+  "Recent files currently displayed on the dashboard.")
+
 (defconst my-dashboard--action-rows
   '((("f" "Open File" my-dashboard--find-file)
      ("r" "Recent Files" my-dashboard--recent-file)
@@ -47,6 +50,11 @@ Each action is a list of its key, label, and interactive command.")
   "RET" #'push-button
   "<tab>" #'forward-button
   "<backtab>" #'backward-button)
+
+(dotimes (index 9)
+  (keymap-set my-dashboard--mode-map
+              (number-to-string (1+ index))
+              #'my-dashboard--open-recent-file))
 
 (define-derived-mode my-dashboard--mode special-mode "Dashboard"
   "Major mode for the personal startup dashboard."
@@ -94,6 +102,17 @@ Each action is a list of its key, label, and interactive command.")
     (call-interactively #'recentf-open-files))
    (t
     (user-error "No recent-file command is available"))))
+
+(defun my-dashboard--open-recent-file (&optional button)
+  "Open the recent file selected by BUTTON or a number key."
+  (interactive)
+  (let ((file (if button
+                  (button-get button 'my-dashboard-file)
+                (nth (- last-command-event ?1)
+                     my-dashboard--recent-files))))
+    (if file
+        (find-file file)
+      (user-error "No recent file assigned to this key"))))
 
 (defun my-dashboard--switch-buffer ()
   "Switch to another buffer."
@@ -147,7 +166,7 @@ Each action is a list of its key, label, and interactive command.")
 (defun my-dashboard--logo-fits-p ()
   "Return non-nil when the logo fits in the selected window."
   (and (display-graphic-p)
-       (>= (window-body-height) 24)
+       (>= (window-body-height) 35)
        (let ((logo-width
               (apply #'max
                      (mapcar
@@ -224,6 +243,24 @@ Each action is a list of its key, label, and interactive command.")
           (my-dashboard--insert-centered
            (my-dashboard--action-button action)))))))
 
+(defun my-dashboard--insert-recent-files ()
+  "Insert the nine most recent files."
+  (my-dashboard--insert-centered
+   (propertize "Recent Files" 'face '(:inherit fixed-pitch :weight bold)))
+  (let ((index 1)
+        (width (apply #'max 0 (mapcar #'string-width my-dashboard--recent-files))))
+    (dolist (file my-dashboard--recent-files)
+      (my-dashboard--insert-centered
+       (make-text-button
+        (concat (format "[%d] %s" index file)
+                (make-string (- width (string-width file)) ?\s)) nil
+        'action #'my-dashboard--open-recent-file
+        'my-dashboard-file file
+        'follow-link t
+        'face 'my-dashboard-button-face
+        'help-echo file))
+      (setq index (1+ index)))))
+
 (defun my-dashboard--refresh ()
   "Render the dashboard in the current buffer."
   (interactive)
@@ -231,12 +268,15 @@ Each action is a list of its key, label, and interactive command.")
                (equal (buffer-name) my-dashboard-buffer-name))
     (user-error "Dashboard refresh is only available in %s"
                 my-dashboard-buffer-name))
-  (let ((inhibit-read-only t)
+  (let ((inhibit-message t)
+        (inhibit-read-only t)
         (show-logo (my-dashboard--logo-fits-p)))
+    (recentf-cleanup)
+    (setq my-dashboard--recent-files (seq-take recentf-list 9))
     (erase-buffer)
     (insert
      (make-string
-      (my-dashboard--top-padding (if show-logo 22 5))
+      (my-dashboard--top-padding (if show-logo 33 16))
       ?\n))
     (if show-logo
         (dolist (line my-dashboard-logo-lines)
@@ -245,6 +285,8 @@ Each action is a list of its key, label, and interactive command.")
        (propertize "Emacs" 'face '(:inherit fixed-pitch :weight bold))))
     (insert "\n\n")
     (my-dashboard--insert-actions)
+    (insert "\n")
+    (my-dashboard--insert-recent-files)
     (goto-char (point-min))
     (ignore-errors (forward-button 1))
     (set-buffer-modified-p nil)))
