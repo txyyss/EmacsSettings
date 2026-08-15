@@ -29,12 +29,12 @@
   "Recent files currently displayed on the dashboard.")
 
 (defconst my-dashboard--action-rows
-  '((("f" "Open File" my-dashboard--find-file)
-     ("r" "Recent Files" my-dashboard--recent-file)
-     ("b" "Switch Buffer" my-dashboard--switch-buffer))
-    (("d" "Dired" my-dashboard--open-dired)
-     ("t" "VTerm" my-dashboard--open-vterm)
-     ("g" "Refresh" my-dashboard--refresh)))
+  '((("b" "Switch Buffer" my-dashboard--switch-buffer)
+     ("d" "Dired" my-dashboard--open-dired)
+     ("f" "Open File" my-dashboard--find-file))
+    (("g" "Refresh" my-dashboard--refresh)
+     ("s" "Scratch" my-dashboard--open-scratch)
+     ("t" "VTerm" my-dashboard--open-vterm)))
   "Rows of dashboard actions.
 Each action is a list of its key, label, and interactive command.")
 
@@ -42,7 +42,7 @@ Each action is a list of its key, label, and interactive command.")
   :doc "Keymap for the internal dashboard mode."
   :parent special-mode-map
   "f" #'my-dashboard--find-file
-  "r" #'my-dashboard--recent-file
+  "s" #'my-dashboard--open-scratch
   "b" #'my-dashboard--switch-buffer
   "d" #'my-dashboard--open-dired
   "t" #'my-dashboard--open-vterm
@@ -81,10 +81,10 @@ Each action is a list of its key, label, and interactive command.")
 (add-hook 'my-dashboard--mode-hook #'my-dashboard--disable-local-modes)
 
 (defun my-dashboard--find-file ()
-  "Open a file using Emacs minibuffer completion."
+  "Open a file in another tab using Emacs minibuffer completion."
   (interactive)
   (let ((use-file-dialog nil))
-    (call-interactively #'find-file)))
+    (call-interactively #'find-file-other-tab)))
 
 (defun my-dashboard--open-dired ()
   "Open Dired using Emacs minibuffer completion."
@@ -92,16 +92,10 @@ Each action is a list of its key, label, and interactive command.")
   (let ((use-file-dialog nil))
     (call-interactively #'dired-other-tab)))
 
-(defun my-dashboard--recent-file ()
-  "Open a recently visited file."
+(defun my-dashboard--open-scratch ()
+  "Open the scratch buffer in another tab."
   (interactive)
-  (cond
-   ((fboundp 'consult-recent-file)
-    (call-interactively #'consult-recent-file))
-   ((fboundp 'recentf-open-files)
-    (call-interactively #'recentf-open-files))
-   (t
-    (user-error "No recent-file command is available"))))
+  (switch-to-buffer-other-tab (get-scratch-buffer-create)))
 
 (defun my-dashboard--open-recent-file (&optional button)
   "Open the recent file selected by BUTTON or a number key."
@@ -111,15 +105,15 @@ Each action is a list of its key, label, and interactive command.")
                 (nth (- last-command-event ?1)
                      my-dashboard--recent-files))))
     (if file
-        (find-file file)
+        (find-file-other-tab file)
       (user-error "No recent file assigned to this key"))))
 
 (defun my-dashboard--switch-buffer ()
-  "Switch to another buffer."
+  "Switch to another buffer in another tab."
   (interactive)
-  (if (fboundp 'consult-buffer)
-      (call-interactively #'consult-buffer)
-    (call-interactively #'switch-to-buffer)))
+  (if (fboundp 'consult-buffer-other-tab)
+      (call-interactively #'consult-buffer-other-tab)
+    (call-interactively #'switch-to-buffer-other-tab)))
 
 (defun my-dashboard--open-vterm ()
   "Open VTerm when it is available."
