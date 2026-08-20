@@ -28,12 +28,8 @@ SIDE should be either the symbol \='left or \='right."
 
 (load custom-file 'noerror 'nomessage) ; missing-ok, nomessage
 
-;;; PATH
-(setenv "PATH" (concat "/opt/homebrew/bin:/opt/homebrew/sbin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("/opt/homebrew/bin" "/opt/homebrew/sbin")))
-(setenv "LC_ALL" "en_US.UTF-8")
-
 ;;; 设置语言
+(setenv "LC_ALL" "en_US.UTF-8")
 (set-default-coding-systems 'utf-8)
 (set-buffer-file-coding-system 'utf-8)
 (setq default-process-coding-system '(utf-8 . utf-8))
@@ -400,6 +396,11 @@ Unicode code points."
   :ensure t
   :hook
   (tuareg-mode . utop-minor-mode))
+
+(use-package eglot
+  :ensure nil
+  :bind (:map eglot-mode-map
+              ("C-c C-f" . eglot-format)))
 
 (use-package ocaml-eglot
   :ensure t
