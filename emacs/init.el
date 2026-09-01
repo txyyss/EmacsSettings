@@ -42,6 +42,7 @@ SIDE should be either the symbol \='left or \='right."
 
 (require 'my-dashboard)
 (add-hook 'window-setup-hook #'my-dashboard--maybe-show)
+(autoload 'huarong "huarong" nil t)
 
 (defun restart ()
   "Restart Emacs."
