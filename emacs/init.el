@@ -289,7 +289,7 @@ Use `revert-buffer' (\\[revert-buffer]) to restore the original listing."
 (dolist (script '(han kana hangul cjk-misc bopomofo))
   (set-fontset-font t script (font-spec :family "LXGW WenKai") nil 'prepend))
 (set-fontset-font t '(#xe000 . #xf8ff) (font-spec :family "Iosevka Curly") nil 'prepend)
-;; Iosevka Version = 34.8.0
+;; Iosevka Version = 34.8.1
 ;; Download from https://github.com/be5invis/Iosevka/releases
 
 
@@ -435,6 +435,8 @@ Unicode code points."
 
 (add-hook 'after-init-hook 'envrc-global-mode)
 (load-theme 'modus-vivendi)
+(require 'my-box)
+(my-box-enable)
 (with-eval-after-load 'tab-bar
   (keymap-unset tab-bar-mode-map "s-0"))
 (server-start)

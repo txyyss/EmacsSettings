@@ -108,12 +108,12 @@
  '(mode-line-modes-delimiters nil)
  '(modus-themes-bold-constructs t)
  '(modus-themes-common-palette-overrides
-   '((bg-mode-line-active bg-cyan-intense)
-     (bg-mode-line-inactive bg-cyan-subtle)
+   '((bg-mode-line-active bg-active)
+     (bg-mode-line-inactive bg-inactive)
      (border-mode-line-active unspecified)
      (border-mode-line-inactive unspecified)
-     (bg-tab-bar bg-cyan-subtle) (bg-tab-current bg-cyan-intense)
-     (bg-tab-other bg-cyan-subtle) (fringe unspecified)
+     (bg-tab-bar bg-dim) (bg-tab-current bg-active)
+     (bg-tab-other bg-inactive) (fringe unspecified)
      (bg-hl-line bg-cyan-nuanced)))
  '(modus-themes-italic-constructs t)
  '(modus-themes-prompts '(extrabold))
@@ -147,7 +147,7 @@
                   ocaml-eglot orderless org-appear org-modern
                   osx-dictionary paredit pdf-tools proof-general
                   racket-mode slime tuareg utop vertico vterm
-                  yaml-mode))
+                  xterm-color yaml-mode))
  '(package-vc-selected-packages
    '((lean4-mode :url
                  "https://github.com/leanprover-community/lean4-mode.git")))
